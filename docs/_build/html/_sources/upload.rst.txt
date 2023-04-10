@@ -1,0 +1,48 @@
+Instruction for uploading data to server
+========================================
+
+Before you run pipeline, you need upload the input file to server:
+
+Press on "choose files" button and select the root folder of the files
+
+Uploading folder of fastq files
+-------------------------------
+
+* Fastq files must be orginazed, within the selected folder (root folder), into subfolders as shown below. The subfolders names are derived from the sample names.
+* Each subfolder contains the fastq file. The fastq file can be compressed in "gz" format.
+* Fastq file names must to end with "_R1.fastq(.gz)" or "_R1.fq(.gz)" for single-read data. The "R" letter donate the read number.
+* In the case of paired-end data (required for Mars-Seq), corresponding files must exist except for the ending "_R2.fastq(.gz)" (or "_R2.fastq(.gz)") instead of "_R1.fastq".
+
+**For example:**
+
+* root folder
+    - sample1
+        * sample1_R1.fastq
+        * sample1_R2.fastq (must exists in MARS-Seq and in paired-end)
+    - sample2
+        * sample2_R1.fastq
+        * sample2_R2.fastq (must exists in MARS-Seq and in paired-end)
+
+
+The pipeline can support in old convention of the fastq file names *_L00*_R1_0*.fastq. The letter "L" donate the lane number, "R" letter donate the read number, and the numbers 001,002 etc donate serial number of the file for each lane and read
+
+**For example:**
+
+* root folder
+    - sample1
+        * sample1_S0_L001_R1_001.fastq
+        * sample1_S0_L001_R1_002.fastq
+        * sample1_S0_L002_R1_001.fastq
+        * sample1_S0_L002_R1_002.fastq
+        * sample1_S0_L001_R2_001.fastq
+        * sample1_S0_L001_R2_002.fastq
+        * sample1_S0_L002_R2_001.fastq
+        * sample1_S0_L002_R2_002.fastq
+    - sample2
+        * ...
+
+Uploading input for demultiplexing pipeline
+-------------------------------------------
+
+* For the pipeline of demultiplexing from BCL files: upload the original bcl folder. Original folder name need to look like this: 180514_NB551168_0123_AHTHHKBGX5 .
+* For the pipeline of demultiplexing from FASTQ files: upload the fastq files. Notice: the pipeline get as input one file per read (i.e. one file for *R1*, *R2*, *I1* etc.).

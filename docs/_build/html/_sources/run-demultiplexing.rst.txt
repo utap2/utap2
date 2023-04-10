@@ -1,0 +1,44 @@
+Run Demultiplexing pipeline
+###########################
+
+
+The are 2 pipelines for demultiplexing, the first gets BCL files as input and the second gets fastq files as input.
+
+Demultiplexing from BCL files
+-----------------------------
+
+If you have bcl files, upload it to the server according to the instructions here (section: Uploading folder of bcl files):
+
+.. toctree::
+    :maxdepth: 1
+
+    upload
+
+You need to upload all original folder of the bcl files as it written by Next-seq (or Hi-seq) machine. The folder name need to look like this name: "170802_NB501465_0140_AH3W3KBGX3".
+
+The pipeline convert bcl files to fastq files and demultiplexes the fastq file according MAR-seq or True-seq (or semi- True-seq) protocol.
+
+In the portal, you need to choose the bcl folder:
+
+
+
+Demultiplexing form fastq files
+-------------------------------
+
+The pipeline demultiplexes the fastq file according MAR-seq or True-seq (or semi- True-seq) protocol.
+
+You need to upload the fastq files to the server.
+
+Notice: the pipeline get as input one file per read (i.e. one file for *R1*, *R2*, *I1* etc.).
+
+.. toctree::
+    :maxdepth: 1
+
+    upload
+
+
+In the portal, you need to choose the root folder of the fastq files from the list.
+
+If the sequencing is single read, choose for read 1 the file with *R1* in its file name, and for index read the file with *R2* (sometimes it is called *I1*), and remain empty the field of read 2.
+
+If the sequencing is paired end, choose for read 1 the file with *R1* in its file name, and for read 2 the file with *R2*, and for index read the file with *I1*. If have no file with *I1* name, choose *R2* file for index read and *R3* file for read 2.

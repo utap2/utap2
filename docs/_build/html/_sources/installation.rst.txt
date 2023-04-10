@@ -1,0 +1,247 @@
+
+Installation
+############
+
+*Support:* refael.kohen@weizmann.ac.il
+
+
+Requirements
+============
+
+The application can be installed on Linux server that submits cluster commands like qsub (pbs cluster), or bsub (lsf cluster).
+
+The host server needs to have ~40G of RAM memory. If you install on compute cluster, all compute nodes in the queue need to have ~40G of RAM memory.
+
+
+The server needs to have installed:
+
+* docker version >= 17
+* miniconda
+* apache
+
+Building the genomes
+====================
+
+Create directory for UTAP software and the output
+-------------------------------------------------
+
+Notice: within this folder the data of the users will be written, therefore you need to verify that you have sufficient disk space, approximately ~400G per analysis.
+::
+
+   HOST_MOUNT=  ... fill here the path
+   mkdir $HOST_MOUNT
+   cd $HOST_MOUNT
+
+
+Download the meta data
+----------------------
+The meta-data folder contains the genomes and annotation files. Download it by the browser from google-drive or by ftp, and move it to $HOST_MOUNT folder.
+::
+
+
+   #Download by browser:
+   https://drive.google.com/file/d/11OLRgh8YlPolyh71ESe10bP_t7P9ZtNf/view?usp=sharing
+   #OR by ftp:
+   ftp dors.weizmann.ac.il
+   username: bioimg
+   password: bioimaging
+   get UTAP/utap-meta-data-v1.0.0.tar.gz
+
+
+   mv utap-meta-data-v1.0.0.tar.gz $HOST_MOUNT
+   cd $HOST_MOUNT
+   tar -xzvf utap-meta-data-v1.0.0.tar.gz
+
+
+Create conda environments
+-------------------------
+::
+
+   conda create -y --name utap
+   conda activate utap
+   conda env create -f utap_environment.yml -n utap
+   #Run the file for installation packages on utap environment
+   $HOST_MOUNT/utap-meta-data/installation/install-conda-packages-transcriptome.sh
+   conda deactivate
+
+   conda create -y -n utap-py35 python=3.5 anaconda
+   conda activate utap-py35
+   conda install -y -c bioconda snakemake
+   conda deactivate
+
+
+Create genomes
+--------------
+
+Extract the genomes to fasta format and create Star index of the genomes (requires ~135G of disc, but in the building process temporary files requires ~200G):
+
+Extract genome files
+^^^^^^^^^^^^^^^^^^^^
+::
+
+    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/hg19.2bit $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/hg38.2bit $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/mm10.2bit $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/danRer10.2bit $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/tair11-araport.2bit $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/tair10.2bit $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/sl3.2bit $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
+
+Build STAR index to genome files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+These commands take ~1 hour per genome. The commands run on 30 threads (you can change it with --runTreadN parameter) and consume RAM memory as following:
+
+* hg19:       29918 MB
+* hg38:       30574 MB
+* mm10:       27532 MB
+* danRer10:   23523 MB
+* tair11:     4301 MB
+* tair10:     4282 MB
+* sl3:        17663 MB
+
+::
+
+    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/UCSC/danRer10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
+    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
+
+
+After the extracting of the fasta files and building the STAR index, you can delete the fasta and .2bit files:
+
+::
+
+   rm $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
+   rm $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
+   rm $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
+   rm $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
+   rm $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
+   rm $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
+   rm $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
+   rm $HOST_MOUNT/utap-meta-data/2bit_genomes/*
+
+Run UTAP
+========
+
+Load the image into docker engine
+---------------------------------
+::
+
+   docker pull refaelkohen/utap:v1.0.0
+
+
+
+For running UTAP on local server, run the command (all parameters all mandatory). The command will create docker container called "utap".
+
+::
+
+   $HOST_MOUNT/utap-meta-data/installation/utap-install.sh -a DNS_HOST -b HOST_MOUNT -c REPLY_EMAIL -d MAIL_SERVER -e HOST_APACHE_PORT -f HOST_SSH_PORT -g ADMIN_PASS -h USER -i INSTITUTE_NAME -j IMAGE_NAME -k DB_PATH -l MAX_UPLOAD_SIZE -m local
+
+For running UTAP on compute cluster run the command:
+::
+
+   $HOST_MOUNT/utap-meta-data/installation/utap-install.sh -a DNS_HOST -b HOST_MOUNT -c REPLY_EMAIL -d MAIL_SERVER -e HOST_APACHE_PORT -f HOST_SSH_PORT -g ADMIN_PASS -h USER -i INSTITUTE_NAME -j IMAGE_NAME -k DB_PATH -l MAX_UPLOAD_SIZE -m CLUSTER_TYPE -n CLUSTER_QUEUE -o CONDA -p AUTH_KEYS_FILE
+
+
+After the run, you can access the application using the address: http://DNS_HOST:HOST_APACHE_PORT (according to your choices for values of these parameters)
+
+
+
+Parameters
+----------
+
+-a DNS_HOST             DNS address of the host server.
+
+                        **For example:** http://servername.ac.il or servername.ac.il
+
+-b HOST_MOUNT           Mount point from the docker on the host (full path of the folder).
+
+                        Notice: this is the folder that contains the utap-meta-data folder.
+
+                        All input and output data of the users will be written into this folder.
+
+-c REPLY_EMAIL          Support email for users. Users can reply to this email.
+
+
+
+-d MAIL_SERVER          Domain name of the mail server
+
+                        **For example:** mg.weizmann.ac.il
+
+-e HOST_APACHE_PORT     Any available port on the host server for Apache of docker.
+
+                        **For example:** 8081
+
+-f HOST_SSH_PORT        Any available port on the host server for ssh server of docker.
+
+                        **For example:** 2222
+
+-g USER                 user in host server that has permission to run cluster commands and write into $HOST_MOUNT folder (cannot be root).
+
+-h INSTITUTE_NAME       Your institute name or lab
+
+                        (string contains only A-Za-z0-9 characters without whitespaces).
+
+-i IMAGE_NAME           the name of docker image.
+
+                        **For example:** utap:v1.0.0
+
+-j ADMIN_PASS           Any password of the admin in the djnago database
+
+                        string can contain only A-Za-z0-9 characters without whitespaces.
+
+-k DB_PATH              Full path to folder where the DB will be located.
+
+                        $USER needs to have write permission to this folder.
+
+                        The "DB_PATH" should not be under a mounted folder. The DB is very small, so it is will not create disk space problems.
+
+                        **For example:** mkdir /utap-db; chown -R $USER/utap-db;
+
+-l MAX_UPLOAD_SIZE      Maximum file/folder size that user can upload at once (Mb).
+
+                        **For example:** 314572800 (i.e. 300*1024*1024 = 314572800 = 300Gb)
+
+-m CLUSTER_TYPE         "local". The commands of utap application will be run on the local server.
+
+                        there is no need to supply the parameters: CLUSTER_QUEUE, CONDA, AUTH_KEYS_FILE.
+
+
+Additional parameters for installing on cluster
+-----------------------------------------------
+
+-m CLUSTER_TYPE         Type of the cluster.
+
+                        **For example:** lsf or pbs.
+
+                        The commands will be sent to the cluster. For now UTAP supports LSF or PBS cluters.
+
+-n CLUSTER_QUEUE        Queue name in the cluster. The $USER need to have permissions to run on this queue.
+
+-o CONDA                Full path to root folder of miniconda.
+
+                        **For example:** /miniconda2
+
+-p AUTH_KEYS_FILE       Full path to .ssh/authorized_keys (or .ssh/authorized_keys2) file of $USER
+
+                        The docker will add its public key to this file.
+
+
+
+
+**Important:**
+
+Within $DB_PATH folder will be created file called: db.sqlite3
+
+The db.sqlite3 file is the database of the application and contains the details of the users and links to its results on $HOST_MOUNT folder.
+
+The $HOST_MOUNT contains all data of the users (input and output files).
+
+The db.sqlite3 database and $HOST_MOUNT folder are located on the disc of the host server (out of the docker container).
+
+When you stop/delete the "utap" container the database and $HOST_MOUNT folder are not deleted.
+
+**If there is a need to delete temprarily the docker, keep the database ("db.sqlite3") and the same $HOST_MOUNT folder. When you will run again the docker with utap-install.sh script you can use the existing database ("db.sqlite3") and $HOST_MOUNT folder.**
