@@ -8,21 +8,24 @@ Installation
 Requirements
 ============
 
-The application can be installed on a Linux server that supports cluster commands like qsub (pbs cluster), or bsub (lsf cluster).
 
-The host server and/or each compute node in the relevent queue(s) requires ~40G of RAM memory.
+The application can be installed on a Linux server that supports cluster commands like qsub (pbs cluster), or bsub (lsf cluster). cluster should be optional.
+
+Note: The application was tested only on lsf cluster.
+
+The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory and ~25 GB available in temp folder (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters file below).
 
 The server requires the following:
 
-* docker version >= 17
-* miniconda version 2
+*Singularity version > 3.10.4 
 
-You must set up a user (not root, and referred to below as "USER") with write permission in the miniconda environment and in the HOST_MOUNT folder (see below), that can run cluster commands and docker.
+A user defined as “USER” (see below)  with “Fakeroot” privileges is required for building singularity image with singularity definition file, if you can’t acquire fakeroot privileges, an installation using sandbox container is possible, please see the bellow section “UTAP sandbox installation”.
 
-Its user id must be above 103; USER can belong to effective group with group id above 108.
 
-USER requires a .ssh folder in its home directory. 
-Create it with the command:  ssh-keygen -t rsa
+“USER” must have full permissions to HOST_MOUNT folder (see below) and to singularity commands.
+
+
+If the application is run on cluster, the user is also required to have permissions to run cluster command and a .ssh folder in its home directory which can be created with the command: ssh-keygen -t rsa
 
 The "USER" should then do the following:
 
