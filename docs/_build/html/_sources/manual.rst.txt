@@ -1,0 +1,55 @@
+
+UTAP - User guide
+#################
+
+
+
+Registration to system
+======================
+
+.. image:: main-screen.png
+
+-------------
+
+Click on signup button and fill the form:
+
+.. image:: signup.png
+
+
+User datasets
+=============
+
+The "User datasets" screen contains the list of the analysis of the user. You can see the status of the run (RUNNING/SUCCESSFOL/FAILED). You need refresh the page to see if the status is changed (you also will get email in the end of the run).
+
+.. image:: analysis-list.png
+
+
+Import Input data
+=================
+
+In order to run the transcriptome analysis pipeline fastq sequence files need to be located on the server.
+
+Click on "Upload data" button on navigation bar and select the folder of fastq files.
+
+.. image:: upload.png
+
+See here instructions how to build valid folder structure:
+
+.. toctree::
+    :maxdepth: 2
+
+    upload
+
+
+Run analysis
+============
+
+After importing you data (or if you have old data on the server that was imported in the past), you can run the pipeline by selecting the "Run pipeline" option
+
+.. image:: run-analysis.png
+
+.. toctree::
+    :maxdepth: 2
+
+    run-rna-mars-seq
+    run-demultiplexing

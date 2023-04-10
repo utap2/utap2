@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python2.7" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python2.7" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; UTAP 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="UTAP - User guide" href="manual.html" />
+    <link rel="prev" title="UTAP: User-friendly Transcriptome Analysis Pipeline" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> UTAP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-genomes">Building the genomes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-directory-for-utap-software-and-the-output">Create directory for UTAP software and the output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download-the-meta-data">Download the meta data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-conda-environments">Create conda environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-genomes">Create genomes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#extract-genome-files">Extract genome files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-star-index-to-genome-files">Build STAR index to genome files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#run-utap">Run UTAP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-the-image-into-docker-engine">Load the image into docker engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-parameters-for-installing-on-cluster">Additional parameters for installing on cluster</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual.html">UTAP - User guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UTAP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p><em>Support:</em> <a class="reference external" href="mailto:refael&#46;kohen&#37;&#52;&#48;weizmann&#46;ac&#46;il">refael<span>&#46;</span>kohen<span>&#64;</span>weizmann<span>&#46;</span>ac<span>&#46;</span>il</a></p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>The application can be installed on Linux server that submits cluster commands like qsub (pbs cluster), or bsub (lsf cluster).</p>
+<p>The host server needs to have ~40G of RAM memory. If you install on compute cluster, all compute nodes in the queue need to have ~40G of RAM memory.</p>
+<p>The server needs to have installed:</p>
+<ul class="simple">
+<li>docker version &gt;= 17</li>
+<li>miniconda</li>
+<li>apache</li>
+</ul>
+</div>
+<div class="section" id="building-the-genomes">
+<h2>Building the genomes<a class="headerlink" href="#building-the-genomes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-directory-for-utap-software-and-the-output">
+<h3>Create directory for UTAP software and the output<a class="headerlink" href="#create-directory-for-utap-software-and-the-output" title="Permalink to this headline">¶</a></h3>
+<p>Notice: within this folder the data of the users will be written, therefore you need to verify that you have sufficient disk space, approximately ~400G per analysis.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HOST_MOUNT=  ... fill here the path
+mkdir $HOST_MOUNT
+cd $HOST_MOUNT
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-the-meta-data">
+<h3>Download the meta data<a class="headerlink" href="#download-the-meta-data" title="Permalink to this headline">¶</a></h3>
+<p>The meta-data folder contains the genomes and annotation files. Download it by the browser from google-drive or by ftp, and move it to $HOST_MOUNT folder.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#Download by browser:
+https://drive.google.com/file/d/11OLRgh8YlPolyh71ESe10bP_t7P9ZtNf/view?usp=sharing
+#OR by ftp:
+ftp dors.weizmann.ac.il
+username: bioimg
+password: bioimaging
+get UTAP/utap-meta-data-v1.0.0.tar.gz
+
+
+mv utap-meta-data-v1.0.0.tar.gz $HOST_MOUNT
+cd $HOST_MOUNT
+tar -xzvf utap-meta-data-v1.0.0.tar.gz
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-conda-environments">
+<h3>Create conda environments<a class="headerlink" href="#create-conda-environments" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>conda create -y --name utap
+conda activate utap
+conda env create -f utap_environment.yml -n utap
+#Run the file for installation packages on utap environment
+$HOST_MOUNT/utap-meta-data/installation/install-conda-packages-transcriptome.sh
+conda deactivate
+
+conda create -y -n utap-py35 python=3.5 anaconda
+conda activate utap-py35
+conda install -y -c bioconda snakemake
+conda deactivate
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-genomes">
+<h3>Create genomes<a class="headerlink" href="#create-genomes" title="Permalink to this headline">¶</a></h3>
+<p>Extract the genomes to fasta format and create Star index of the genomes (requires ~135G of disc, but in the building process temporary files requires ~200G):</p>
+<div class="section" id="extract-genome-files">
+<h4>Extract genome files<a class="headerlink" href="#extract-genome-files" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/hg19.2bit $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/hg38.2bit $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/mm10.2bit $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/danRer10.2bit $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/tair11-araport.2bit $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/tair10.2bit $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/sl3.2bit $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-star-index-to-genome-files">
+<h4>Build STAR index to genome files<a class="headerlink" href="#build-star-index-to-genome-files" title="Permalink to this headline">¶</a></h4>
+<p>These commands take ~1 hour per genome. The commands run on 30 threads (you can change it with --runTreadN parameter) and consume RAM memory as following:</p>
+<ul class="simple">
+<li>hg19:       29918 MB</li>
+<li>hg38:       30574 MB</li>
+<li>mm10:       27532 MB</li>
+<li>danRer10:   23523 MB</li>
+<li>tair11:     4301 MB</li>
+<li>tair10:     4282 MB</li>
+<li>sl3:        17663 MB</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/UCSC/danRer10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
+$HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
+</pre></div>
+</div>
+<p>After the extracting of the fasta files and building the STAR index, you can delete the fasta and .2bit files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rm $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
+rm $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
+rm $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
+rm $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
+rm $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
+rm $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
+rm $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
+rm $HOST_MOUNT/utap-meta-data/2bit_genomes/*
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="run-utap">
+<h2>Run UTAP<a class="headerlink" href="#run-utap" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="load-the-image-into-docker-engine">
+<h3>Load the image into docker engine<a class="headerlink" href="#load-the-image-into-docker-engine" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">refaelkohen</span><span class="o">/</span><span class="n">utap</span><span class="p">:</span><span class="n">v1</span><span class="o">.</span><span class="mf">0.0</span>
+</pre></div>
+</div>
+<p>For running UTAP on local server, run the command (all parameters all mandatory). The command will create docker container called &quot;utap&quot;.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$HOST_MOUNT/utap-meta-data/installation/utap-install.sh -a DNS_HOST -b HOST_MOUNT -c REPLY_EMAIL -d MAIL_SERVER -e HOST_APACHE_PORT -f HOST_SSH_PORT -g ADMIN_PASS -h USER -i INSTITUTE_NAME -j IMAGE_NAME -k DB_PATH -l MAX_UPLOAD_SIZE -m local
+</pre></div>
+</div>
+<p>For running UTAP on compute cluster run the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$HOST_MOUNT/utap-meta-data/installation/utap-install.sh -a DNS_HOST -b HOST_MOUNT -c REPLY_EMAIL -d MAIL_SERVER -e HOST_APACHE_PORT -f HOST_SSH_PORT -g ADMIN_PASS -h USER -i INSTITUTE_NAME -j IMAGE_NAME -k DB_PATH -l MAX_UPLOAD_SIZE -m CLUSTER_TYPE -n CLUSTER_QUEUE -o CONDA -p AUTH_KEYS_FILE
+</pre></div>
+</div>
+<p>After the run, you can access the application using the address: <a class="reference external" href="http://DNS_HOST:HOST_APACHE_PORT">http://DNS_HOST:HOST_APACHE_PORT</a> (according to your choices for values of these parameters)</p>
+</div>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-a <var>DNS_HOST</var></span></kbd></td>
+<td><p class="first">DNS address of the host server.</p>
+<p class="last"><strong>For example:</strong> <a class="reference external" href="http://servername.ac.il">http://servername.ac.il</a> or servername.ac.il</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b <var>HOST_MOUNT</var></span></kbd></td>
+<td><p class="first">Mount point from the docker on the host (full path of the folder).</p>
+<p>Notice: this is the folder that contains the utap-meta-data folder.</p>
+<p class="last">All input and output data of the users will be written into this folder.</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-c <var>REPLY_EMAIL</var></span></kbd></td>
+<td>Support email for users. Users can reply to this email.</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-d <var>MAIL_SERVER</var></span></kbd></td>
+<td><p class="first">Domain name of the mail server</p>
+<p class="last"><strong>For example:</strong> mg.weizmann.ac.il</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-e <var>HOST_APACHE_PORT</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Any available port on the host server for Apache of docker.</p>
+<p class="last"><strong>For example:</strong> 8081</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-f <var>HOST_SSH_PORT</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Any available port on the host server for ssh server of docker.</p>
+<p class="last"><strong>For example:</strong> 2222</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-g <var>USER</var></span></kbd></td>
+<td>user in host server that has permission to run cluster commands and write into $HOST_MOUNT folder (cannot be root).</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-h <var>INSTITUTE_NAME</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Your institute name or lab</p>
+<p class="last">(string contains only A-Za-z0-9 characters without whitespaces).</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-i <var>IMAGE_NAME</var></span></kbd></td>
+<td><p class="first">the name of docker image.</p>
+<p class="last"><strong>For example:</strong> utap:v1.0.0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-j <var>ADMIN_PASS</var></span></kbd></td>
+<td><p class="first">Any password of the admin in the djnago database</p>
+<p class="last">string can contain only A-Za-z0-9 characters without whitespaces.</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-k <var>DB_PATH</var></span></kbd></td>
+<td><p class="first">Full path to folder where the DB will be located.</p>
+<p>$USER needs to have write permission to this folder.</p>
+<p>The &quot;DB_PATH&quot; should not be under a mounted folder. The DB is very small, so it is will not create disk space problems.</p>
+<p class="last"><strong>For example:</strong> mkdir /utap-db; chown -R $USER/utap-db;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-l <var>MAX_UPLOAD_SIZE</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Maximum file/folder size that user can upload at once (Mb).</p>
+<p class="last"><strong>For example:</strong> 314572800 (i.e. 300*1024*1024 = 314572800 = 300Gb)</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-m <var>CLUSTER_TYPE</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">&quot;local&quot;. The commands of utap application will be run on the local server.</p>
+<p class="last">there is no need to supply the parameters: CLUSTER_QUEUE, CONDA, AUTH_KEYS_FILE.</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="additional-parameters-for-installing-on-cluster">
+<h3>Additional parameters for installing on cluster<a class="headerlink" href="#additional-parameters-for-installing-on-cluster" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-m <var>CLUSTER_TYPE</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Type of the cluster.</p>
+<p><strong>For example:</strong> lsf or pbs.</p>
+<p class="last">The commands will be sent to the cluster. For now UTAP supports LSF or PBS cluters.</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-n <var>CLUSTER_QUEUE</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Queue name in the cluster. The $USER need to have permissions to run on this queue.</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-o <var>CONDA</var></span></kbd></td>
+<td><p class="first">Full path to root folder of miniconda.</p>
+<p class="last"><strong>For example:</strong> /miniconda2</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>AUTH_KEYS_FILE</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Full path to .ssh/authorized_keys (or .ssh/authorized_keys2) file of $USER</p>
+<p class="last">The docker will add its public key to this file.</p>
+</td></tr>
+</tbody>
+</table>
+<p><strong>Important:</strong></p>
+<p>Within $DB_PATH folder will be created file called: db.sqlite3</p>
+<p>The db.sqlite3 file is the database of the application and contains the details of the users and links to its results on $HOST_MOUNT folder.</p>
+<p>The $HOST_MOUNT contains all data of the users (input and output files).</p>
+<p>The db.sqlite3 database and $HOST_MOUNT folder are located on the disc of the host server (out of the docker container).</p>
+<p>When you stop/delete the &quot;utap&quot; container the database and $HOST_MOUNT folder are not deleted.</p>
+<p><strong>If there is a need to delete temprarily the docker, keep the database (&quot;db.sqlite3&quot;) and the same $HOST_MOUNT folder. When you will run again the docker with utap-install.sh script you can use the existing database (&quot;db.sqlite3&quot;) and $HOST_MOUNT folder.</strong></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="manual.html" class="btn btn-neutral float-right" title="UTAP - User guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="UTAP: User-friendly Transcriptome Analysis Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Refael Kohen.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            LANGUAGE:'Python2.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

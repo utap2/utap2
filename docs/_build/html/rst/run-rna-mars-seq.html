@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python2.7" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python2.7" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Run RNA-seq or MARS-seq pipeline &mdash; UTAP 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Run Demultiplexing pipeline" href="run-demultiplexing.html" />
+    <link rel="prev" title="Instructions for uploading data to the server" href="upload.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> UTAP
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="demo-site.html">UTAP demo website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rna-mars-seq-results.html">Analysis pipeline steps and reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="user-guide.html">User guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#registration-to-the-system">Registration to the system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#user-datasets">User datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#import-input-data">Import Input data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="user-guide.html#run-analysis">Run analysis</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Run RNA-seq or MARS-seq pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rna-seq-analysis-setup">RNA-seq Analysis Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-pipeline-efficiently">Using the pipeline efficiently</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="run-demultiplexing.html">Run Demultiplexing pipeline</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">UTAP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="user-guide.html">User guide</a> &raquo;</li>
+        
+      <li>Run RNA-seq or MARS-seq pipeline</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/rst/run-rna-mars-seq.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="run-rna-seq-or-mars-seq-pipeline">
+<h1>Run RNA-seq or MARS-seq pipeline<a class="headerlink" href="#run-rna-seq-or-mars-seq-pipeline" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rna-seq-analysis-setup">
+<h2>RNA-seq Analysis Setup<a class="headerlink" href="#rna-seq-analysis-setup" title="Permalink to this headline">¶</a></h2>
+<p>If your protocol is RNA-seq, you will get this screen:</p>
+<img alt="../_images/rna-seq.png" src="../_images/rna-seq.png" />
+<p>If your protocol is MARS-seq, you will get this screen:</p>
+<img alt="../_images/mars-seq.png" src="../_images/mars-seq.png" />
+<hr class="docutils" />
+<p>In the input folder field, Browse within your directory structure and Select the <strong>root folder</strong>  for analysis.  Note that if you wish to go up one level (or more) click on the desired folder level using the path at the top of the window.</p>
+<img alt="../_images/browse-folder.png" src="../_images/browse-folder.png" />
+<p>Input folder names must conform to the correct format as previously described. If there is a problem with the folder you selected, first resolve the error and then retry, selecting the updated folder.</p>
+<p>If you wish the output folder to be different from the one automatically filled in (based on the selected input folder), just select the desired output folder.</p>
+<p>Fill in the project name, then select the genome and annotation.</p>
+<p>For RNA-seq protocols, choose whether your protocol is stranded (sequenced reads save the original strand of RNA fragments) or non-stranded.</p>
+<p>Define the type of your adapters for each read (R1 and R2). These adapters will be removed from the reads by the pipeline. You can leave the default adapters if you use True-seq protocol P5 and P7 adapters.</p>
+<hr class="docutils" />
+<p>To identify what's differentially expressed by using the DESeq2 package, select the Run Deseq option. By default, two categories must be created (fill in the category names for each of the 2 categories, and click on the Add Categories button).</p>
+<img alt="../_images/deseq1.png" src="../_images/deseq1.png" />
+<hr class="docutils" />
+<p>Choose the samples by first selecting them, and then using the arrows to move them to the appropriate categories. You may also add additional categories.</p>
+<img alt="../_images/deseq2.png" src="../_images/deseq2.png" />
+<hr class="docutils" />
+<p>The order of what's being compared will be determined by the specification order of the categories. For example, DESeq2's output will show a &quot;Treatment&quot; vs &quot;Control&quot; comparison when &quot;Treatment&quot; is defined to be the first category, and &quot;Control&quot; the second.</p>
+<p>If the samples were prepared in different batches, one can annotate them as follows: After moving the samples into category boxes, click on the &quot;Add Batch Effect&quot; button, select the samples from the category boxes that belong to a particular batch, and click on the &quot;Batch 1&quot; button. Repeat the operation for the other batches. Be sure that the batch effect is designed correctly - seeDESeq2 documentation <a class="reference external" href="https://bioconductor.org/packages/3.7/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#model-matrix-not-full-rank">here</a>.</p>
+<img alt="../_images/deseq-batch.png" src="../_images/deseq-batch.png" />
+<p>All of the steps of the pipeline (mapping, counts etc.) will be run on all of the samples, with the exception of Deseq which will be run only on samples with categories.</p>
+<p>Finally, click on the &quot;Run analysis&quot; button.</p>
+<p>At the end of the run, an email will be sent reporting analysis completion.</p>
+</div>
+<div class="section" id="using-the-pipeline-efficiently">
+<h2>Using the pipeline efficiently<a class="headerlink" href="#using-the-pipeline-efficiently" title="Permalink to this headline">¶</a></h2>
+<p><strong>If you want re-run only the Deseq step several times on the same input folder (with other comparisons/batches), after completion of the initial analysis you will see (on the &quot;user dataset&quot; screen) a new button called &quot;run again with other parameters&quot;. Clicking on this button will re-run only the Deseq step.</strong></p>
+<p><strong>Thus, the analysis will re-run only the short Dseq step (which takes a few minutes) and not re-run all of the time-consuming steps of the complete pipeline.</strong></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="run-demultiplexing.html" class="btn btn-neutral float-right" title="Run Demultiplexing pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="upload.html" class="btn btn-neutral" title="Instructions for uploading data to the server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Refael Kohen.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'Python2.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

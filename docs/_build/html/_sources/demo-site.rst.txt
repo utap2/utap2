@@ -1,0 +1,12 @@
+UTAP demo website
+#################
+
+You can login to demo website:
+
+`http://utap-demo.weizmann.ac.il <http://utap-demo.weizmann.ac.il>`_
+
+username: testuser
+
+password: utap1234
+
+This web site demonstrates the user interface and examples of run results, yet you are unable to run  a new analysis.
