@@ -59,7 +59,7 @@ The UTAP installation folder includes the following files:
    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_installation_files.tar.gz -P $HOST_MOUNT
    
    cd $HOST_MOUNT
-   tar -xzvf UTAP_installation_files.tar.gz
+    tar -xvzf UTAP_installation_files.tar.gz && mv UTAP_installation_files/* .
 
 
 Download genomes indexes
