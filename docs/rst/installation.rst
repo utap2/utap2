@@ -216,28 +216,32 @@ Optional parameters
                         
                         
                         
-USER                   user in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write 
+USER                   
+                       User in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write 
 
                        into the $HOST_MOUNT folder (user can have fakeroot permissions).
 
                        **The default is:** USER=$USER
 
 
-DNS_HOST               DNS address of the host server.
+DNS_HOST               
+                       DNS address of the host server.
 
                        For example: http://servername.ac.il or servername.ac.il
                         
                        The default is the IPv4 address of the host server (can be obtained with the command 'hostname -I')
 
 
-REPLY_EMAIL            Support email for users. Users can reply to this email.
+REPLY_EMAIL            
+                       Support email for users. Users can reply to this email.
                       
                        Can only be used if the folowing parameter MAIL_SERVER is defined.
                       
                        **The default is:** REPLY_EMAIL=None
 
 
-MAIL_SERVER            Domain name of the mail server
+MAIL_SERVER            
+                       Domain name of the mail server
 
                        **For example:** mg.weizmann.ac.il
                         
