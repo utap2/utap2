@@ -78,7 +78,7 @@ In any case, if you are using multiple genomes, ensure that they are synchronize
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
     tar -xvzf Zebrafish.tar.gz
     mkdir genomes
-    rsync -a Mouse/* Human/* Zebrafish/* genomes/
+    rsync -a Zebrafish/* genomes/
     
     #For Mouse genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
