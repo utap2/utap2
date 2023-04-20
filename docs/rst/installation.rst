@@ -9,23 +9,21 @@ Requirements
 ============
 
 
-The application can be installed on a Linux server that supports cluster commands like qsub (pbs cluster), or bsub (lsf cluster). cluster should be optional.
+The application should be installed on a Linux server.
 
-Note: The application was tested only on lsf cluster.
+
+If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF or PBS cluster, the UTAP pipelines will need to be executed locally.
+
 
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory and ~25 GB available in temp folder (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters file below).
 
 The server requires the following:
-
-*Singularity version > 3.10.4 
+Singularity version > 3.10.4 
 
 A user defined as “USER” (see below)  with “Fakeroot” privileges is required for building singularity image with singularity definition file, if you can’t acquire fakeroot privileges, an installation using sandbox container is possible, please see the bellow section “UTAP sandbox installation”.
 
-
-“USER” must have full permissions to HOST_MOUNT folder (see below) and to singularity commands.
-
-
-If the application is run on cluster, the user is also required to have permissions to run cluster command and a .ssh folder in its home directory which can be created with the command: ssh-keygen -t rsa
+The “USER” must have full permissions to HOST_MOUNT folder (see below) and to singularity commands.
+If the application is run on cluster, the user is also required to have permissions to run cluster command 
 
 The "USER" should then do the following:
 
@@ -41,108 +39,62 @@ Note: Since user output data will be written in this folder, please verify that 
    cd $HOST_MOUNT
 
 
-Download the metadata
+Download the UTAP installation folder 
 ---------------------
-The meta-data folder contains the genomes and annotation files. You can download it using your browser from our google-drive or via ftp as noted below, and then unpack it in the $HOST_MOUNT folder.
+The UTAP installation folder includes the following files:
+  a.	install_UTAP_singularity.sh
+  b.	optional_parameters.conf
+  c.	ports.conf
+  d.	required_parameters.conf
+  e.	Singularity_sed.def
+  f.	update-db.sh
+  g.	utap_install_image.sh
+  i.	run_UTAP_sandbox.sh
+
+ You can download it using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT folder.
 ::
 
 
    #Download the zipped folder into $HOST_MOUNT folder:
-   wget http://utap-demo.weizmann.ac.il/reports/utap-meta-data-v1.0.7.tar.gz -P $HOST_MOUNT
+   wget ftp://dors.weizmann.ac.il/UTAP/UTAP_installation_files.tar.gz -P $HOST_MOUNT
    
    cd $HOST_MOUNT
-   tar -xzvf utap-meta-data-v1.0.7.tar.gz
+   tar -xzvf UTAP_installation_files.tar.gz
 
 
-Create conda environments
+Download genomes indexes
 -------------------------
-**If you install the system on local server and don't use a compute cluster for running, skip this section.**
-The environment requires ~29G of disk.
+
+The genomes folder includes human (hg38), mouse(mm10) and zebrafish(danRer11) genomes indexes, you can choose to download only one of them as noted below.
+If you require a genome that is not supplied, please follow the instruction in the section “Generate new genome index and annotation file”.
+
+You can download the genomes folder using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT under genomes directoy. If you chose to download the genomes in a diffrent location,you have to overwrite the parameter GENOMES_DIR in the optional_prameters file.
+
+In any case, if you are using multiple genomes, ensure that they are synchronized under the same directory using the rsync command as indicated below. 
 ::
 
-   conda create -y --name utap r-essentials r-base=3.3.2
-   conda activate utap
-   # Install packages in the utap environment:
-   # Run the script in this file in your shell:
-   export CONDA_DIR=YOUR_CONDA_DIR # For example: CONDA_DIR=/home/user/miniconda2
-   $HOST_MOUNT/utap-meta-data/installation/install-conda-packages-transcriptome.sh >& $HOST_MOUNT/utap-meta-data/installation/conda-install-transcriptome.stdout
-   conda deactivate
-
-   conda create -y --name utap-chromatin
-   conda activate utap-chromatin
-   export CONDA_DIR=YOUR_CONDA_DIR # For example: CONDA_DIR=/home/user/miniconda2
-   $HOST_MOUNT/utap-meta-data/installation/install-conda-packages-chromatin.sh >& $HOST_MOUNT/utap-meta-data/installation/conda-install-chromatin.stdout
-   conda deactivate
-
-   conda create -y -n utap-py35 python=3.5 anaconda
-   conda activate utap-py35
-   conda install -y -c bioconda snakemake==3.13.3
-   conda deactivate
-
-Create genomes
-==============
-
-Extract the genomes to fasta format and create a Star index of the genomes (requires ~200GB of disk during the building process, reduced to ~135GB once the build completes and temporary files are removed):
-
-Extract genome files
---------------------
-::
-
-    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/hg19.2bit $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/hg38.2bit $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/mm10.2bit $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/danRer10.2bit $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/tair11-araport.2bit $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/tair10.2bit $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/twoBitToFa $HOST_MOUNT/utap-meta-data/2bit_genomes/sl3.2bit $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
-
-Build the STAR index
---------------------
-The commands listed below take ~1 hour per genome. They run on 30 threads (you can change that number by modifying the --runTreadN parameter), and consume RAM memory as follows:
-
-* hg19:       29,918 MB
-* hg38:       30,574 MB
-* mm10:       27,532 MB
-* danRer10:   23,523 MB
-* tair11:     4,301 MB
-* tair10:     4,282 MB
-* sl3:        17,663 MB
-
-::
-
-    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
-    $HOST_MOUNT/utap-meta-data/softwares/bin/STAR --runThreadN 30 --runMode genomeGenerate --genomeDir $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/STAR_index/ --genomeFastaFiles $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
+    #Download the zipped folder into $HOST_MOUNT folder:
+    #For Zebrafish genome:
+    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
+    tar -xvzf Zebrafish.tar.gz
+    mkdir genomes
+    rsync -a Mouse/* Human/* Zebrafish/* genomes/
+    
+    #For Mouse genome:
+    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
+    tar -xvzf Mouse.tar.gz
+    mkdir genomes
+    rsync -a Mouse/* genomes/
+    
+    #For Human genome:
+    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
+    mkdir genomes;
+    rsync -a Human/* genomes/
+    
+    #for combining all genomes together:
+    rsync -a Human/* Mouse/* Zebrafish/*  genomes/
 
 
-Build the BOWTIE2 index
------------------------
-The commands listed below take ~1 hour per genome and consume ~15g RAM memory.
-
-::
-
-    CONDA=/your/path/to/miniconda2/folder
-    $CONDA/envs/utap-chromatin/bin/bowtie2-build $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/BOWTIE2_index/hg19
-    $CONDA/envs/utap-chromatin/bin/bowtie2-build $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/BOWTIE2_index/hg38
-    $CONDA/envs/utap-chromatin/bin/bowtie2-build $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/BOWTIE2_index/mm10
-
-
-After extracting the fasta files and building the index, you can delete the fasta and .2bit files:
-
-::
-
-   rm $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg19/gemone_hg19.fa
-   rm $HOST_MOUNT/utap-meta-data/genomes/Homo_sapiens/UCSC/hg38/gemone_hg38.fa
-   rm $HOST_MOUNT/utap-meta-data/genomes/Mus_musculus/UCSC/mm10/gemone_mm10.fa
-   rm $HOST_MOUNT/utap-meta-data/genomes/Danio_rerio/UCSC/danRer10/gemone_danRer10.fa
-   rm $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/ARAPORT/tair11/gemone_tair11-araport.fa
-   rm $HOST_MOUNT/utap-meta-data/genomes/Arabidopsis_thaliana/NCBI/tair10/gemone_tair10.fa
-   rm $HOST_MOUNT/utap-meta-data/genomes/Solanum_lycopersicum/SGN/sl3/gemone_sl3.fa
-   rm $HOST_MOUNT/utap-meta-data/2bit_genomes/*
 
 Run UTAP
 ========
@@ -151,120 +103,68 @@ Pull UTAP image from the public repository
 ------------------------------------------
 ::
 
-   docker pull refaelkohen/utap
+   singularity pull library://utap2/test/utap:latest
 
 
+Fill up all the parameters in files required_parameters.conf and optional_parameters.conf. 
 
-For running UTAP on a local server, execute the following command (all parameters all mandatory), which will create a Docker container called "utap".
+All the parameters in the file required_parameters.conf are mandatory.
+The parameters in the file optional_parameters.conf are not mandatory and are used to overwrite the existed default parameters in the file. 
+
+All the parameters are described bellow under the sectio parameters.
+
+For running UTAP run the command in the shell:
 
 ::
 
-   $HOST_MOUNT/utap-meta-data/installation/utap-install.sh -a DNS_HOST -b HOST_MOUNT -c REPLY_EMAIL -d MAIL_SERVER -e HOST_APACHE_PORT -g ADMIN_PASS -h USER -i INSTITUTE_NAME -j DB_PATH -k MAX_UPLOAD_SIZE -m MAX_CORES -n local
+    cd $HOST_MOUNT
+    
+    ./install_UTAP_singularity.sh -a required_parameters -b optional_parameters
+    
 
-For running UTAP on a compute cluster run the command:
+
+An image named utap.SIF (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
+
+If "USER" has fakeroot privilleges, a utap instance will be lunched and after the run, you will be able to aceess the application using the address: 
+http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:8000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
+
+If the "USER" lacks fakeroot privileges, then follow the steps in section "UTAP sandbox installation".
+
+
+UTAP sandbox installation
+------------------------------------------
+
+This installation is for USER that doesn’t have fakeroot privilege.
+
+**Make sure that the parameter FAKEROOT=FALSE in the optional_parameters file.
+
+All the initial steps are like the ones described above.
+
+After running the command:
+ ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
+as described above. 
+
+a sandbox container named utap.sandbox will be generated in the $HOST_MOUNT folder.
+
+Enter  utap.sandbox container and run the follwing commands in the shell:
+
 ::
 
-   $HOST_MOUNT/utap-meta-data/installation/utap-install.sh -a DNS_HOST -b HOST_MOUNT -c REPLY_EMAIL -d MAIL_SERVER -e HOST_APACHE_PORT -g ADMIN_PASS -h USER -i INSTITUTE_NAME -j DB_PATH -k MAX_UPLOAD_SIZE -m MAX_CORES -n CLUSTER_TYPE -o CLUSTER_QUEUE -p RESOURCES_PARAMS -q CONDA
+    cd $HOST_MOUNT
+    source singularity_variables
+    singularity shell --writable utap.snadbox
+
+run the script run_UTAP_sandbox.sh as described below:
+::
+
+    cd /opt
+    ./run_UTAP_sandbox.sh
 
 
-
-After the run, you can access the application using the address: http://DNS_HOST:HOST_APACHE_PORT (according to your choices for values of these parameters)
-
-You can run the command in the background and close the terminal.
-
-Parameters
-----------
-
--a DNS_HOST             DNS address of the host server.
-
-                        **For example:** http://servername.ac.il or servername.ac.il
-
--b HOST_MOUNT           Mount point from the docker on the host (full path of the folder).
-
-                        This is the folder that contains the utap-meta-data folder.
-
-                        All input and output data for all of the users will be written into this folder.
-
--c REPLY_EMAIL          Support email for users. Users can reply to this email.
+After the run, you can access the application using the address: http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:8000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
 
 
-
--d MAIL_SERVER          Domain name of the mail server
-
-                        **For example:** mg.weizmann.ac.il
-
--e HOST_APACHE_PORT     Any available port on the host server for the Docker Apache.
-
-                        **For example:** 8081
-
--f HOST_SSH_PORT        (Optional) Any available port on the host server for the Docker ssh server.
-
-                        **For example:** 2222
-
--g ADMIN_PASS           Password of an admin in the djnago database
-
-                        (the string can contain only A-Za-z0-9 characters without whitespaces).
-
--h USER                 user in host server that has permission to run cluster commands and write into the $HOST_MOUNT folder (cannot be root).
-
--i INSTITUTE_NAME       Your institute name or lab
-
-                        (the string can contain only A-Za-z0-9 characters without whitespaces).
-
-
--j DB_PATH              Full path to the folder where the DB will be located.
-
-                        $USER needs to have write permission for this folder.
-
-                        The "DB_PATH" should not be under a mounted folder. The DB is very small, so it is will not create disk space problems.
-
-                        **For example:** mkdir /utap-db; chown -R $USER/utap-db;
-
--k MAX_UPLOAD_SIZE      Maximum file/folder size that a user can upload at once (Megabytes).
-
-                        **For example:** 314572800 (i.e. 300*1024*1024 = 314572800Mb = 300Gb)
-
--l PROXY_URL            (Optional) url of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
-
--m MAX_CORES            Maximum cores in the host computer or in each node of the cluster
-
--n CLUSTER_TYPE         "local". The commands of the UTAP application will be run on the local server;
-
-                        there is no need to supply the parameters: CLUSTER_QUEUE, CONDA, or AUTH_KEYS_FILE.
-
-
-Additional parameters for installing on a cluster
--------------------------------------------------
-
--n CLUSTER_TYPE         Type of the cluster.
-
-                        **For example:** lsf or pbs.
-
-                        The commands will be sent to the cluster. Currently, UTAP supports LSF or PBS cluters.
-
--o CLUSTER_QUEUE        Queue name in the cluster. $USER must have permissions to run on this queue.
-
--p RESOURCES_PARAMS     Parameters for your cluster resources.
-
-                        If the memory is per cpu, set mem=resources.mem_mb_per_thread,
-
-                        If the memory is for all cpus of the job together, set mem=resources.mem_mb_total
-
-                        Examples (be sure to use quotes exactly as shown below):
-
-                        '-l select=1:ncpus={threads}:mem={resources.mem_mb_total}mb'
-
-                        '-l mem={resources.mem_mb_total}mb,nodes=1:ppn={threads}'
-
-                        '-n {threads} -R "rusage[mem={resources.mem_mb_per_thread}]" -R "span[hosts=1]"'
-
--q CONDA                Full path to root folder of miniconda.
-
-                        **For example:** /miniconda2
-
-
-
-**Important:**
+Important:
 
 A file called db.sqlite3 will be created within $DB_PATH folder.
 
@@ -272,8 +172,226 @@ The db.sqlite3 file is the database of the application; it contains user details
 
 The $HOST_MOUNT folder contains all of the data for all of the users (input and output files).
 
-The db.sqlite3 database and $HOST_MOUNT folder are located on the disk of the host server (out of the docker container).
+The db.sqlite3 database and $HOST_MOUNT folder are located on the host serverand not inside the container. 
+Therefore, ehen you stop/delete the "utap" container, the database and $HOST_MOUNT folder are not deleted.
 
-When you stop/delete the "utap" container, the database and $HOST_MOUNT folder are not deleted.
+If there is a need to temporarily delete the singularity, keep the database ("db.sqlite3") 
 
-**If there is a need to temporarily delete the docker, keep the database ("db.sqlite3") and the same $HOST_MOUNT folder. When you rerun the docker via the utap-install.sh script, you can use the existing database ("db.sqlite3") and $HOST_MOUNT folder.**
+and the same $HOST_MOUNT folder. When you rerun the singularity via the install_UTAP_singularity.sh script, you can use the existing database ("db.sqlite3") and $HOST_MOUNT folder.
+
+
+Parameters
+==========
+
+Required parameters
+-------------------
+
+HOST_MOUNT             Mount point from the singularity on the host (full path of the folder).
+                          
+                       This is the folder that contains all UTAP installation files,
+                          
+                       All input and output data for all of the users will be written into this folder.
+
+
+ADMIN_PASS             Password of an admin in the djnago database
+                        
+                       (The password must contain at least one uppercase character, one lowercase character, and one digit)
+
+
+MAX_CORES              Maximum cores in the host computer or in each node of the cluster
+
+
+
+MAX_MEMORY             Maximum memory in MB in the host computer or in each node of the cluster 
+
+
+
+Optional parameters
+-------------------                        
+                        
+                        
+                        
+USER                   user in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write into the 
+                       $HOST_MOUNT folder (user can have fakeroot permissions).
+
+                       **The default is:** USER=$USER
+
+
+DNS_HOST               DNS address of the host server.
+
+                       For example: http://servername.ac.il or servername.ac.il
+                        
+                       The default is the IPv4 address of the host server (can be obtained with the command 'hostname -I')
+
+
+REPLY_EMAIL            Support email for users. Users can reply to this email.
+                      
+                       Can only be used if the folowing parameter MAIL_SERVER is defined.
+                      
+                       **The default is:** REPLY_EMAIL=None
+
+
+MAIL_SERVER            Domain name of the mail server
+
+                       **For example:** mg.weizmann.ac.il
+                        
+                       **The default is:**  REPLY_EMAIL= None
+
+
+HOST_APACHE_PORT        Any available port on the host server for the singularity Apache.
+
+                        **For example:** 8081
+                        
+                        **The default is:** HOST_APACHE_PORT= 8000
+
+
+
+
+INSTITUTE_NAME           Your institute name or lab
+
+                        (the string can contain only A-Za-z0-9 characters without whitespaces).
+
+                        **The default is:** INSTITUTE_NAME =None
+
+
+
+MAX_UPLOAD_SIZE          Maximum file/folder size that a user can upload at once (Megabytes).
+
+                         **For example:** 314572800 (i.e. 300*1024*1024 = 314572800Mb = 300Gb)
+
+                        **The default is:** MAX_UPLOAD_SIZE =314572800
+
+
+
+CONDA                   Full path to root folder of miniconda.
+
+                        A full miniconda3 env exist inside the container 
+
+                        **For example:** /miniconda2
+
+                        **The default is:** CONDA=None 
+                        
+                        When default parameter is used the environmet at /opt/miniconda3 inside the container will be used
+
+
+TEST                    Set to 1 if the container is for testing.
+
+                        **The default is:** TEST=None 
+
+
+DEVELOPMENT             Set to 1 if the container is for development 
+
+                        **The default is:** DEVELOPMENT=None
+
+
+PROXY_URL              url of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
+
+
+UTAP_CODE              The full path to the external UTAP code. 
+
+                       Code exists inside the container.
+
+                       **The default is:** UTAP_CODE=None 
+                       
+                       When default parameter is used the code at /opt/utap inside the container will be used
+
+
+INTERNAL_OUTPUT        Host internal output to be mounted 
+
+                       **The default is:** INTERNAL_OUTPUT=None
+
+
+DEMO_SITE              Set to 1 if the container is for demo
+
+                       **The default is:** DEMO_SITE=None
+
+
+
+RUN_NGSPLOT           Set to 1 if for running NGS-plot.
+
+                      **The default is:** RUN_NGSPLOT=None
+
+
+HOST_HOME_DIR        The home USER home directory on the host 
+
+                     **For example:** /home/username 
+
+                     **The default is:** $HOME
+
+
+INTERNAL_USERS       Set to 1 if utap installation is for Weizmann users
+
+                     **The default is:** INTERNAL_USERS=None 
+
+DB_PATH              Full path to the folder where the DB will be located.
+
+                     $USER needs to have write permission for this folder.
+
+                     The DB is very small, so it is will not create disk space problems.
+
+                     **For example:** mkdir /utap-db; chown -R $USER/utap-db; 
+
+                     **The default is:** DB_PATH=$HOST_MOUNT/UTAP_DB
+
+
+GENOMES_DIR          The full path to the genomes directory.
+
+                     **The default is:** GENOMES_DIR =$HOST_MOUNT/genomes 
+
+
+SINGULARITY_TMP_DIR           Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 25GB  
+
+                              large to hold the entire resulting Singularity image.
+ 
+                              If you use fakeroot privileges,  make sure that the tmp directory is  local and not NFS or GPFS mounted disc.
+
+                              **The default is:** SINGULARITY_TMP_DIR=/tmp
+
+FAKEROOT                      Set to 1 If USER has fakeroot privileges.
+
+                              **The default is:** FAKEROOT=1
+
+
+SINGULARITY_HOST_COMMAND           Singularity command on the host 
+
+                                   **for example:** if singularity is installed as module named Singularity on the host then the command will be :”ml                                       
+                                   Singularity”
+
+                                   **The default is:** SINGULARITY_HOST_COMMAND=None 
+
+
+
+Additional optional parameters for installing on a cluster:
+
+
+
+
+CLUSTER_TYPE         Type of the cluster.
+
+                     **For example:** lsf or pbs or local.
+
+                     The commands will be sent to the cluster. Currently, UTAP supports LSF or PBS cluters.
+                     
+                     When "local" parameter is used , UTAP pipelines will be run on the local host inside the container.
+
+                     **The default is:** CLUSTER_TYPE=local
+
+
+
+CLUSTER_QUEUE           Queue name in the cluster. $USER  must have permissions to run on this queue. 
+
+                        **The default is:** CLUSTER_QUEUE=None
+                        
+
+SINGULARITY_CLUSTER_COMMAND         Singularity command on the cluster 
+
+                                    for example: if singularity is installed as module named Singularity on the cluster, then command will be :”ml                                           
+                                    Singularity”
+
+                                    **The default is:** SINGULARITY_CLUSTER_COMMAND=None 
+                                    
+
+
+
+
+
