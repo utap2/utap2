@@ -195,21 +195,18 @@ HOST_MOUNT
                        All input and output data for all of the users will be written into this folder.
 
 
-ADMIN_PASS             
-                        
+ADMIN_PASS              
                        Password of an admin in the djnago database
                         
                        (The password must contain at least one uppercase character, one lowercase character, and one digit)
 
 
-MAX_CORES              
-                        
+MAX_CORES               
                        Maximum cores in the host computer or in each node of the cluster
 
 
 
-MAX_MEMORY              
-                        
+MAX_MEMORY                                      
                        Maximum memory in MB in the host computer or in each node of the cluster 
 
 
