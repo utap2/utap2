@@ -12,7 +12,7 @@ Requirements
 The application should be installed on a Linux server.
 
 
-If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF or PBS cluster, the UTAP pipelines will need to be executed locally.
+If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF cluster, the UTAP pipelines will need to be executed locally.
 
 
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory and ~25 GB available in temp folder (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters file below).
@@ -408,6 +408,8 @@ CLUSTER_TYPE
 
 CLUSTER_QUEUE           Queue name in the cluster. $USER  must have permissions to run on this queue. 
 
+
+
                         **The default is:** CLUSTER_QUEUE=None
                         
 
@@ -421,5 +423,8 @@ SINGULARITY_CLUSTER_COMMAND         Singularity command on the cluster
 
 
 
+REMARKS
+-------
 
+1. PBS cluster installation was prepared but not tested.
 
