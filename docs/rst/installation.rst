@@ -88,6 +88,7 @@ In any case, if you are using multiple genomes, ensure that they are synchronize
     
     #For Human genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
+    tar -xvzf Human.tar.gz
     mkdir genomes;
     rsync -a Human/* genomes/
     
@@ -186,7 +187,8 @@ Parameters
 Required parameters
 -------------------
 
-HOST_MOUNT             Mount point from the singularity on the host (full path of the folder).
+HOST_MOUNT             
+                       Mount point from the singularity on the host (full path of the folder).
                           
                        This is the folder that contains all UTAP installation files,
                           
