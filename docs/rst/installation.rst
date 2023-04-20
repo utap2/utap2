@@ -211,11 +211,11 @@ Optional parameters
                         
                         
                         
-USER                   
+USER                   user in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write 
 
-user in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write into the $HOST_MOUNT folder (user can have fakeroot permissions).
+                       into the $HOST_MOUNT folder (user can have fakeroot permissions).
 
-**The default is:** USER=$USER
+                       **The default is:** USER=$USER
 
 
 DNS_HOST               DNS address of the host server.
