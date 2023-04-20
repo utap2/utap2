@@ -248,16 +248,18 @@ MAIL_SERVER
                        **The default is:**  REPLY_EMAIL= None
 
 
-HOST_APACHE_PORT        Any available port on the host server for the singularity Apache.
+HOST_APACHE_PORT        
+                        Any available port on the host server for the singularity Apache.
 
-                        **For example:** 8081
+                        **For example:** 8080
                         
                         **The default is:** HOST_APACHE_PORT= 8000
 
 
 
 
-INSTITUTE_NAME           Your institute name or lab
+INSTITUTE_NAME           
+                        Your institute name or lab
 
                         (the string can contain only A-Za-z0-9 characters without whitespaces).
 
@@ -265,15 +267,17 @@ INSTITUTE_NAME           Your institute name or lab
 
 
 
-MAX_UPLOAD_SIZE          Maximum file/folder size that a user can upload at once (Megabytes).
+MAX_UPLOAD_SIZE          
+                        Maximum file/folder size that a user can upload at once (Megabytes).
 
-                         **For example:** 314572800 (i.e. 300*1024*1024 = 314572800Mb = 300Gb)
+                        **For example:** 314572800 (i.e. 300*1024*1024 = 314572800Mb = 300Gb)
 
                         **The default is:** MAX_UPLOAD_SIZE =314572800
 
 
 
-CONDA                   Full path to root folder of miniconda.
+CONDA                   
+                        Full path to root folder of miniconda.
 
                         A full miniconda3 env exist inside the container 
 
@@ -284,56 +288,66 @@ CONDA                   Full path to root folder of miniconda.
                         When default parameter is used the environmet at /opt/miniconda3 inside the container will be used
 
 
-TEST                    Set to 1 if the container is for testing.
+TEST                    
+                        Set to 1 if the container is for testing.
 
                         **The default is:** TEST=None 
 
 
-DEVELOPMENT             Set to 1 if the container is for development 
+DEVELOPMENT             
+                        Set to 1 if the container is for development 
 
                         **The default is:** DEVELOPMENT=None
 
 
-PROXY_URL              url of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
+PROXY_URL              
+                        URL of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
 
 
-UTAP_CODE              The full path to the external UTAP code. 
+UTAP_CODE              
+                        The full path to the external UTAP code. 
 
-                       Code exists inside the container.
+                        Code exists inside the container.
 
-                       **The default is:** UTAP_CODE=None 
+                        **The default is:** UTAP_CODE=None 
                        
-                       When default parameter is used the code at /opt/utap inside the container will be used
+                        When default parameter is used the code at /opt/utap inside the container will be used
 
 
-INTERNAL_OUTPUT        Host internal output to be mounted 
+INTERNAL_OUTPUT        
+                        Host internal output to be mounted 
 
-                       **The default is:** INTERNAL_OUTPUT=None
+                        **The default is:** INTERNAL_OUTPUT=None
 
 
-DEMO_SITE              Set to 1 if the container is for demo
+DEMO_SITE              
+                       Set to 1 if the container is for demo
 
                        **The default is:** DEMO_SITE=None
 
 
 
-RUN_NGSPLOT           Set to 1 if for running NGS-plot.
+RUN_NGSPLOT           
+                      Set to 1 if for running NGS-plot.
 
                       **The default is:** RUN_NGSPLOT=None
 
 
-HOST_HOME_DIR        The home USER home directory on the host 
+HOST_HOME_DIR        
+                     The home USER home directory on the host 
 
                      **For example:** /home/username 
 
                      **The default is:** $HOME
 
 
-INTERNAL_USERS       Set to 1 if utap installation is for Weizmann users
+INTERNAL_USERS       
+                     Set to 1 if utap installation is for Weizmann users
 
                      **The default is:** INTERNAL_USERS=None 
 
-DB_PATH              Full path to the folder where the DB will be located.
+DB_PATH              
+                     Full path to the folder where the DB will be located.
 
                      $USER needs to have write permission for this folder.
 
@@ -344,22 +358,25 @@ DB_PATH              Full path to the folder where the DB will be located.
                      **The default is:** DB_PATH=$HOST_MOUNT/UTAP_DB
 
 
-GENOMES_DIR          The full path to the genomes directory.
+GENOMES_DIR          
+                     The full path to the genomes directory.
 
                      **The default is:** GENOMES_DIR =$HOST_MOUNT/genomes 
 
 
-SINGULARITY_TMP_DIR           Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 25GB  
+SINGULARITY_TMP_DIR           
+                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 25GB  
 
-                              large to hold the entire resulting Singularity image.
+                     large to hold the entire resulting Singularity image.
  
-                              If you use fakeroot privileges,  make sure that the tmp directory is  local and not NFS or GPFS mounted disc.
+                     If you use fakeroot privileges,  make sure that the tmp directory is  local and not NFS or GPFS mounted disc.
 
-                              **The default is:** SINGULARITY_TMP_DIR=/tmp
+                     **The default is:** SINGULARITY_TMP_DIR=/tmp
 
-FAKEROOT                      Set to 1 If USER has fakeroot privileges.
+FAKEROOT                      
+                     Set to 1 If USER has fakeroot privileges.
 
-                              **The default is:** FAKEROOT=1
+                     **The default is:** FAKEROOT=1
 
 
 SINGULARITY_HOST_COMMAND           Singularity command on the host 
@@ -376,7 +393,8 @@ Additional optional parameters for installing on a cluster:
 
 
 
-CLUSTER_TYPE         Type of the cluster.
+CLUSTER_TYPE         
+                     Type of the cluster.
 
                      **For example:** lsf or pbs or local.
 
