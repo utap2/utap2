@@ -1,17 +1,22 @@
 .. _manual-main:
 
-UTAP: User-friendly Transcriptome Analysis Pipeline
+UTAP: User-friendly Transcriptome and Epigenome Analysis Pipeline
 ===================================================
 
-RNA-Seq technology is routinely used to characterize the transcriptome and detect gene expression differences among cell types, genotypes and conditions. Advances in short-read sequencing instruments such as Illumina Next-Seq, have yielded easy-to-operate machines, with higher throughput, at a lower price per base. However, processing this data requires bioinformatics expertise to tailor and execute specific solutions for each type of library preparation.
+NGS technology is routinely used to characterize the genome and detect gene expression differences among cell types, genotypes and conditions. Advances in short-read sequencing instruments such as Illumina Next-Seq, have yielded easy-to-operate machines, with higher throughput, at a lower price per base. However, processing this data requires bioinformatics expertise to tailor and execute specific solutions for each type of library preparation.
 
-In order to enable fast and user-friendly data analysis, we developed an intuitive and scalable transcriptome pipeline that executes the full process, starting from sequences (RNA-Seq and bulk MARS-Seq), and ending with sets of differentially expressed genes. Output files are placed in a structured folder system, and summarization of the results is displayed in a rich and comprehensive report containing dozens of plots, tables and links.
+In order to enable fast and user-friendly transcriptome and epigenome NGS sequence data analysis, we developed an intuitive and scalable pipeline that executes the full process. Transcriptome analysis starts from cDNA sequences derived from RNA (for the protocols: TruSeq, bulk MARS-Seq, Ribo-Seq and SCRB-Seq) and ends with gene count and/or differentially expressed genes. Output files are organized in structured folders, and results summaries are provided in rich and comprehensive reports, containing dozens of plots, tables and links. In addition, the pipeline supports epigenome sequence analysis for ChIP-Seq and ATAC-Seq, including alignment and peaks detection. 
+
+Our User-friendly Transcriptome Analysis Pipeline (UTAP) can be easily installed through a single singularity image that includes all the necessary software and files inside miniconda environment required for running Snakemake  workflows and taking advantage of parallel cluster resources.
+
+UTAP is a web-based intuitive platform currently installed on Weizmann institute’s cluster and is used extensively by the institute researches. It is also available as an open-source application for the biomedical research community, thus enabling researchers with limited programming skills, to efficiently and accurately analyse transcriptome and epigenome sequence data. 
+
 
 
 .. toctree::
     :maxdepth: 2
 
-    rst/demo-site
+ 
     rst/rna-mars-seq-results
     rst/installation
     rst/user-guide
@@ -26,9 +31,7 @@ UTAP is licensed under GNU General Public License version 3. License needed for 
 Author
 ======
 
-Refael Kohen (until version 1.0.7),
-
-refael.kohen@weizmann.ac.il, refael.kohen@gmail.com
+UTAP team
 
 support:
 utap@weizmann.ac.il
