@@ -120,7 +120,7 @@ For running UTAP run the command in the shell:
 
     cd $HOST_MOUNT
     
-    ./install_UTAP_singularity.sh -a required_parameters -b optional_parameters
+    ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
     
 
 
