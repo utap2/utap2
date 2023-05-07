@@ -77,24 +77,18 @@ In any case, if you are using multiple genomes, ensure that they are synchronize
     #For Zebrafish genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
     tar -xvzf Zebrafish.tar.gz
-    mkdir genomes
     rsync -a Zebrafish/* genomes/
     
     #For Mouse genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
     tar -xvzf Mouse.tar.gz
-    mkdir genomes
     rsync -a Mouse/* genomes/
     
     #For Human genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
     tar -xvzf Human.tar.gz
-    mkdir genomes;
     rsync -a Human/* genomes/
     
-    #for combining all genomes together:
-    rsync -a Human/* Mouse/* Zebrafish/*  genomes/
-
 
 
 Run UTAP
