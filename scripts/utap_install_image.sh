@@ -1,68 +1,68 @@
 #!/bin/bash
 
 
+#
+#if [ "$SINGULARITY_CLUSTER_COMMAND" = "None" ]
+#then
+#	export SINGULARITY_CLUSTER_COMMAND=""
+#else
+#	export SINGULARITY_CLUSTER_COMMAND="$SINGULARITY_CLUSTER_COMMAND;"
+#fi
+#
 
-if [ "$SINGULARITY_CLUSTER_COMMAND" = "None" ]
-then
-	export SINGULARITY_CLUSTER_COMMAND=""
-else
-	export SINGULARITY_CLUSTER_COMMAND="$SINGULARITY_CLUSTER_COMMAND;"
-fi
-
-
-
-if [ "$FAKEROOT" = "FALSE" ]
-then
-  if [ "$CONDA" != "None" ]; then  #external conda env entered as input
-    export MAIN_CONDA="/mnt/conda"
-    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=True";
-    echo "You are installing UTAP that runs with external conda environment on the host" 
-  else #no external conda env entered as input, the conda env inside the image will used
-    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=False";
-    export MAIN_CONDA=/opt/miniconda3/envs/utap
-    echo "You are installing UTAP that runs local conda environment inside the image"
-  fi 
-  export DB_PATH="/mnt/utap_db"
-  export GENOMES_DIR="/mnt/genomes"
-  export HOST_MOUNT="/mnt/host_mount"
-  export INTERNAL_OUTPUT="/mnt/internal_output"
-else 
-  if [ "$CONDA" != "None" ]; then  #external conda env entered as input
-    export MAIN_CONDA=$CONDA
-    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=True";
-    echo "You are installing UTAP that runs with external conda environment on the host" 
-  else #no external conda env entered as input, the conda env inside the image will used
-    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=False";
-    export MAIN_CONDA=/opt/miniconda3/envs/utap
-    echo "You are installing UTAP that runs local conda environment inside the image"
-   fi
-fi
-
-
+#
+#if [ "$SANDBOX" = "TRUE" ]
+#then
+#  if [ "$CONDA" != "None" ]; then  #external conda env entered as input
+#    export MAIN_CONDA="/mnt/conda"
+#    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=True";
+#    echo "You are installing UTAP that runs with external conda environment on the host" 
+#  else #no external conda env entered as input, the conda env inside the image will used
+#    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=False";
+#    export MAIN_CONDA=/opt/miniconda3/envs/utap
+#    echo "You are installing UTAP that runs local conda environment inside the image"
+#  fi 
+#  export DB_PATH="/mnt/utap_db"
+#  export GENOMES_DIR="/mnt/genomes"
+#  export HOST_MOUNT="/mnt/host_mount"
+#  export INTERNAL_OUTPUT="/mnt/internal_output"
+#else 
+#  if [ "$CONDA" != "None" ]; then  #external conda env entered as input
+#    export MAIN_CONDA=$CONDA
+#    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=True";
+#    echo "You are installing UTAP that runs with external conda environment on the host" 
+#  else #no external conda env entered as input, the conda env inside the image will used
+#    RUN_LOCAL_HOST_CONDA="RUN_LOCAL_HOST_CONDA\=False";
+#    export MAIN_CONDA=/opt/miniconda3/envs/utap
+#    echo "You are installing UTAP that runs local conda environment inside the image"
+#   fi
+#fi
 
 
-if [ "$CLUSTER_TYPE" = "lsf" ]; then
-  export CLUSTER_EXE=bsub
-  echo "You are installing UTAP that run on cluster"
-  RUN_LOCAL="RUN_LOCAL\=False";
-  
-elif [ "$CLUSTER_TYPE" = "pbs" ]; then
-  echo "You are installing UTAP that run on cluster"
-  RUN_LOCAL="RUN_LOCAL\=False";
-  export CLUSTER_EXE=qsub
-else
-  export CLUSTER_EXE=""
-  echo "You are installing UTAP that runs on the local server"
-  RUN_LOCAL="RUN_LOCAL\=True"
-fi
 
 
-if [ "$DEMO_SITE" != "None" ]; then # It is demo site
-  echo "You are installing demo version of UTAP"
-  DEMO_SITE="DEMO_SITE\=True"
-else
-  DEMO_SITE="DEMO_SITE\=False"
-fi 
+#if [ "$CLUSTER_TYPE" = "lsf" ]; then
+#  export CLUSTER_EXE=bsub
+#  echo "You are installing UTAP that run on cluster"
+#  RUN_LOCAL="RUN_LOCAL\=False";
+#  
+#elif [ "$CLUSTER_TYPE" = "pbs" ]; then
+#  echo "You are installing UTAP that run on cluster"
+#  RUN_LOCAL="RUN_LOCAL\=False";
+#  export CLUSTER_EXE=qsub
+#else
+#  export CLUSTER_EXE=""
+#  echo "You are installing UTAP that runs on the local server"
+#  RUN_LOCAL="RUN_LOCAL\=True"
+#fi
+#
+#
+#if [ "$DEMO_SITE" != "None" ]; then # It is demo site
+#  echo "You are installing demo version of UTAP"
+#  DEMO_SITE="DEMO_SITE\=True"
+#else
+#  DEMO_SITE="DEMO_SITE\=False"
+#fi 
 
 DB_PATH=$DB_PATH"/db.sqlite3"
 WEIZMANN_EMAIL="utap@weizmann.ac.il" # Our email for notifications
@@ -166,20 +166,25 @@ sed -i "s/CONDA_ENV_SED/${CONDA_ENV//\//\\/}/" /etc/apache2/envvars
 
 #######################   UTAP   ######################################
 
-#change UTAP code location 
-if [ $UTAP_CODE != "None" ]; then 
-  mv /opt/utap/ /opt/utap.bak
-  ln -s $UTAP_CODE /opt/
-fi
+##change UTAP code location 
+#if [ $UTAP_CODE != "None" ]; then 
+#  mv /opt/utap/ /opt/utap.bak
+#  ln -s $UTAP_CODE /opt/
+#fi
 
 
 #Change the code of the settings file:
 
-sed "s/HOST_MOUNT=PROJECT_ROOT/HOST_MOUNT='${HOST_MOUNT//\//\\/}'/" /opt/utap/analysis/backend/settings_base_template.py | sed "s/'PIPELINE_SERVER'/'$DNS_HOST'/" | sed "s/'NOTIFICATION_INTERNAL_MAILING_LIST_SED_TEMPLATE'/'$NOTIFICATION_EMAILS'/" | sed "s/DEMO_SITE\=False/$DEMO_SITE/" | sed "s/RUN_LOCAL\=True/$RUN_LOCAL/"  | sed "s/RUN_LOCAL_HOST_CONDA\=True/$RUN_LOCAL_HOST_CONDA/"  | sed "s/'INSTITUTE_NAME'/'${INSTITUTE_NAME//\//\\/}'/" | sed "s/'CLUSTER_QUEUE'/'$CLUSTER_QUEUE'/" | sed "s/'DB_PATH'/'${DB_PATH//\//\\/}'/" | sed "s/'MAIL_SERVER'/'$MAIL_SERVER'/" | sed "s/'PIPELINE_SERVER_PORT_SED'/$HOST_APACHE_PORT/" | sed "s/'BIOUTILS_PACKAGE'/'${BIOUTILS_PACKAGE//\//\\/}'/" | sed "s/'SNAKEFILE_PACKAGE'/'${SNAKEFILE_PACKAGE//\//\\/}'/" | sed "s/'CONDA_ROOT'/'${CONDA_ROOT//\//\\/}'/" | sed "s/'GS_EXE'/'${GS_EXE//\//\\/}'/" | sed "s/'RSCRIPT'/'${RSCRIPT//\//\\/}'/" | sed "s/'R_LIB_PATHS'/'${R_LIB_PATHS//\//\\/}'/" | sed "s/'CUTADAPT_EXE'/'${CUTADAPT_EXE//\//\\/}'/" | sed "s/'FASTQC_EXE'/'${FASTQC_EXE//\//\\/}'/" | sed "s/'STAR_EXE'/'${STAR_EXE//\//\\/}'/" | sed "s/'SAMTOOLS_EXE'/'${SAMTOOLS_EXE//\//\\/}'/" | sed "s/'NGS_PLOT_EXE'/'${NGS_PLOT_EXE//\//\\/}'/" | sed "s/'HTSEQ_COUNT_EXE'/'${HTSEQ_COUNT_EXE//\//\\/}'/" | sed "s/'CLUSTER_EXE'/'${CLUSTER_EXE//\//\\/}'/" | sed "s/'SNAKEMAKE_EXE'/'${SNAKEMAKE_EXE//\//\\/}'/" | sed "s/'BCL2FASTQ_EXE'/'${BCL2FASTQ_EXE//\//\\/}'/" | sed "s/'CELLRANGER_EXE'/'${CELLRANGER_EXE//\//\\/}'/" | sed "s/'JAVA_EXE'/'${JAVA_EXE//\//\\/}'/" | sed "s/'MULTIQC_EXE'/'${MULTIQC_EXE//\//\\/}'/" | sed "s/'BOWTIE2_EXE'/'${BOWTIE2_EXE//\//\\/}'/" | sed "s/'PICARD_EXE'/'${PICARD_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE'/'${IGVTOOLS_EXE//\//\\/}'/" | sed "s/'MACS2_EXE'/'${MACS2_EXE//\//\\/}'/" | sed "s/'BEDTOOLS_EXE'/'${BEDTOOLS_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE_FOR_RIBOSEQ'/'${IGVTOOLS_EXE_FOR_RIBOSEQ//\//\\/}'/" | sed "s/'JRE_EXE'/'${JRE_EXE//\//\\/}'/" | sed "s/'PYTHON_EXE'/'${PYTHON_EXE//\//\\/}'/" | sed "s/'PEAKSPLITTER_EXE'/'${PEAKSPLITTER_EXE//\//\\/}'/" | sed "s/'HOMER_EXE'/'${HOMER_EXE//\//\\/}'/" | sed "s/'KENTUTILS_EXE'/'${KENTUTILS_EXE//\//\\/}'/" | sed "s/'BOWTIE1_EXE'/'${BOWTIE1_EXE//\//\\/}'/" | sed "s/'MACS_EXE'/'${MACS_EXE//\//\\/}'/" | sed "s/'TOPHAT_EXE'/'${TOPHAT_EXE//\//\\/}'/" | sed "s/'MAX_UPLOAD_SIZE'/${MAX_UPLOAD_SIZE}/" | sed "s/'USER_CLUSTER'/'${USER}'/" | sed "s/'CLUSTER_TYPE'/'${CLUSTER_TYPE}'/" | sed "s/'CLUSTER_RESOURCES_PARAMS'/'${CLUSTER_RESOURCES_PARAMS}'/" | sed "s/'MAX_CORES'/'${MAX_CORES}'/" | sed "s/'MAX_MEMORY'/'${MAX_MEMORY}'/" | sed "s/'PROXY_URL'/'${PROXY_URL//\//\\/}'/" | sed "s/'SINGULARITY_CLUSTER_COOMAND'/'${SINGULARITY_CLUSTER_COMMAND//\//\\/}'/" | sed "s@'IMAGE_PATH'@'${IMAGE_PATH}'@" | sed "s@'SINGULARITY_MOUNTS'@'${SINGULARITY_MOUNTS}'@" | sed "s/'BEDGRAPH_TO_BIGWIG'/'${BEDGRAPH_TO_BIGWIG//\//\\/}'/" | sed "s/'BEDCLIP'/'${BEDCLIP//\//\\/}'/" > /opt/utap/analysis/backend/settings_base.py
+sed "s/HOST_MOUNT=PROJECT_ROOT/HOST_MOUNT='${HOST_MOUNT//\//\\/}'/" /opt/utap/analysis/backend/settings_base_template.py | sed "s/'PIPELINE_SERVER'/'$DNS_HOST'/" | sed "s/'NOTIFICATION_INTERNAL_MAILING_LIST_SED_TEMPLATE'/'$NOTIFICATION_EMAILS'/" | sed "s/DEMO_SITE\=False/$DEMO_SITE/" | sed "s/RUN_LOCAL\=True/$RUN_LOCAL/"  | sed "s/RUN_LOCAL_HOST_CONDA\=True/$RUN_LOCAL_HOST_CONDA/"  | sed "s/'INSTITUTE_NAME'/'${INSTITUTE_NAME//\//\\/}'/" | sed "s/'CLUSTER_QUEUE'/'$CLUSTER_QUEUE'/" | sed "s/'DB_PATH'/'${DB_PATH//\//\\/}'/" | sed "s/'MAIL_SERVER'/'$MAIL_SERVER'/" | sed "s/'PIPELINE_SERVER_PORT_SED'/$HOST_APACHE_PORT/" | sed "s/'BIOUTILS_PACKAGE'/'${BIOUTILS_PACKAGE//\//\\/}'/" | sed "s/'SNAKEFILE_PACKAGE'/'${SNAKEFILE_PACKAGE//\//\\/}'/" | sed "s/'CONDA_ROOT'/'${CONDA_ROOT//\//\\/}'/" | sed "s/'GS_EXE'/'${GS_EXE//\//\\/}'/" | sed "s/'RSCRIPT'/'${RSCRIPT//\//\\/}'/" | sed "s/'R_LIB_PATHS'/'${R_LIB_PATHS//\//\\/}'/" | sed "s/'CUTADAPT_EXE'/'${CUTADAPT_EXE//\//\\/}'/" | sed "s/'FASTQC_EXE'/'${FASTQC_EXE//\//\\/}'/" | sed "s/'STAR_EXE'/'${STAR_EXE//\//\\/}'/" | sed "s/'SAMTOOLS_EXE'/'${SAMTOOLS_EXE//\//\\/}'/" | sed "s/'NGS_PLOT_EXE'/'${NGS_PLOT_EXE//\//\\/}'/" | sed "s/'HTSEQ_COUNT_EXE'/'${HTSEQ_COUNT_EXE//\//\\/}'/" | sed "s/'CLUSTER_EXE'/'${CLUSTER_EXE//\//\\/}'/" | sed "s/'SNAKEMAKE_EXE'/'${SNAKEMAKE_EXE//\//\\/}'/" | sed "s/'BCL2FASTQ_EXE'/'${BCL2FASTQ_EXE//\//\\/}'/" | sed "s/'CELLRANGER_EXE'/'${CELLRANGER_EXE//\//\\/}'/" | sed "s/'JAVA_EXE'/'${JAVA_EXE//\//\\/}'/" | sed "s/'MULTIQC_EXE'/'${MULTIQC_EXE//\//\\/}'/" | sed "s/'BOWTIE2_EXE'/'${BOWTIE2_EXE//\//\\/}'/" | sed "s/'PICARD_EXE'/'${PICARD_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE'/'${IGVTOOLS_EXE//\//\\/}'/" | sed "s/'MACS2_EXE'/'${MACS2_EXE//\//\\/}'/" | sed "s/'BEDTOOLS_EXE'/'${BEDTOOLS_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE_FOR_RIBOSEQ'/'${IGVTOOLS_EXE_FOR_RIBOSEQ//\//\\/}'/" | sed "s/'JRE_EXE'/'${JRE_EXE//\//\\/}'/" | sed "s/'PYTHON_EXE'/'${PYTHON_EXE//\//\\/}'/" | sed "s/'PEAKSPLITTER_EXE'/'${PEAKSPLITTER_EXE//\//\\/}'/" | sed "s/'HOMER_EXE'/'${HOMER_EXE//\//\\/}'/" | sed "s/'KENTUTILS_EXE'/'${KENTUTILS_EXE//\//\\/}'/" | sed "s/'BOWTIE1_EXE'/'${BOWTIE1_EXE//\//\\/}'/" | sed "s/'MACS_EXE'/'${MACS_EXE//\//\\/}'/" | sed "s/'TOPHAT_EXE'/'${TOPHAT_EXE//\//\\/}'/" | sed "s/'MAX_UPLOAD_SIZE'/${MAX_UPLOAD_SIZE}/" | sed "s/'USER_CLUSTER'/'${USER}'/" | sed "s/'CLUSTER_TYPE'/'${CLUSTER_TYPE}'/" | sed "s/'CLUSTER_RESOURCES_PARAMS'/'${CLUSTER_RESOURCES_PARAMS}'/" | sed "s/'MAX_CORES'/'${MAX_CORES}'/" | sed "s/'MAX_MEMORY'/'${MAX_MEMORY}'/" | sed "s/'PROXY_URL'/'${PROXY_URL//\//\\/}'/" | sed "s/'HOST_MOUNT_CLUSTER'/'${HOST_MOUNT_CLUSTER//\//\\/}'/" | sed "s/'SINGULARITY_CLUSTER_COOMAND'/'${SINGULARITY_CLUSTER_COMMAND//\//\\/}'/" | sed "s@'IMAGE_PATH'@'${IMAGE_PATH}'@" | sed "s@'SINGULARITY_MOUNTS'@'${SINGULARITY_MOUNTS}'@" | sed "s/'BEDGRAPH_TO_BIGWIG'/'${BEDGRAPH_TO_BIGWIG//\//\\/}'/" | sed "s/'BEDCLIP'/'${BEDCLIP//\//\\/}'/" > /opt/utap/analysis/backend/settings_base.py
 
 
 if [ $INTERNAL_USERS != "None" ]; then # if not empty variable - it is internal users
   cp /opt/utap/analysis/backend/settings_internal_template.py /opt/utap/analysis/backend/settings.py
+  if [ -d  "$INTERNAL_OUTPUT" ]; then
+    sed -i "s/'INTERNAL_OUTPUT'/'${INTERNAL_OUTPUT//\//\\/}'/" /opt/utap/analysis/backend/settings.py
+  else
+    sed -i "s/'INTERNAL_OUTPUT'//" /opt/utap/analysis/backend/settings.py
+  fi
 else #external users
   cp /opt/utap/analysis/backend/settings_external_template.py /opt/utap/analysis/backend/settings.py
 fi
@@ -192,7 +197,7 @@ chmod 777 /opt/update-db.sh
 echo "Start build database of Djnago"
 /opt/update-db.sh -a $HOST_MOUNT -b $REPLY_EMAIL -c $ADMIN_PASS -d $TEST -e $INTERNAL_USERS -f $GENOMES_DIR
 
-mkdir -p $HOST_MOUNT/utap-output/.python-eggs
+#mkdir -p $HOST_MOUNT/utap-output/.python-eggs
 echo yes | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py collectstatic
 
 
@@ -235,14 +240,14 @@ source $HOME/.bashrc
 ####################################
 
 
-if [ $CLUSTER_TYPE != "local" ]; then
-  if [ ! -f  $HOST_HOME_DIR/.ssh/id_rsa.pub ]; then
-    ssh-keygen -t rsa -N "" -f $HOST_HOME_DIR
-  fi	
-	cat $HOST_HOME_DIR/.ssh/id_rsa.pub >> $HOST_HOME_DIR/.ssh/authorized_keys
-	chmod 700 $HOST_HOME_DIR/.ssh
-	chmod 600 $HOST_HOME_DIR/.ssh/*
-fi
+#if [ $CLUSTER_TYPE != "local" ]; then
+#  if [ ! -f  $HOST_HOME_DIR/.ssh/id_rsa.pub ]; then
+#    ssh-keygen -t rsa -N "" -f $HOST_HOME_DIR/.ssh/id_rsa
+#  fi	
+#	cat $HOST_HOME_DIR/.ssh/id_rsa.pub >> $HOST_HOME_DIR/.ssh/authorized_keys
+#	chmod 700 $HOST_HOME_DIR/.ssh
+#	chmod 600 $HOST_HOME_DIR/.ssh/*
+#fi
 
 chmod 777 /etc/apache2/ports.conf
 cp  /etc/apache2/ports.conf /etc/apache2/ports.conf.sed

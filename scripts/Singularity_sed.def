@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: utap-1.10.3_v6.BASE.sif
+From: utap_latest.sif
 Stage: spython-base
 
 

@@ -18,7 +18,7 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 /bin/bash -c "source $HOST_MOUNT/UTAP_HOME_DIR/.bashrc"
 if [ $DEVELOPMENT = "None" ]; then 
-  service apache2 restart 
+  service apache2 start 
 else 
   /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py runserver --insecure 0.0.0.0:2000
 fi
