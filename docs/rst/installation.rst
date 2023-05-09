@@ -71,7 +71,7 @@ Download genomes indexes
 -------------------------
 
 The genomes folder includes human (hg38), mouse(mm10) and zebrafish(danRer11) genomes indexes, you can choose to download only one of them as noted below.
-If you require a genome that is not supplied, please follow the instruction in the section “Generate new genome index and annotation file”.
+If you require a genome that is not supplied,  follow the instruction in the section “Generate new genome index and annotation file”.
 
 You can download the genomes folder using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT under genomes directoy. If you chose to download the genomes in a diffrent location,you have to overwrite the parameter GENOMES_DIR in the optional_prameters file.
 
@@ -122,7 +122,7 @@ For running UTAP run the command in the shell:
     
 
 If UTAP was installed as instance, an image named utap.SIF (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
-If UTAP was instaled as sandbox, a folder names utap.sandbox (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
+If UTAP was instaled as sandbox, a folder names utap.sandbox (~17GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
 After the run, you will be able to aceess the application on your browser using the address: 
 http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:7000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
 
@@ -146,6 +146,19 @@ If there is a need to temporarily delete the singularity, keep the database ("db
 
 and the same $HOST_MOUNT folder. When you rerun the singularity via the install_UTAP_singularity.sh script, you can use the existing database ("db.sqlite3") and $HOST_MOUNT folder.
 
+Test UTAP
+=========
+For testing UTAP, You can download fastq files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
+::
+
+    cd $HOST_MOUNT
+    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exmaple_and_data_for_testing_mm10_MARS-seq/fastq $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/
+
+After the download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the piplines scroll-bar. fill in the form and choose the folder $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+
+After the run is completed you will be able to compare your results to the MARS-Seq example run in: ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exmaple_and_data_for_testing_mm10_MARS-seq/20230328_041840_test_Transcriptome_MARS-Seq/
+
+for more details, refer to the "Help" tab in the site navigation bar.
 
 Parameters
 ==========
