@@ -15,15 +15,20 @@ The application should be installed on a Linux server.
 If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF cluster, the UTAP pipelines will need to be executed locally.
 
 
-The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory and ~25 GB available in temp folder (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters file below).
+The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory.
 
 The server requires the following:
 Singularity version > 3.10.4 
 
-A user defined as “USER” (see below)  with “Fakeroot” privileges is required for building singularity image with singularity definition file, if you can’t acquire fakeroot privileges, an installation using sandbox container is possible, please see the bellow section “UTAP sandbox installation”.
 
-The “USER” must have full permissions to HOST_MOUNT folder (see below) and to singularity commands.
+The “USER” (see optional_parameters.conf file below) must have full permissions to "HOST_MOUNT" folder (see required_parameters.conf file below) and to singularity commands.
 If the application is run on cluster, the user is also required to have permissions to run cluster command 
+
+UTAP can be installed as an instance container or as a sandbox container.
+If "USER"  has “Fakeroot” privileges and ~35 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
+and corresponding directory is not mounted as gpfs or nfs mount, then UTAP will be installed as instance container.
+otherwise, sandbox container will be installed.
+
 
 The "USER" should then do the following:
 
@@ -56,10 +61,10 @@ The UTAP installation folder includes the following files:
 
 
    #Download the zipped folder into $HOST_MOUNT folder:
-   wget ftp://dors.weizmann.ac.il/UTAP/UTAP_installation_files.tar.gz -P $HOST_MOUNT
+   wget ftp://dors.weizmann.ac.il/UTAP/UTAP_installation_files/UTAP_installation_files.tar.gz -P $HOST_MOUNT
    
    cd $HOST_MOUNT
-    tar -xvzf UTAP_installation_files.tar.gz && mv UTAP_installation_files/* .
+   tar -xvzf UTAP_installation_files.tar.gz && mv UTAP_installation_files/* $HOST_MOUNT
 
 
 Download genomes indexes
@@ -98,7 +103,7 @@ Pull UTAP image from the public repository
 ------------------------------------------
 ::
 
-   singularity pull library://utap2/test/utap:latest
+   singularity pull library://utap2/utap/utap:latest
 
 
 Fill up all the parameters in files required_parameters.conf and optional_parameters.conf. 
@@ -106,57 +111,24 @@ Fill up all the parameters in files required_parameters.conf and optional_parame
 All the parameters in the file required_parameters.conf are mandatory.
 The parameters in the file optional_parameters.conf are not mandatory and are used to overwrite the existed default parameters in the file. 
 
-All the parameters are described bellow under the sectio parameters.
+All the parameters are described bellow under the section parameters.
 
 For running UTAP run the command in the shell:
 
 ::
 
     cd $HOST_MOUNT
-    
     ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
     
 
-
-An image named utap.SIF (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
-
-If "USER" has fakeroot privilleges, a utap instance will be lunched and after the run, you will be able to aceess the application using the address: 
-http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:8000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
+If UTAP was installed as instance, an image named utap.SIF (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
+If UTAP was instaled as sandbox, a folder names utap.sandbox (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
+After the run, you will be able to aceess the application on your browser using the address: 
+http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:7000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
 
 If the "USER" lacks fakeroot privileges, then follow the steps in section "UTAP sandbox installation".
 
 
-UTAP sandbox installation
-------------------------------------------
-
-This installation is for USER that doesn’t have fakeroot privilege.
-
-**Make sure that the parameter FAKEROOT=FALSE in the optional_parameters file.
-
-All the initial steps are like the ones described above.
-
-After running the command:
- ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
-as described above. 
-
-a sandbox container named utap.sandbox will be generated in the $HOST_MOUNT folder.
-
-Enter  utap.sandbox container and run the follwing commands in the shell:
-
-::
-
-    cd $HOST_MOUNT
-    source singularity_variables
-    singularity shell --writable utap.snadbox
-
-run the script run_UTAP_sandbox.sh as described below:
-::
-
-    cd /opt
-    ./run_UTAP_sandbox.sh
-
-
-After the run, you can access the application using the address: http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:8000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
 
 
 Important:
@@ -218,12 +190,14 @@ USER
                        **The default is:** USER=$USER
 
 
+
 DNS_HOST               
                        DNS address of the host server.
 
                        For example: http://servername.ac.il or servername.ac.il
                         
                        The default is the IPv4 address of the host server (can be obtained with the command 'hostname -I')
+
 
 
 REPLY_EMAIL            
@@ -234,6 +208,7 @@ REPLY_EMAIL
                        **The default is:** REPLY_EMAIL=None
 
 
+
 MAIL_SERVER            
                        Domain name of the mail server
 
@@ -242,13 +217,13 @@ MAIL_SERVER
                        **The default is:**  REPLY_EMAIL= None
 
 
+
 HOST_APACHE_PORT        
                         Any available port on the host server for the singularity Apache.
 
                         **For example:** 8080
                         
-                        **The default is:** HOST_APACHE_PORT= 8000
-
+                        **The default is:** HOST_APACHE_PORT= 7000
 
 
 
@@ -257,7 +232,7 @@ INSTITUTE_NAME
 
                         (the string can contain only A-Za-z0-9 characters without whitespaces).
 
-                        **The default is:** INSTITUTE_NAME =None
+                        **The default is:** INSTITUTE_NAME=None
 
 
 
@@ -275,56 +250,25 @@ CONDA
 
                         A full miniconda3 env exist inside the container 
 
-                        **For example:** /miniconda2
+                        **For example:** /miniconda3
 
                         **The default is:** CONDA=None 
                         
                         When default parameter is used the environmet at /opt/miniconda3 inside the container will be used
 
 
-TEST                    
-                        Set to 1 if the container is for testing.
 
-                        **The default is:** TEST=None 
-
-
-DEVELOPMENT             
-                        Set to 1 if the container is for development 
-
-                        **The default is:** DEVELOPMENT=None
-
-
-PROXY_URL              
+PROXY_URL            
                         URL of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
 
-
-UTAP_CODE              
-                        The full path to the external UTAP code. 
-
-                        Code exists inside the container.
-
-                        **The default is:** UTAP_CODE=None 
-                       
-                        When default parameter is used the code at /opt/utap inside the container will be used
-
-
-INTERNAL_OUTPUT        
-                        Host internal output to be mounted 
-
-                        **The default is:** INTERNAL_OUTPUT=None
-
-
-DEMO_SITE              
-                       Set to 1 if the container is for demo
-
-                       **The default is:** DEMO_SITE=None
 
 
 
 RUN_NGSPLOT           
                       Set to 1 if for running NGS-plot.
 
-                      **The default is:** RUN_NGSPLOT=None
+                      **The default is:** RUN_NGSPLOT=1
+
 
 
 HOST_HOME_DIR        
@@ -335,10 +279,6 @@ HOST_HOME_DIR
                      **The default is:** $HOME
 
 
-INTERNAL_USERS       
-                     Set to 1 if utap installation is for Weizmann users
-
-                     **The default is:** INTERNAL_USERS=None 
 
 DB_PATH              
                      Full path to the folder where the DB will be located.
@@ -370,10 +310,11 @@ SINGULARITY_TMP_DIR
 FAKEROOT                      
                      Set to 1 If USER has fakeroot privileges.
 
-                     **The default is:** FAKEROOT=1
+                     **The default is:** FAKEROOT=None
 
 
-SINGULARITY_HOST_COMMAND           Singularity command on the host 
+SINGULARITY_HOST_COMMAND           
+                                   Singularity command on the host 
 
                                    **for example:** if singularity is installed as module named Singularity on the host then the command will be :”ml                                       
                                    Singularity”
