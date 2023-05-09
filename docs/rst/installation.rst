@@ -12,7 +12,7 @@ Requirements
 The application should be installed on a Linux server.
 
 
-If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF or PBS cluster, the UTAP pipelines will need to be executed locally.
+If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF cluster, the UTAP pipelines will need to be executed locally.
 
 
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory and ~25 GB available in temp folder (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters file below).
@@ -59,7 +59,7 @@ The UTAP installation folder includes the following files:
    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_installation_files.tar.gz -P $HOST_MOUNT
    
    cd $HOST_MOUNT
-   tar -xzvf UTAP_installation_files.tar.gz
+    tar -xvzf UTAP_installation_files.tar.gz && mv UTAP_installation_files/* .
 
 
 Download genomes indexes
@@ -77,23 +77,18 @@ In any case, if you are using multiple genomes, ensure that they are synchronize
     #For Zebrafish genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
     tar -xvzf Zebrafish.tar.gz
-    mkdir genomes
-    rsync -a Mouse/* Human/* Zebrafish/* genomes/
+    rsync -a Zebrafish/* genomes/
     
     #For Mouse genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
     tar -xvzf Mouse.tar.gz
-    mkdir genomes
     rsync -a Mouse/* genomes/
     
     #For Human genome:
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
-    mkdir genomes;
+    tar -xvzf Human.tar.gz
     rsync -a Human/* genomes/
     
-    #for combining all genomes together:
-    rsync -a Human/* Mouse/* Zebrafish/*  genomes/
-
 
 
 Run UTAP
@@ -119,7 +114,7 @@ For running UTAP run the command in the shell:
 
     cd $HOST_MOUNT
     
-    ./install_UTAP_singularity.sh -a required_parameters -b optional_parameters
+    ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
     
 
 
@@ -186,23 +181,27 @@ Parameters
 Required parameters
 -------------------
 
-HOST_MOUNT             Mount point from the singularity on the host (full path of the folder).
+HOST_MOUNT             
+                       Mount point from the singularity on the host (full path of the folder).
                           
                        This is the folder that contains all UTAP installation files,
                           
                        All input and output data for all of the users will be written into this folder.
 
 
-ADMIN_PASS             Password of an admin in the djnago database
+ADMIN_PASS              
+                       Password of an admin in the djnago database
                         
                        (The password must contain at least one uppercase character, one lowercase character, and one digit)
 
 
-MAX_CORES              Maximum cores in the host computer or in each node of the cluster
+MAX_CORES               
+                       Maximum cores in the host computer or in each node of the cluster
 
 
 
-MAX_MEMORY             Maximum memory in MB in the host computer or in each node of the cluster 
+MAX_MEMORY                                      
+                       Maximum memory in MB in the host computer or in each node of the cluster 
 
 
 
@@ -211,43 +210,50 @@ Optional parameters
                         
                         
                         
-USER                   user in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write into the 
-                       $HOST_MOUNT folder (user can have fakeroot permissions).
+USER                   
+                       User in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write 
+
+                       into the $HOST_MOUNT folder (user can have fakeroot permissions).
 
                        **The default is:** USER=$USER
 
 
-DNS_HOST               DNS address of the host server.
+DNS_HOST               
+                       DNS address of the host server.
 
                        For example: http://servername.ac.il or servername.ac.il
                         
                        The default is the IPv4 address of the host server (can be obtained with the command 'hostname -I')
 
 
-REPLY_EMAIL            Support email for users. Users can reply to this email.
+REPLY_EMAIL            
+                       Support email for users. Users can reply to this email.
                       
                        Can only be used if the folowing parameter MAIL_SERVER is defined.
                       
                        **The default is:** REPLY_EMAIL=None
 
 
-MAIL_SERVER            Domain name of the mail server
+MAIL_SERVER            
+                       Domain name of the mail server
 
                        **For example:** mg.weizmann.ac.il
                         
                        **The default is:**  REPLY_EMAIL= None
 
 
-HOST_APACHE_PORT        Any available port on the host server for the singularity Apache.
+HOST_APACHE_PORT        
+                        Any available port on the host server for the singularity Apache.
 
-                        **For example:** 8081
+                        **For example:** 8080
                         
                         **The default is:** HOST_APACHE_PORT= 8000
 
 
 
 
-INSTITUTE_NAME           Your institute name or lab
+INSTITUTE_NAME           
+                        Your institute name or lab
 
                         (the string can contain only A-Za-z0-9 characters without whitespaces).
 
@@ -255,15 +261,17 @@ INSTITUTE_NAME           Your institute name or lab
 
 
 
-MAX_UPLOAD_SIZE          Maximum file/folder size that a user can upload at once (Megabytes).
+MAX_UPLOAD_SIZE          
+                        Maximum file/folder size that a user can upload at once (Megabytes).
 
-                         **For example:** 314572800 (i.e. 300*1024*1024 = 314572800Mb = 300Gb)
+                        **For example:** 314572800 (i.e. 300*1024*1024 = 314572800Mb = 300Gb)
 
                         **The default is:** MAX_UPLOAD_SIZE =314572800
 
 
 
-CONDA                   Full path to root folder of miniconda.
+CONDA                   
+                        Full path to root folder of miniconda.
 
                         A full miniconda3 env exist inside the container 
 
@@ -274,56 +282,66 @@ CONDA                   Full path to root folder of miniconda.
                         When default parameter is used the environmet at /opt/miniconda3 inside the container will be used
 
 
-TEST                    Set to 1 if the container is for testing.
+TEST                    
+                        Set to 1 if the container is for testing.
 
                         **The default is:** TEST=None 
 
 
-DEVELOPMENT             Set to 1 if the container is for development 
+DEVELOPMENT             
+                        Set to 1 if the container is for development 
 
                         **The default is:** DEVELOPMENT=None
 
 
-PROXY_URL              url of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
+PROXY_URL              
+                        URL of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
 
 
-UTAP_CODE              The full path to the external UTAP code. 
+UTAP_CODE              
+                        The full path to the external UTAP code. 
 
-                       Code exists inside the container.
+                        Code exists inside the container.
 
-                       **The default is:** UTAP_CODE=None 
+                        **The default is:** UTAP_CODE=None 
                        
-                       When default parameter is used the code at /opt/utap inside the container will be used
+                        When default parameter is used the code at /opt/utap inside the container will be used
 
 
-INTERNAL_OUTPUT        Host internal output to be mounted 
+INTERNAL_OUTPUT        
+                        Host internal output to be mounted 
 
-                       **The default is:** INTERNAL_OUTPUT=None
+                        **The default is:** INTERNAL_OUTPUT=None
 
 
-DEMO_SITE              Set to 1 if the container is for demo
+DEMO_SITE              
+                       Set to 1 if the container is for demo
 
                        **The default is:** DEMO_SITE=None
 
 
 
-RUN_NGSPLOT           Set to 1 if for running NGS-plot.
+RUN_NGSPLOT           
+                      Set to 1 if for running NGS-plot.
 
                       **The default is:** RUN_NGSPLOT=None
 
 
-HOST_HOME_DIR        The home USER home directory on the host 
+HOST_HOME_DIR        
+                     The home USER home directory on the host 
 
                      **For example:** /home/username 
 
                      **The default is:** $HOME
 
 
-INTERNAL_USERS       Set to 1 if utap installation is for Weizmann users
+INTERNAL_USERS       
+                     Set to 1 if utap installation is for Weizmann users
 
                      **The default is:** INTERNAL_USERS=None 
 
-DB_PATH              Full path to the folder where the DB will be located.
+DB_PATH              
+                     Full path to the folder where the DB will be located.
 
                      $USER needs to have write permission for this folder.
 
@@ -334,22 +352,25 @@ DB_PATH              Full path to the folder where the DB will be located.
                      **The default is:** DB_PATH=$HOST_MOUNT/UTAP_DB
 
 
-GENOMES_DIR          The full path to the genomes directory.
+GENOMES_DIR          
+                     The full path to the genomes directory.
 
                      **The default is:** GENOMES_DIR =$HOST_MOUNT/genomes 
 
 
-SINGULARITY_TMP_DIR           Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 25GB  
+SINGULARITY_TMP_DIR           
+                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 25GB  
 
-                              large to hold the entire resulting Singularity image.
+                     large to hold the entire resulting Singularity image.
  
-                              If you use fakeroot privileges,  make sure that the tmp directory is  local and not NFS or GPFS mounted disc.
+                     If you use fakeroot privileges,  make sure that the tmp directory is  local and not NFS or GPFS mounted disc.
 
-                              **The default is:** SINGULARITY_TMP_DIR=/tmp
+                     **The default is:** SINGULARITY_TMP_DIR=/tmp
 
-FAKEROOT                      Set to 1 If USER has fakeroot privileges.
+FAKEROOT                      
+                     Set to 1 If USER has fakeroot privileges.
 
-                              **The default is:** FAKEROOT=1
+                     **The default is:** FAKEROOT=1
 
 
 SINGULARITY_HOST_COMMAND           Singularity command on the host 
@@ -366,7 +387,8 @@ Additional optional parameters for installing on a cluster:
 
 
 
-CLUSTER_TYPE         Type of the cluster.
+CLUSTER_TYPE         
+                     Type of the cluster.
 
                      **For example:** lsf or pbs or local.
 
@@ -379,6 +401,8 @@ CLUSTER_TYPE         Type of the cluster.
 
 
 CLUSTER_QUEUE           Queue name in the cluster. $USER  must have permissions to run on this queue. 
+
+
 
                         **The default is:** CLUSTER_QUEUE=None
                         
@@ -393,5 +417,8 @@ SINGULARITY_CLUSTER_COMMAND         Singularity command on the cluster
 
 
 
+REMARKS
+-------
 
+1. PBS cluster installation was prepared but not tested.
 
