@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = u'UTAP'
-copyright = u'2018, Refael Kohen'
-author = u'Refael Kohen'
+copyright = u'2023, '
+author = u'UTAP team'
 
 # The short X.Y version
 version = u''
@@ -127,7 +127,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'UTAP.tex', u'UTAP Documentation',
-     u'Refael Kohen', 'manual'),
+     u'UTAP team', 'manual'),
 ]
 
 # -- Options for manual page output ------------------------------------------
