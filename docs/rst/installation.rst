@@ -54,7 +54,7 @@ The UTAP installation folder includes the following files:
   e.	Singularity_sed.def
   f.	update-db.sh
   g.	utap_install_image.sh
-  i.	run_UTAP_sandbox.sh
+  h.	run_UTAP_sandbox.sh
 
  You can download it using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT folder.
 ::
@@ -354,14 +354,13 @@ CLUSTER_TYPE
 
 
 
-CLUSTER_QUEUE           Queue name in the cluster. $USER  must have permissions to run on this queue. 
-
-
-
-                        **The default is:** CLUSTER_QUEUE=None
+CLUSTER_QUEUE           
+                     Queue name in the cluster. $USER  must have permissions to run on this queue. 
+                     **The default is:** CLUSTER_QUEUE=None
                         
 
-SINGULARITY_CLUSTER_COMMAND         Singularity command on the cluster 
+SINGULARITY_CLUSTER_COMMAND         
+                                    Singularity command on the cluster 
 
                                     for example: if singularity is installed as module named Singularity on the cluster, then command will be :”ml                                           
                                     Singularity”
