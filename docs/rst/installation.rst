@@ -32,9 +32,11 @@ otherwise, UTAP sandbox container will be installed.
 
 The "USER" should then do the following:
 
+Run UTAP
+========
 
 Create a directory for UTAP software and its output
-===================================================
+---------------------------------------------------
 
 Note: Since user output data will be written in this folder, please verify that you have sufficient disk space -  approximately 400G per analysis.
 ::
@@ -45,7 +47,8 @@ Note: Since user output data will be written in this folder, please verify that 
 
 
 Download the UTAP installation folder 
----------------------
+-------------------------------------
+
 The UTAP installation folder includes the following files:
   a.	install_UTAP_singularity.sh
   b.	optional_parameters.conf
@@ -96,16 +99,14 @@ In any case, if you are using multiple genomes, ensure that they are synchronize
     
 
 
-Run UTAP
-========
-
 Pull UTAP image from the public repository
 ------------------------------------------
 ::
 
    singularity pull library://utap2/utap/utap:latest
 
-
+Execute UTAP
+--------------
 Fill up all the parameters in files required_parameters.conf and optional_parameters.conf. 
 
 All the parameters in the file required_parameters.conf are mandatory.
