@@ -25,7 +25,7 @@ The “USER” (see optional_parameters.conf file below) must have full permissi
 If the application is run on cluster, the user is also required to have permissions to run cluster command 
 
 UTAP can be installed as an instance container or as a sandbox container.
-If "USER"  has “Fakeroot” privileges and ~35 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
+If "USER" has “Fakeroot” privileges and ~35 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
 and the corresponding directory is not mounted as gpfs or nfs mount, then UTAP will be installed as instance container.
 otherwise, UTAP sandbox container will be installed.
 
