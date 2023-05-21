@@ -73,12 +73,11 @@ The UTAP installation folder includes the following files:
 Download genomes indexes
 -------------------------
 
-The genomes folder includes human (hg38), mouse(mm10) and zebrafish(danRer11) genomes indexes, you can choose to download only one of them as noted below.
-If you require a genome that is not supplied, follow the instruction in the section “Generate new genome index and annotation file”.
+The genomes folder contains indexes for human (hg38), mouse (mm10), and zebrafish (danRer11). You have the option to download any one of these genomes individually, as specified below. If you require a genome that is not provided, please refer to the instructions in the "Generate new genome index and annotation file" section.
 
-You can download the genomes folder using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT under genomes directoy. If you chose to download the genomes in a different location, you  have to overwrite the parameter GENOMES_DIR in the optional_prameters.conf file.
+You can download the genomes folder either through your browser or via FTP, as indicated below. After downloading, unpack the folder in the $HOST_MOUNT directory under the "genomes" folder. If you choose to download the genomes to a different location, you will need to overwrite the GENOMES_DIR parameter in the optional_parameters.conf file.
 
-In any case, if you are using multiple genomes, ensure that they are synchronized under the same directory using the "rsync" command as indicated below. 
+If you are using multiple genomes, it is important to ensure that they are synchronized under the same directory. You can achieve this by utilizing the "rsync" command as demonstrated below.
 ::
 
     #Download the zipped folder into $HOST_MOUNT folder:
