@@ -25,16 +25,18 @@ The “USER” (see optional_parameters.conf file below) must have full permissi
 If the application is run on cluster, the user is also required to have permissions to run cluster command 
 
 UTAP can be installed as an instance container or as a sandbox container.
-If "USER"  has “Fakeroot” privileges and ~35 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
+If "USER" has “Fakeroot” privileges and ~35 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
 and the corresponding directory is not mounted as gpfs or nfs mount, then UTAP will be installed as instance container.
 otherwise, UTAP sandbox container will be installed.
 
 
 The "USER" should then do the following:
 
+Run UTAP
+========
 
 Create a directory for UTAP software and its output
-===================================================
+---------------------------------------------------
 
 Note: Since user output data will be written in this folder, please verify that you have sufficient disk space -  approximately 400G per analysis.
 ::
@@ -45,7 +47,8 @@ Note: Since user output data will be written in this folder, please verify that 
 
 
 Download the UTAP installation folder 
----------------------
+-------------------------------------
+
 The UTAP installation folder includes the following files:
   a.	install_UTAP_singularity.sh
   b.	optional_parameters.conf
@@ -54,7 +57,7 @@ The UTAP installation folder includes the following files:
   e.	Singularity_sed.def
   f.	update-db.sh
   g.	utap_install_image.sh
-  i.	run_UTAP_sandbox.sh
+  h.	run_UTAP_sandbox.sh
 
  You can download it using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT folder.
 ::
@@ -96,16 +99,14 @@ In any case, if you are using multiple genomes, ensure that they are synchronize
     
 
 
-Run UTAP
-========
-
 Pull UTAP image from the public repository
 ------------------------------------------
 ::
 
    singularity pull library://utap2/utap/utap:latest
 
-
+Execute UTAP
+--------------
 Fill up all the parameters in files required_parameters.conf and optional_parameters.conf. 
 
 All the parameters in the file required_parameters.conf are mandatory.
@@ -148,15 +149,30 @@ and the same $HOST_MOUNT folder. When you rerun the singularity via the install_
 
 Test UTAP
 =========
-For testing UTAP, You can download fastq files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
+For testing UTAP, You can download fastq and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
 ::
 
     cd $HOST_MOUNT
-    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exmaple_and_data_for_testing_mm10_MARS-seq/fastq $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/
+    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/ $HOST_MOUNT/utap-output/admin/
+    
+After the download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the piplines scroll-bar. fill in the form as indicted bellow:
 
-After the download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the piplines scroll-bar. fill in the form and choose the folder $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+1. choose the folder $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+2.chose run DESeq2 
+3.fill in the categories as follow:
 
-After the run is completed you will be able to compare your results to the MARS-Seq example run in: ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exmaple_and_data_for_testing_mm10_MARS-seq/20230328_041840_test_Transcriptome_MARS-Seq/
+   MG_cont
+   
+   MG_LPS
+   
+   astro_cont
+   astro_LPS
+   CD45_cont  
+   CD45_LPS
+
+.. image:: figures/MARS_Seq_example_form.png
+
+After the run is completed you will be able to compare your results to the MARS-Seq example run in: ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230328_041840_test_Transcriptome_MARS-Seq/
 
 for more details, refer to the "Help" tab in the site navigation bar.
 
@@ -354,14 +370,13 @@ CLUSTER_TYPE
 
 
 
-CLUSTER_QUEUE           Queue name in the cluster. $USER  must have permissions to run on this queue. 
-
-
-
-                        **The default is:** CLUSTER_QUEUE=None
+CLUSTER_QUEUE           
+                     Queue name in the cluster. $USER  must have permissions to run on this queue. 
+                     **The default is:** CLUSTER_QUEUE=None
                         
 
-SINGULARITY_CLUSTER_COMMAND         Singularity command on the cluster 
+SINGULARITY_CLUSTER_COMMAND         
+                                    Singularity command on the cluster 
 
                                     for example: if singularity is installed as module named Singularity on the cluster, then command will be :”ml                                           
                                     Singularity”
