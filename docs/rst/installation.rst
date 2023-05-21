@@ -19,7 +19,8 @@ The host server and/or each compute node in the relevant queue(s) requires ~40GB
 
 The server requires the following:
 SingularityCE version > 3.10.4  
-for downloading SingularityCE refer to: https://sylabs.io/singularity/
+
+For downloading SingularityCE refer to: https://sylabs.io/singularity/
 
 
 The “USER” (see optional_parameters.conf file below) must have full permissions to "HOST_MOUNT" folder (see required_parameters.conf file below) and to singularity commands.
@@ -161,8 +162,8 @@ After download is completed, login as admin USER to the UTAP site and choose Tra
 2.Select "Run DESeq2: in "DESeq2 run" choise field
 3.fill in the DESeq2 category boxes as follow:
 
-   MG_cont
-   -------
+   ###MG_cont
+  
    GFAP_reporter_12hLPS_MG3_cont_1
    
    MG_LPS
