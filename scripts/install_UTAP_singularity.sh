@@ -7,6 +7,9 @@ UTAP_CODE=None
 INTERNAL_OUTPUT=None
 DEMO_SITE=None
 INTERNAL_USERS=None
+EMAIL_USE_TLS="TLS_USE_IN_MAIL\=False"
+EMAIL_PORT=25
+
 
 
 #get required and optional parameters files as input 
@@ -41,19 +44,23 @@ sed -i 's/^[[:space:]]*//g' ${required_parameters}
 sed -i 's/^[[:space:]]*//g' ${optional_parameters}
 
 #parse all parameters - remove spaces, special characters and check if parameter exist
-for line in `cat required_parameters.conf`
+file="required_parameters.conf"
+while read -r line; 
 do 
-  if [ "$line" != "" ] || [ "$line" != "#"* ];
-    then
-    var=`sed -n -e 's/=.*//p' <<< "$line"`
-    value=`sed -n -e 's/^.*=//p' <<< "$line"`
-    if [ -z "${value}" ];
-      then 
+  [ -z "$line" ] &&  continue;
+  [[ "$line" =~ ^#.*$ ]] && continue;
+  var=`sed -n -e 's/=.*//p' <<< "$line"`
+  value=`sed -n -e 's/^.*=//p' <<< "$line"`
+  if [[ "$value" = *"None"* ]]; then  
+      echo "None value for required setting $var"
+      exit 
+  fi   
+  if [ -z "${value}" ];
+    then 
       echo "missing value for required setting $var"
       exit
-    fi
   fi
-done
+done < "$file"
 
 #merge all paresed parameters together
 cat ${required_parameters} ${optional_parameters} > all_parameters
@@ -67,7 +74,20 @@ source all_parameters
 #cp -r $SSH_DIR $HOST_MOUNT/UTAP_HOME_DIR
 
 
-##validation to all parametrs :
+##functions
+
+
+
+get_dir_df() {
+  param="$1"
+  dir_df=`df -P -T $2 |  awk -F' ' 'NR==1 { for (i=1; i<=NF; i++) if ($i ~ /'"${param}"*'/) col=i } { print $col }' - | head -2 | tail -1`
+  if [ "$param" = "Avail" ];
+  then  
+    dir_df=${dir_df%.*}
+  fi
+  echo $dir_df
+} 
+  
 
 get_max_resources () {
   hosts=`bqueues -l $CLUSTER_QUEUE | grep HOSTS | cut -d " " -f2-`
@@ -142,7 +162,11 @@ run_utap () {
     #echo "GENOMES_DIR=$GENOMES_MNT" >> all_parameters
     #echo "HOST_MOUNT=$HOST_MOUNT_MNT"  >> all_parameters
     #echo "INTERNAL_OUTPUT=$INTERNAL_MNT" >> all_parameters
-    export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing 
+    if [ "$FAKEROOT" = "TRUE" ]; then
+      export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable --fakeroot utap.sandbox service postfix start && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
+    else
+      export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
+    fi   
   fi
   
   #crete mount points from the host to singularity image
@@ -185,6 +209,8 @@ run_utap () {
   eval $run_UTAP
   
 }
+
+##validation for all parameters :
 
 #check if DEMO installation
 if [ "$DEMO_SITE" != "None" ]; then # It is demo site
@@ -230,23 +256,47 @@ check_dir "$HOST_HOME_DIR"
 #check HOST_MOUNT permissions 
 chmod  +rwx $HOST_MOUNT || (echo "ERROR: USER $USER doesn't have permissions to $HOST_MOUNT directory" && exit)
 
-#check if the provided MAIL_SERVER is responding 
-if [ "$MAIL_SERVER" != "None" ]; then
-   ping -c1 -W1  $MAIL_SERVER || (echo "ERROR: server $MAIL_SERVER is down" && exit)
-   if [ "$REPLY_EMAIL" = "None" ]; then
-     override_param REPLY_EMAIL "" 
-     echo "WARNING: MAIL_SERVER was provided but no REPLY_EMAIL adress was specify" 
-   fi
-else 
-   if [ "$REPLY_EMAIL" != "None" ]; then
-     echo "WARNING: MAIL_SERVER was not provided but REPLY_EMAIL adress was specify" 
-   fi
-   override_param MAIL_SERVER ""
-   override_param REPLY_EMAIL ""   
+#check HOST_MOUNT contains sufficient space
+host_mount_size=`get_dir_df "Avail" "$HOST_MOUNT"`
+if [ "$host_mount_size" -lt 100000000 ];
+then
+  echo "There is not enough space on HOST_MOUNT $HOST_MOUNT directory for UTAP installation"
+  exit
 fi
 
+#check if the provided MAIL_SERVER is responding 
+if [ "$MAIL_SERVER" = "None" ]; then
+   override_param MAIL_SERVER "localhost"
+fi
+
+
+#check if mail address is valid
+if [[ $REPLY_EMAIL =~ '(.+)@(.+)' ]] ; then
+    echo "REPLY_EMAIL $REPLY_EMAIL address is not valid";
+    exit
+else 
+  if [[ $REPLY_EMAIL = *"gmail.com" ]] ; then
+    EMAIL_USE_TLS="TLS_USE_IN_MAIL\=True"
+    EMAIL_PORT="587"
+    override_param MAIL_SERVER "smtp.gmail.com"
+    if [[ $MAIL_PASSWORD = *"None"* ]] || [[ $MAIL_PASSWORD = "" ]] ; then 
+      echo "ERROR: if gmail address is specified, you must provide gmail app password"
+      exit
+    fi
+  else
+     if [ $MAIL_PASSWORD = "None" ]; then  
+       override_param MAIL_PASSWORD ""
+     fi 
+  fi 
+fi
+
+
 #check if HOST_APACHE_PORT is open
-netstat -tulpn | grep :$HOST_APACHE_PORT && (echo "port allready in use please specify another port from 1024 through 49151" && exit) 
+netstat -tulpn | grep :$HOST_APACHE_PORT && (echo "port allready in use please specify another port from 1024 through 49151" && exit)
+if [ $HOST_APACHE_PORT = "9000" ] ; then
+ echo "ERROR: port 9000 is used for mail server, plese specify a different port"
+ exit
+fi 
 
 
 #set MAX_MEMORY and MAX_CORES if not provided 
@@ -373,13 +423,6 @@ mkdir -p $HOST_MOUNT/{logs-utap,parameters_files,reports,utap-output/admin,utap-
 touch $HOST_MOUNT/jobs_status.txt
 
 
-#create empty directroies to mounts apache2 logs directories from container 
-mkdir -p $HOST_MOUNT/apache2/run
-mkdir -p $HOST_MOUNT/apache2/logs
-
-
-
-
 export SERVER_NAME=`hostname`
 export PRIMARYGRP=`id -gn <<< $USER`
 
@@ -399,7 +442,8 @@ echo "DEVELOPMENT=$DEVELOPMENT" >> all_parameters
 #echo "INTERNAL_OUTPUT=$INTERNAL_OUTPUT" >> all_parameters
 echo "INTERNAL_USERS=$INTERNAL_USERS" >> all_parameters
 #echo "GENOMES_DIR=$GENOMES_DIR" >> all_parameters
-
+echo "EMAIL_PORT=$EMAIL_PORT" >> all_parameters
+echo "EMAIL_USE_TLS=$EMAIL_USE_TLS" >> all_parameters
 
 
 
@@ -421,19 +465,17 @@ fi
 if [ "$FAKEROOT" = "TRUE" ];
 then
   echo "user has fakeroot privileges, installing utap instance"
-  type=`df -P -T $SINGULARITY_TMPDIR |  awk -F' ' 'NR==1 { for (i=1; i<=NF; i++) if ($i ~ /'Type'/) col=i } { print $col }' - | head -2 | tail -1`
-  size=`df -P -T $SINGULARITY_TMPDIR |  awk -F' ' 'NR==1 { for (i=1; i<=NF; i++) if ($i ~ /'Avail'*/) col=i } { print $col }' - | head -2 | tail -1`
-  size=${size%.*}  
-  if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 35000000  -lt "$size" ];
+  type=`get_dir_df "Type" "$SINGULARITY_TMPDIR"`
+  size=`get_dir_df "Avail" "$SINGULARITY_TMPDIR"`
+  if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 36000000  -lt "$size" ];
   then 
     run_utap "instance" || run_utap "sandbox"  || echo "ERROR: failed to install UTAP sandbox, please contact UTAP team at utap@weizmann.ac.il"
   else 
     echo "insufficient disk space or disk is mounted as gpfs or nfs at $SINGULARITY_TMPDIR, $HOST_MOUNT will be used as temp dir for utap installation"
     export SINGULARITY_TMPDIR=$HOST_MOUNT
-    type=`df -P -T $SINGULARITY_TMPDIR |  awk -F' ' 'NR==1 { for (i=1; i<=NF; i++) if ($i ~ /'Type'/) col=i } { print $col }' - | head -2 | tail -1`
-    size=`df -P -T $SINGULARITY_TMPDIR |  awk -F' ' 'NR==1 { for (i=1; i<=NF; i++) if ($i ~ /'Avail'*/) col=i } { print $col }' - | head -2 | tail -1`
-    size=${size%.*} 
-    if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 35000000  -lt "$size" ];
+    type=`get_dir_df "Type" "$SINGULARITY_TMPDIR"`
+    size=`get_dir_df "Avail" "$SINGULARITY_TMPDIR"`
+    if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 36000000  -lt "$size" ];
     then 
       run_utap "instance" || run_utap "sandbox"  || echo "ERROR: failed to install UTAP sandbox, please contact UTAP team at utap@weizmann.ac.il"
     else 

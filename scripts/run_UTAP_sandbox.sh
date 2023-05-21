@@ -1,16 +1,16 @@
 #!/bin/bash
 
-cp /mnt/host_mount/{utap_install_image.sh,update-db.sh} /opt/
+cp /mnt/host_mount/{install_UTAP_image.sh,update-db.sh} /opt/
 cp /mnt/host_mount/all_parameters /opt/settings
 cp /mnt/host_mount/ports.conf /etc/apache2/ports.conf
 
 chmod +x /opt/update-db.sh
-chmod +x /opt/utap_install_image.sh
+chmod +x /opt/install_UTAP_image.sh
 chmod +x /opt/settings/all_parameters
 chmod +rwx /etc/apache2/ports.conf
 set -a 
 source /opt/settings/all_parameters
-source /opt/utap_install_image.sh
+source /opt/install_UTAP_image.sh
 set +a 
 export HOME=$HOST_MOUNT/UTAP_HOME_DIR
 export PATH=/opt/miniconda3/envs/ngsplot/bin:/opt/miniconda3/envs/utap/bin:/opt/miniconda3/envs/utap:$PATH
