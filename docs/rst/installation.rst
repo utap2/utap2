@@ -154,7 +154,8 @@ For testing UTAP, you can download fastq files and test files for MARS-Seq pipel
 ::
 
     cd $HOST_MOUNT
-    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/ $HOST_MOUNT/utap-output/admin/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*' -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
+ 
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
 
@@ -218,7 +219,8 @@ To run the script, follow the instructions below:
 ::
 
     cd $HOST_MOUNT
-    ./utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    chmod +x $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    .  $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
     
 If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
 
