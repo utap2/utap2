@@ -18,19 +18,19 @@ If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelin
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory.
 
 The server requires the following:
-Singularity version > 3.10.4 
+SingularityCE version > 3.10.4  
+
+For downloading SingularityCE refer to: https://sylabs.io/singularity/
 
 
 The “USER” (see optional_parameters.conf file below) must have full permissions to "HOST_MOUNT" folder (see required_parameters.conf file below) and to singularity commands.
-If the application is run on cluster, the user is also required to have permissions to run cluster command 
+If the application is run on cluster, the user is also required to have permissions to run cluster commands.
 
-UTAP can be installed as an instance container or as a sandbox container.
-If "USER" has “Fakeroot” privileges and ~35 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
-and the corresponding directory is not mounted as gpfs or nfs mount, then UTAP will be installed as instance container.
-otherwise, UTAP sandbox container will be installed.
-
+UTAP can be installed either as an instance container or as a sandbox container. 
+If the "USER" has "fakeroot" privileges and there is approximately 36 GB of available space in the server's temp directory (default location: /tmp but can be modified using SINGULARITY_TMP_DIR in the optional_parameters.conf file below) or in the "HOST_MOUNT" directory, and the corresponding directory is not mounted as a GPFS or NFS mount, then UTAP will be installed as an instance container. Otherwise, UTAP will be installed as a sandbox container.
 
 The "USER" should then do the following:
+
 
 Run UTAP
 ========
@@ -56,7 +56,7 @@ The UTAP installation folder includes the following files:
   d.	required_parameters.conf
   e.	Singularity_sed.def
   f.	update-db.sh
-  g.	utap_install_image.sh
+  g.	install_UTAP_image.sh
   h.	run_UTAP_sandbox.sh
 
  You can download it using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT folder.
@@ -73,12 +73,11 @@ The UTAP installation folder includes the following files:
 Download genomes indexes
 -------------------------
 
-The genomes folder includes human (hg38), mouse(mm10) and zebrafish(danRer11) genomes indexes, you can choose to download only one of them as noted below.
-If you require a genome that is not supplied,  follow the instruction in the section “Generate new genome index and annotation file”.
+The genomes folder contains indexes for human (hg38), mouse (mm10), and zebrafish (danRer11). You have the option to download any one of these genomes individually, as specified below. If you require a genome that is not provided, please refer to the instructions in the "Generate new genome index and annotation file" section.
 
-You can download the genomes folder using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT under genomes directoy. If you chose to download the genomes in a diffrent location,you have to overwrite the parameter GENOMES_DIR in the optional_prameters file.
+You can download the genomes folder either through your browser or via FTP, as indicated below. After downloading, unpack the folder in the $HOST_MOUNT directory under the "genomes" folder. If you choose to download the genomes to a different location, you will need to overwrite the GENOMES_DIR parameter in the optional_parameters.conf file.
 
-In any case, if you are using multiple genomes, ensure that they are synchronized under the same directory using the rsync command as indicated below. 
+If you are using multiple genomes, it is important to ensure that they are synchronized under the same directory. You can achieve this by utilizing the "rsync" command as demonstrated below.
 ::
 
     #Download the zipped folder into $HOST_MOUNT folder:
@@ -109,10 +108,11 @@ Execute UTAP
 --------------
 Fill up all the parameters in files required_parameters.conf and optional_parameters.conf. 
 
-All the parameters in the file required_parameters.conf are mandatory.
-The parameters in the file optional_parameters.conf are not mandatory and are used to overwrite the existed default parameters in the file. 
+The parameters listed in the required_parameters.conf file are all mandatory and must be provided.
 
-All the parameters are described bellow under the section parameters.
+The parameters mentioned in the optional_parameters.conf file are not mandatory and can be left unchanged. These optional parameters serve the purpose of overriding the default parameters already set in the file.
+
+All the parameters are described below under the section parameters.
 
 For running UTAP run the command in the shell:
 
@@ -122,59 +122,108 @@ For running UTAP run the command in the shell:
     ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
     
 
-If UTAP was installed as instance, an image named utap.SIF (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
-If UTAP was instaled as sandbox, a folder names utap.sandbox (~17GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
-After the run, you will be able to aceess the application on your browser using the address: 
-http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:7000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
+If UTAP was installed as an instance, an image named utap.SIF (approximately 7GB in size) will be created in your $HOST_MOUNT directory, along with additional folders and files necessary for UTAP run.
 
-If the "USER" lacks fakeroot privileges, then follow the steps in section "UTAP sandbox installation".
+Alternatively, if UTAP was installed as a sandbox, a folder named utap.sandbox (around 17GB in size) will be generated in your $HOST_MOUNT directory, containing the required folders and files for UTAP run.
 
+Upon completion of the run, you will be able to access the application through your web browser using the following address:
 
-
+http://DNS_HOST:HOST_APACHE_PORT
+or
+http://host_ip:7000
+if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 
 Important:
 
-A file called db.sqlite3 will be created within $DB_PATH folder.
+Within the $DB_PATH folder, a file named db.sqlite3 will be created.
 
-The db.sqlite3 file is the database of the application; it contains user details, and links to results in the $HOST_MOUNT folder.
+The db.sqlite3 file serves as the application's database, storing user details and links to results within the $HOST_MOUNT folder.
 
-The $HOST_MOUNT folder contains all of the data for all of the users (input and output files).
+The $HOST_MOUNT folder contains data for all users, including input and output files.
 
-The db.sqlite3 database and $HOST_MOUNT folder are located on the host serverand not inside the container. 
-Therefore, ehen you stop/delete the "utap" container, the database and $HOST_MOUNT folder are not deleted.
+It is important to note that the db.sqlite3 database and $HOST_MOUNT folder are located on the host server, outside of the container. Consequently, deleting or stopping the "utap" container will not remove the database or $HOST_MOUNT folder.
 
-If there is a need to temporarily delete the singularity, keep the database ("db.sqlite3") 
-
-and the same $HOST_MOUNT folder. When you rerun the singularity via the install_UTAP_singularity.sh script, you can use the existing database ("db.sqlite3") and $HOST_MOUNT folder.
+In the event of a temporary Singularity deletion, it is advised to retain the database ("db.sqlite3") and the corresponding $HOST_MOUNT folder. Upon rerunning Singularity using the install_UTAP_singularity.sh script, the existing database ("db.sqlite3") and $HOST_MOUNT folder will be utilized.
 
 Test UTAP
 =========
-For testing UTAP, You can download fastq and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
+
+Run MARS-Seq pipeline with example data
+--------------------------------------
+For testing UTAP, you can download fastq files and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
 ::
 
     cd $HOST_MOUNT
-    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/ $HOST_MOUNT/utap-output/admin/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*' -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
+ 
     
-After the download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the piplines scroll-bar. fill in the form as indicted bellow:
+Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
 
-1. choose the folder $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
-2.chose run DESeq2 
-3.fill in the categories as follow:
+   1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+   2.Select "Run DESeq2: in "DESeq2 run" choice field
+   3.Fill in the DESeq2 category boxes as follow:
 
    MG_cont
-   
+               GFAP_reporter_12hLPS_MG3_cont_1
+
    MG_LPS
-   
+               GFAP_reporter_12hLPS_MG1_LPS_1
+               
+               
+               GFAP_reporter_12hLPS_MG2_LPS_2
+
    astro_cont
+               GFAP_reporter_12hLPS_astro3_cont_1
+
    astro_LPS
-   CD45_cont  
+               GFAP_reporter_12hLPS_astro1_LPS_1
+               
+               
+               GFAP_reporter_12hLPS_astro2_LPS_2
+
+   CD45_cont
+               GFAP_reporter_12hLPS_CD45_3_cont_1
+
    CD45_LPS
+               GFAP_reporter_12hLPS_CD45_1_LPS_1
+               
+               
+               GFAP_reporter_12hLPS_CD45_2_LPS_2
 
-.. image:: figures/MARS_Seq_example_form.png
+It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
 
-After the run is completed you will be able to compare your results to the MARS-Seq example run in: ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230328_041840_test_Transcriptome_MARS-Seq/
 
-for more details, refer to the "Help" tab in the site navigation bar.
+Here is a screen shot of the MARS-Seq pipeline form for the example data.
+
+.. image:: ../figures/MARS_Seq_example_form.png
+
+4.click on "Run analysis" button
+
+View pipeline output
+-------------------
+After submitting the run, you will be directed to the "User Datasets" page, which can also be accessed by navigating to "User Datasets" in the site navigation bar. This page allows you to track the progress of all the runs. Within a few seconds of starting the run, a folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be generated. This folder contains the pipeline output for each step, organized in separate folders.
+
+The folder "10_reports/<report_name>_umi_counts_<run_id>" contains graphs, statistics, and additional information for all the pipeline steps. Once the run is completed, you will receive an email with links to the results report. For a detailed interactive explanation of the report, you can utilize the relevant e-learning module available in the site navigation bar.
+
+An example of the pipeline output can be found at:
+ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
+
+For further details, please refer to the "Help" tab in the site navigation bar.
+
+Check pipeline output
+--------------------------
+After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
+
+To run the script, follow the instructions below:
+
+::
+
+    cd $HOST_MOUNT
+    chmod +x $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    .  $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    
+If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
+
 
 Parameters
 ==========
@@ -191,18 +240,25 @@ HOST_MOUNT
 
 
 ADMIN_PASS              
-                       Password of an admin in the djnago database
+                       Password of an admin in the UTAP database
                         
-                       (The password must contain at least one uppercase character, one lowercase character, and one digit)
+                       (The password must contain at least one uppercase character, one lowercase character, and one digit).
+
+
+
+REPLY_EMAIL            
+                       Support email for users. Users receive emails from this address.
+                       If you provide a Gmail address, please ensure that you input your correct Gmail app password in the field "MAIL_PASSWORD" within the            optional_parameters.conf file. Refer to https://support.google.com/accounts/answer/185833?hl=en for getting gmail app password.
+                      
 
 
 MAX_CORES               
-                       Maximum cores in the host computer or in each node of the cluster
+                       Maximum cores in the host computer or in each node of the cluster.
 
 
 
 MAX_MEMORY                                      
-                       Maximum memory in MB in the host computer or in each node of the cluster 
+                       Maximum memory in MB in the host computer or in each node of the cluster.
 
 
 
@@ -214,7 +270,7 @@ Optional parameters
 USER                   
                        User in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write 
 
-                       into the $HOST_MOUNT folder (user can have fakeroot permissions).
+                       into the $HOST_MOUNT folder (user can have "fakeroot" permissions).
 
                        **The default is:** USER=$USER
 
@@ -229,23 +285,19 @@ DNS_HOST
 
 
 
-REPLY_EMAIL            
-                       Support email for users. Users can reply to this email.
-                      
-                       Can only be used if the folowing parameter MAIL_SERVER is defined.
-                      
-                       **The default is:** REPLY_EMAIL=None
-
-
 
 MAIL_SERVER            
-                       Domain name of the mail server
+                       Domain name of the mail server.
 
                        **For example:** mg.weizmann.ac.il
                         
                        **The default is:**  REPLY_EMAIL= None
 
 
+MAIL_PASSWORD
+                       Password associated to the REPLY_EMAIL address in required_parameters.conf file.
+                        
+                       **The default is:**  MAIL_PASSWORD=None
 
 HOST_APACHE_PORT        
                         Any available port on the host server for the singularity Apache.
@@ -275,20 +327,21 @@ MAX_UPLOAD_SIZE
 
 
 CONDA                   
-                        Full path to root folder of miniconda.
+                        Full path to miniconda's env root folder.
 
-                        A full miniconda3 env exist inside the container 
+                        A full miniconda3 env exist inside the container .
 
                         **For example:** /miniconda3
 
                         **The default is:** CONDA=None 
                         
-                        When default parameter is used the environmet at /opt/miniconda3 inside the container will be used
+                        When default parameter is used the env at /opt/miniconda3 inside the container will be used.
 
 
 
 PROXY_URL            
-                        URL of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
+                        UTAP's URL if you are using proxy server. 
+                        default: DNS_HOST:HOST_APACHE_PORT
 
 
 
@@ -301,7 +354,7 @@ RUN_NGSPLOT
 
 
 HOST_HOME_DIR        
-                     The home USER home directory on the host 
+                     The USER home directory on the host. 
 
                      **For example:** /home/username 
 
@@ -328,24 +381,24 @@ GENOMES_DIR
 
 
 SINGULARITY_TMP_DIR           
-                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 25GB  
+                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 36GB  
 
                      large to hold the entire resulting Singularity image.
  
-                     If you use fakeroot privileges,  make sure that the tmp directory is  local and not NFS or GPFS mounted disc.
+                     If you use "fakeroot" privileges,  make sure that the tmp directory is local and not NFS or GPFS mounted disc.
 
                      **The default is:** SINGULARITY_TMP_DIR=/tmp
 
 FAKEROOT                      
-                     Set to 1 If USER has fakeroot privileges.
+                     Set to 1 If USER has "fakeroot" privileges.
 
                      **The default is:** FAKEROOT=None
 
 
 SINGULARITY_HOST_COMMAND           
-                                   Singularity command on the host 
+                                   Singularity command on the host. 
 
-                                   **for example:** if singularity is installed as module named Singularity on the host then the command will be :”ml                                       
+                                   **for example:** if singularity is installed as module named Singularity on the host then the command will be: ”ml                                       
                                    Singularity”
 
                                    **The default is:** SINGULARITY_HOST_COMMAND=None 
@@ -362,23 +415,24 @@ CLUSTER_TYPE
 
                      **For example:** lsf or pbs or local.
 
-                     The commands will be sent to the cluster. Currently, UTAP supports LSF or PBS cluters.
+                     The commands will be sent to the cluster. Currently, UTAP supports LSF or PBS clusters.
                      
-                     When "local" parameter is used , UTAP pipelines will be run on the local host inside the container.
+                     When "local" parameter is used, UTAP pipelines will be run on the local host inside the container.
 
                      **The default is:** CLUSTER_TYPE=local
 
 
 
 CLUSTER_QUEUE           
-                     Queue name in the cluster. $USER  must have permissions to run on this queue. 
+                     Queue name in the cluster. $USER must have permissions to run on this queue. 
+                     
                      **The default is:** CLUSTER_QUEUE=None
                         
 
 SINGULARITY_CLUSTER_COMMAND         
-                                    Singularity command on the cluster 
+                                    Singularity command on the cluster. 
 
-                                    for example: if singularity is installed as module named Singularity on the cluster, then command will be :”ml                                           
+                                    **For example:** if singularity is installed as module named Singularity on the cluster, then command will be: ”ml                                           
                                     Singularity”
 
                                     **The default is:** SINGULARITY_CLUSTER_COMMAND=None 
