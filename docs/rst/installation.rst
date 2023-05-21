@@ -26,11 +26,8 @@ For downloading SingularityCE refer to: https://sylabs.io/singularity/
 The “USER” (see optional_parameters.conf file below) must have full permissions to "HOST_MOUNT" folder (see required_parameters.conf file below) and to singularity commands.
 If the application is run on cluster, the user is also required to have permissions to run cluster commands.
 
-UTAP can be installed as an instance container or as a sandbox container.
-If "USER" has “Fakeroot” privileges and ~36 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
-and the corresponding directory is not mounted as gpfs or nfs mount, then UTAP will be installed as instance container.
-otherwise, UTAP sandbox container will be installed.
-
+UTAP can be installed either as an instance container or as a sandbox container. 
+If the "USER" has "Fakeroot" privileges and there is approximately 36 GB of available space in the server's temp directory (default location: /tmp, but can be modified using SINGULARITY_TMP_DIR in the optional_parameters.conf file below) or in the "HOST_MOUNT" directory, and the corresponding directory is not mounted as a GPFS or NFS mount, then UTAP will be installed as an instance container. Otherwise, UTAP will be installed as a sandbox container.
 
 The "USER" should then do the following:
 
@@ -148,7 +145,7 @@ When you rerun singularity via the install_UTAP_singularity.sh script,the existi
 Test UTAP
 =========
 
-Run MARS-Seq pipline with example data
+Run MARS-Seq pipeline with example data
 --------------------------------------
 For testing UTAP, You can download fastq files and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
 ::
@@ -192,7 +189,7 @@ Here is a screen shot of the MARS-Seq pipeline form for the example data.
 
 4.click on "Run analysis" button
 
-View pipline output
+View pipeline output
 -------------------
 After submitting the run, you will be directed to the "User Datasets" page, which can also be accessed by navigating to "User_Datasets" in the site navigation bar. This page allows you to track the progress of all the runs. Within a few seconds of starting the run, a folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be generated. This folder contains the pipeline output for each step, organized in separate folders.
 
@@ -203,7 +200,7 @@ ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_t
 
 For further details, please refer to the "Help" tab in the site navigation bar.
 
-Check if test run succided
+Check pipeline output
 --------------------------
 After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
 
@@ -212,7 +209,7 @@ To run the script, follow the instructions below:
 ::
 
     cd $HOST_MOUNT
-    ./tap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    ./utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
     
 If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
 
@@ -231,18 +228,25 @@ HOST_MOUNT
 
 
 ADMIN_PASS              
-                       Password of an admin in the djnago database
+                       Password of an admin in the UTAP database
                         
-                       (The password must contain at least one uppercase character, one lowercase character, and one digit)
+                       (The password must contain at least one uppercase character, one lowercase character, and one digit).
+
+
+
+REPLY_EMAIL            
+                       Support email for users. Users recieve emails from this adress.
+                       If you provide a Gmail address, please ensure that you input your correct Gmail app password in the field "MAIL_PASSWORD" within the            optional_parameters.conf file. Refer to https://support.google.com/accounts/answer/185833?hl=en for getting gmail app password.
+                      
 
 
 MAX_CORES               
-                       Maximum cores in the host computer or in each node of the cluster
+                       Maximum cores in the host computer or in each node of the cluster.
 
 
 
 MAX_MEMORY                                      
-                       Maximum memory in MB in the host computer or in each node of the cluster 
+                       Maximum memory in MB in the host computer or in each node of the cluster .
 
 
 
@@ -269,23 +273,19 @@ DNS_HOST
 
 
 
-REPLY_EMAIL            
-                       Support email for users. Users can reply to this email.
-                      
-                       Can only be used if the folowing parameter MAIL_SERVER is defined.
-                      
-                       **The default is:** REPLY_EMAIL=None
-
-
 
 MAIL_SERVER            
-                       Domain name of the mail server
+                       Domain name of the mail server.
 
                        **For example:** mg.weizmann.ac.il
                         
                        **The default is:**  REPLY_EMAIL= None
 
 
+MAIL_PASSWORD
+                       Password associated to the REPLY_EMAIL adress in required_parameters.conf file.
+                        
+                       **The default is:**  MAIL_PASSWORD=None
 
 HOST_APACHE_PORT        
                         Any available port on the host server for the singularity Apache.
@@ -315,20 +315,21 @@ MAX_UPLOAD_SIZE
 
 
 CONDA                   
-                        Full path to root folder of miniconda.
+                        Full path to miniconda's env root folder.
 
-                        A full miniconda3 env exist inside the container 
+                        A full miniconda3 env exist inside the container .
 
                         **For example:** /miniconda3
 
                         **The default is:** CONDA=None 
                         
-                        When default parameter is used the environmet at /opt/miniconda3 inside the container will be used
+                        When default parameter is used the environmet at /opt/miniconda3 inside the container will be used.
 
 
 
 PROXY_URL            
-                        URL of utap if you using with proxy. default: DNS_HOST:HOST_APACHE_PORT
+                        UTAP's URL if you are using proxy server. 
+                        default: DNS_HOST:HOST_APACHE_PORT
 
 
 
@@ -341,7 +342,7 @@ RUN_NGSPLOT
 
 
 HOST_HOME_DIR        
-                     The home USER home directory on the host 
+                     The USER home directory on the host. 
 
                      **For example:** /home/username 
 
@@ -368,11 +369,11 @@ GENOMES_DIR
 
 
 SINGULARITY_TMP_DIR           
-                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 25GB  
+                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 36GB  
 
                      large to hold the entire resulting Singularity image.
  
-                     If you use fakeroot privileges,  make sure that the tmp directory is  local and not NFS or GPFS mounted disc.
+                     If you use fakeroot privileges,  make sure that the tmp directory is local and not NFS or GPFS mounted disc.
 
                      **The default is:** SINGULARITY_TMP_DIR=/tmp
 
@@ -383,7 +384,7 @@ FAKEROOT
 
 
 SINGULARITY_HOST_COMMAND           
-                                   Singularity command on the host 
+                                   Singularity command on the host. 
 
                                    **for example:** if singularity is installed as module named Singularity on the host then the command will be :”ml                                       
                                    Singularity”
@@ -411,14 +412,14 @@ CLUSTER_TYPE
 
 
 CLUSTER_QUEUE           
-                     Queue name in the cluster. $USER  must have permissions to run on this queue. 
+                     Queue name in the cluster. $USER must have permissions to run on this queue. 
                      **The default is:** CLUSTER_QUEUE=None
                         
 
 SINGULARITY_CLUSTER_COMMAND         
-                                    Singularity command on the cluster 
+                                    Singularity command on the cluster. 
 
-                                    for example: if singularity is installed as module named Singularity on the cluster, then command will be :”ml                                           
+                                    **For example:** if singularity is installed as module named Singularity on the cluster, then command will be :”ml                                           
                                     Singularity”
 
                                     **The default is:** SINGULARITY_CLUSTER_COMMAND=None 
