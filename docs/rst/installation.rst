@@ -163,29 +163,23 @@ After download is completed, login as admin USER to the UTAP site and choose Tra
 3.fill in the DESeq2 category boxes as follow:
 
 MG_cont
-  
             GFAP_reporter_12hLPS_MG3_cont_1
    
 MG_LPS
-  
             GFAP_reporter_12hLPS_MG1_LPS_1
             GFAP_reporter_12hLPS_MG2_LPS_2
    
 astro_cont
-   
             GFAP_reporter_12hLPS_astro3_cont_1
    
 astro_LPS
-   
             GFAP_reporter_12hLPS_astro1_LPS_1
             GFAP_reporter_12hLPS_astro2_LPS_2
    
 CD45_cont
-   
             GFAP_reporter_12hLPS_CD45_3_cont_1
    
 CD45_LPS
-   
             GFAP_reporter_12hLPS_CD45_1_LPS_1
             GFAP_reporter_12hLPS_CD45_2_LPS_2
 
