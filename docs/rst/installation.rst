@@ -156,35 +156,37 @@ For testing UTAP, You can download fastq files and test files for MARS-Seq pipel
     cd $HOST_MOUNT
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/ $HOST_MOUNT/utap-output/admin/
     
-After download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the "Choose pipeline" scroll-bar. fill in the form as indicted bellow:
+Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
 
-1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
-2.Select "Run DESeq2: in "DESeq2 run" choise field
-3.fill in the DESeq2 category boxes as follow:
+   1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+   2.Select "Run DESeq2: in "DESeq2 run" choise field
+   3.fill in the DESeq2 category boxes as follow:
 
-MG_cont
-            GFAP_reporter_12hLPS_MG3_cont_1
-   
-MG_LPS
-            GFAP_reporter_12hLPS_MG1_LPS_1
-            GFAP_reporter_12hLPS_MG2_LPS_2
-   
-astro_cont
-            GFAP_reporter_12hLPS_astro3_cont_1
-   
-astro_LPS
-            GFAP_reporter_12hLPS_astro1_LPS_1
-            GFAP_reporter_12hLPS_astro2_LPS_2
-   
-CD45_cont
-            GFAP_reporter_12hLPS_CD45_3_cont_1
-   
-CD45_LPS
-            GFAP_reporter_12hLPS_CD45_1_LPS_1
-            GFAP_reporter_12hLPS_CD45_2_LPS_2
+   MG_cont
+               GFAP_reporter_12hLPS_MG3_cont_1
 
-important: make sure that all category names are indentical to the names above. this is curicial for checking if UTAP run test passed succfully.
-here is a screen shot of the MARS-Seq pipline form for the example data.
+   MG_LPS
+               GFAP_reporter_12hLPS_MG1_LPS_1\n
+               GFAP_reporter_12hLPS_MG2_LPS_2
+
+   astro_cont
+               GFAP_reporter_12hLPS_astro3_cont_1
+
+   astro_LPS
+               GFAP_reporter_12hLPS_astro1_LPS_1\n
+               GFAP_reporter_12hLPS_astro2_LPS_2
+
+   CD45_cont
+               GFAP_reporter_12hLPS_CD45_3_cont_1
+
+   CD45_LPS
+               GFAP_reporter_12hLPS_CD45_1_LPS_1\n
+               GFAP_reporter_12hLPS_CD45_2_LPS_2
+
+It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
+
+
+Here is a screen shot of the MARS-Seq pipeline form for the example data.
 
 .. image:: ../figures/MARS_Seq_example_form.png
 
@@ -192,26 +194,27 @@ here is a screen shot of the MARS-Seq pipline form for the example data.
 
 View pipline output
 -------------------
-After submmiting the run, you will be redirected to the "User Datasets" page (can also be viewed by navigating to "User_Datasets" in the site navigation bar) in which all runs progress can be tracked. 
-A folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be genrated a few seconds after the run start. The folder contains the pipeline output for each step stored in a folder. 
-The folder "10_reports/<report_name>_umi_counts_<run_id>" contains graphs, statistics and aditional information for all pipline steps. 
-Upon completion, you will get an email with links to the results report. For an interactive detailed explanation of the report use the relevant e-learning module in the site navigation bar.
-An example for the pipline output is available at:
+After submitting the run, you will be directed to the "User Datasets" page, which can also be accessed by navigating to "User_Datasets" in the site navigation bar. This page allows you to track the progress of all the runs. Within a few seconds of starting the run, a folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be generated. This folder contains the pipeline output for each step, organized in separate folders.
+
+The folder "10_reports/<report_name>umi_counts<run_id>" contains graphs, statistics, and additional information for all the pipeline steps. Once the run is completed, you will receive an email with links to the results report. For a detailed interactive explanation of the report, you can utilize the relevant e-learning module available in the site navigation bar.
+
+An example of the pipeline output can be found at:
 ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
-for more details, refer to the "Help" tab in the site navigation bar.
+
+For further details, please refer to the "Help" tab in the site navigation bar.
 
 Check if test run succided
 --------------------------
-Once the run is completed, you will be able to check if the test run passed succefully by running the script test_UTAP.sh
-thescript compare between the your pipeline results and the example results at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
-run the script as folow:
+After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
+
+To run the script, follow the instructions below:
 
 ::
 
     cd $HOST_MOUNT
     ./tap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
     
-if the run passed succefully then you will get the output: "UTAP test run succeeded".
+If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
 
 Parameters
 ==========
