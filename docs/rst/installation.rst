@@ -146,6 +146,9 @@ When you rerun singularity via the install_UTAP_singularity.sh script,the existi
 
 Test UTAP
 =========
+
+Run MARS-Seq pipline with example data
+--------------------------------------
 For testing UTAP, You can download fastq files and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
 ::
 
@@ -192,6 +195,8 @@ here is a screen shot of the MARS-Seq pipline form for the example data.
 
 4.click on "Run analysis" button
 
+View pipline output
+-------------------
 After submmiting the run, you will be redirected to the "User Datasets" page (can also be viewed by navigating to "User_Datasets" in the site navigation bar) in which all runs progress can be tracked. 
 A folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be genrated a few seconds after the run start. The folder contains the pipeline output for each step stored in a folder. 
 The folder "10_reports/<report_name>_umi_counts_<run_id>" contains graphs, statistics and aditional information for all pipline steps. 
@@ -199,6 +204,19 @@ Upon completion, you will get an email with links to the results report. For an 
 An example for the pipline output is available at:
 ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
 for more details, refer to the "Help" tab in the site navigation bar.
+
+Check if test run succided
+--------------------------
+Once the run is completed, you will be able to check if the test run passed succefully by running the script test_UTAP.sh
+thescript compare between the your pipeline results and the example results at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
+run the script as folow:
+
+::
+
+    cd $HOST_MOUNT
+    ./tap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    
+if the run passed succefully then you will get the output: "UTAP test run succeeded".
 
 Parameters
 ==========
