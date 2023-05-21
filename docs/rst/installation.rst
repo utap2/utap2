@@ -18,14 +18,15 @@ If the server supports LSF or PBS cluster, it is recommended to run UTAP pipelin
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory.
 
 The server requires the following:
-Singularity version > 3.10.4 
+SingularityCE version > 3.10.4  
+for downloading SingularityCE refer to: https://sylabs.io/singularity/
 
 
 The “USER” (see optional_parameters.conf file below) must have full permissions to "HOST_MOUNT" folder (see required_parameters.conf file below) and to singularity commands.
-If the application is run on cluster, the user is also required to have permissions to run cluster command 
+If the application is run on cluster, the user is also required to have permissions to run cluster commands.
 
 UTAP can be installed as an instance container or as a sandbox container.
-If "USER" has “Fakeroot” privileges and ~35 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
+If "USER" has “Fakeroot” privileges and ~36 GB are available in the server temp directory (the default temp directory is /tmp but it can be modified with SINGULARITY_TMP_DIR in optional_parameters.conf file below) or in "HOST_MOUNT" directory  
 and the corresponding directory is not mounted as gpfs or nfs mount, then UTAP will be installed as instance container.
 otherwise, UTAP sandbox container will be installed.
 
@@ -56,7 +57,7 @@ The UTAP installation folder includes the following files:
   d.	required_parameters.conf
   e.	Singularity_sed.def
   f.	update-db.sh
-  g.	utap_install_image.sh
+  g.	install_UTAP_image.sh
   h.	run_UTAP_sandbox.sh
 
  You can download it using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT folder.
@@ -76,7 +77,7 @@ Download genomes indexes
 The genomes folder includes human (hg38), mouse(mm10) and zebrafish(danRer11) genomes indexes, you can choose to download only one of them as noted below.
 If you require a genome that is not supplied,  follow the instruction in the section “Generate new genome index and annotation file”.
 
-You can download the genomes folder using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT under genomes directoy. If you chose to download the genomes in a diffrent location,you have to overwrite the parameter GENOMES_DIR in the optional_prameters file.
+You can download the genomes folder using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT under genomes directoy. If you chose to download the genomes in a diffrent location,you have to overwrite the parameter GENOMES_DIR in the optional_prameters.conf file.
 
 In any case, if you are using multiple genomes, ensure that they are synchronized under the same directory using the rsync command as indicated below. 
 ::
@@ -110,7 +111,7 @@ Execute UTAP
 Fill up all the parameters in files required_parameters.conf and optional_parameters.conf. 
 
 All the parameters in the file required_parameters.conf are mandatory.
-The parameters in the file optional_parameters.conf are not mandatory and are used to overwrite the existed default parameters in the file. 
+The parameters in the file optional_parameters.conf are not mandatory (can be left untouched) and are used to overwrite the existing default parameters in the file. 
 
 All the parameters are described bellow under the section parameters.
 
@@ -123,14 +124,9 @@ For running UTAP run the command in the shell:
     
 
 If UTAP was installed as instance, an image named utap.SIF (~7GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
-If UTAP was instaled as sandbox, a folder names utap.sandbox (~17GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
+If UTAP was instaled as sandbox, a folder named utap.sandbox (~17GB) will be generated in your $HOST_MOUNT directory with additonal folders and files required for UTAP run.
 After the run, you will be able to aceess the application on your browser using the address: 
 http://DNS_HOST:HOST_APACHE_PORT or http://host_ip:7000 if the default values for DNS_HOST and HOST_APACHE_PORT were not changed.
-
-If the "USER" lacks fakeroot privileges, then follow the steps in section "UTAP sandbox installation".
-
-
-
 
 Important:
 
@@ -140,40 +136,68 @@ The db.sqlite3 file is the database of the application; it contains user details
 
 The $HOST_MOUNT folder contains all of the data for all of the users (input and output files).
 
-The db.sqlite3 database and $HOST_MOUNT folder are located on the host serverand not inside the container. 
-Therefore, ehen you stop/delete the "utap" container, the database and $HOST_MOUNT folder are not deleted.
+The db.sqlite3 database and $HOST_MOUNT folder are located on the host server and not inside the container. 
 
-If there is a need to temporarily delete the singularity, keep the database ("db.sqlite3") 
+Therefore, even if you stop/delete the "utap" container, the database and $HOST_MOUNT folder are not deleted.
 
-and the same $HOST_MOUNT folder. When you rerun the singularity via the install_UTAP_singularity.sh script, you can use the existing database ("db.sqlite3") and $HOST_MOUNT folder.
+If there is a need to temporarily delete singularity, keep the database ("db.sqlite3") and the same $HOST_MOUNT folder. 
+
+When you rerun singularity via the install_UTAP_singularity.sh script,the existing database ("db.sqlite3") and $HOST_MOUNT folder will be used.
 
 Test UTAP
 =========
-For testing UTAP, You can download fastq and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
+For testing UTAP, You can download fastq files and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
 ::
 
     cd $HOST_MOUNT
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/ $HOST_MOUNT/utap-output/admin/
     
-After the download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the piplines scroll-bar. fill in the form as indicted bellow:
+After download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the "Choose pipeline" scroll-bar. fill in the form as indicted bellow:
 
-1. choose the folder $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
-2.chose run DESeq2 
-3.fill in the categories as follow:
+1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+2.Select "Run DESeq2: in "DESeq2 run" choise field
+3.fill in the DESeq2 category boxes as follow:
 
    MG_cont
+   -------
+   GFAP_reporter_12hLPS_MG3_cont_1
    
    MG_LPS
+   -------
+   GFAP_reporter_12hLPS_MG1_LPS_1
+   GFAP_reporter_12hLPS_MG2_LPS_2
    
    astro_cont
+   ----------
+   GFAP_reporter_12hLPS_astro3_cont_1
+   
    astro_LPS
-   CD45_cont  
+   ---------
+   GFAP_reporter_12hLPS_astro1_LPS_1
+   GFAP_reporter_12hLPS_astro2_LPS_2
+   
+   CD45_cont
+   ---------
+   GFAP_reporter_12hLPS_CD45_3_cont_1
+   
    CD45_LPS
+   --------
+   GFAP_reporter_12hLPS_CD45_1_LPS_1
+   GFAP_reporter_12hLPS_CD45_2_LPS_2
+
+important: make sure that all category names are indentical to the names above. this is curicial for checking if UTAP run test passed succfully.
+here is a screen shot of the MARS-Seq pipline form for the example data.
 
 .. image:: figures/MARS_Seq_example_form.png
 
-After the run is completed you will be able to compare your results to the MARS-Seq example run in: ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230328_041840_test_Transcriptome_MARS-Seq/
+4.click on "Run analysis" button
 
+After submmiting the run, you will be redirected to the "User Datasets" page (can also be viewed by navigating to "User_Datasets" in the site navigation bar) in which all runs progress can be tracked. 
+A folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be genrated a few seconds after the run start. The folder contains the pipeline output for each step stored in a folder. 
+The folder "10_reports/<report_name>_umi_counts_<run_id>" contains graphs, statistics and aditional information for all pipline steps. 
+Upon completion, you will get an email with links to the results report. For an interactive detailed explanation of the report use the relevant e-learning module in the site navigation bar.
+An example for the pipline output is available at:
+ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
 for more details, refer to the "Help" tab in the site navigation bar.
 
 Parameters
