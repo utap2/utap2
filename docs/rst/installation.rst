@@ -149,15 +149,30 @@ and the same $HOST_MOUNT folder. When you rerun the singularity via the install_
 
 Test UTAP
 =========
-For testing UTAP, You can download fastq files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
+For testing UTAP, You can download fastq and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
 ::
 
     cd $HOST_MOUNT
-    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exmaple_and_data_for_testing_mm10_MARS-seq/fastq $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/
+    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/ $HOST_MOUNT/utap-output/admin/
+    
+After the download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the piplines scroll-bar. fill in the form as indicted bellow:
 
-After the download is completed, login as admin USER to the UTAP site and choose Transcriptome MARS-Seq pipeline from to the piplines scroll-bar. fill in the form and choose the folder $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+1. choose the folder $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+2.chose run DESeq2 
+3.fill in the categories as follow:
 
-After the run is completed you will be able to compare your results to the MARS-Seq example run in: ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exmaple_and_data_for_testing_mm10_MARS-seq/20230328_041840_test_Transcriptome_MARS-Seq/
+   MG_cont
+   
+   MG_LPS
+   
+   astro_cont
+   astro_LPS
+   CD45_cont  
+   CD45_LPS
+
+.. image:: figures/MARS_Seq_example_form.png
+
+After the run is completed you will be able to compare your results to the MARS-Seq example run in: ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230328_041840_test_Transcriptome_MARS-Seq/
 
 for more details, refer to the "Help" tab in the site navigation bar.
 
