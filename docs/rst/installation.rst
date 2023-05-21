@@ -164,35 +164,35 @@ After download is completed, login as admin USER to the UTAP site and choose Tra
 
 MG_cont
   
-   GFAP_reporter_12hLPS_MG3_cont_1
+         GFAP_reporter_12hLPS_MG3_cont_1
    
 MG_LPS
   
-   GFAP_reporter_12hLPS_MG1_LPS_1
-   GFAP_reporter_12hLPS_MG2_LPS_2
+         GFAP_reporter_12hLPS_MG1_LPS_1
+         GFAP_reporter_12hLPS_MG2_LPS_2
    
 astro_cont
    
-   GFAP_reporter_12hLPS_astro3_cont_1
+         GFAP_reporter_12hLPS_astro3_cont_1
    
 astro_LPS
    
-   GFAP_reporter_12hLPS_astro1_LPS_1
-   GFAP_reporter_12hLPS_astro2_LPS_2
+         GFAP_reporter_12hLPS_astro1_LPS_1
+         GFAP_reporter_12hLPS_astro2_LPS_2
    
 CD45_cont
    
-   GFAP_reporter_12hLPS_CD45_3_cont_1
+         GFAP_reporter_12hLPS_CD45_3_cont_1
    
 CD45_LPS
    
-   GFAP_reporter_12hLPS_CD45_1_LPS_1
-   GFAP_reporter_12hLPS_CD45_2_LPS_2
+        GFAP_reporter_12hLPS_CD45_1_LPS_1
+        GFAP_reporter_12hLPS_CD45_2_LPS_2
 
 important: make sure that all category names are indentical to the names above. this is curicial for checking if UTAP run test passed succfully.
 here is a screen shot of the MARS-Seq pipline form for the example data.
 
-.. image:: figures/MARS_Seq_example_form.png
+.. image:: utap2/docs/figures/MARS_Seq_example_form.png
 
 4.click on "Run analysis" button
 
