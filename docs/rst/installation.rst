@@ -27,7 +27,7 @@ The “USER” (see optional_parameters.conf file below) must have full permissi
 If the application is run on cluster, the user is also required to have permissions to run cluster commands.
 
 UTAP can be installed either as an instance container or as a sandbox container. 
-If the "USER" has "Fakeroot" privileges and there is approximately 36 GB of available space in the server's temp directory (default location: /tmp but can be modified using SINGULARITY_TMP_DIR in the optional_parameters.conf file below) or in the "HOST_MOUNT" directory, and the corresponding directory is not mounted as a GPFS or NFS mount, then UTAP will be installed as an instance container. Otherwise, UTAP will be installed as a sandbox container.
+If the "USER" has "fakeroot" privileges and there is approximately 36 GB of available space in the server's temp directory (default location: /tmp but can be modified using SINGULARITY_TMP_DIR in the optional_parameters.conf file below) or in the "HOST_MOUNT" directory, and the corresponding directory is not mounted as a GPFS or NFS mount, then UTAP will be installed as an instance container. Otherwise, UTAP will be installed as a sandbox container.
 
 The "USER" should then do the following:
 
@@ -159,8 +159,8 @@ For testing UTAP, you can download fastq files and test files for MARS-Seq pipel
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
 
    1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
-   2.Select "Run DESeq2: in "DESeq2 run" choise field
-   3.fill in the DESeq2 category boxes as follow:
+   2.Select "Run DESeq2: in "DESeq2 run" choice field
+   3.Fill in the DESeq2 category boxes as follow:
 
    MG_cont
                GFAP_reporter_12hLPS_MG3_cont_1
@@ -200,7 +200,7 @@ Here is a screen shot of the MARS-Seq pipeline form for the example data.
 
 View pipeline output
 -------------------
-After submitting the run, you will be directed to the "User Datasets" page, which can also be accessed by navigating to "User_Datasets" in the site navigation bar. This page allows you to track the progress of all the runs. Within a few seconds of starting the run, a folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be generated. This folder contains the pipeline output for each step, organized in separate folders.
+After submitting the run, you will be directed to the "User Datasets" page, which can also be accessed by navigating to "User Datasets" in the site navigation bar. This page allows you to track the progress of all the runs. Within a few seconds of starting the run, a folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be generated. This folder contains the pipeline output for each step, organized in separate folders.
 
 The folder "10_reports/<report_name>_umi_counts_<run_id>" contains graphs, statistics, and additional information for all the pipeline steps. Once the run is completed, you will receive an email with links to the results report. For a detailed interactive explanation of the report, you can utilize the relevant e-learning module available in the site navigation bar.
 
