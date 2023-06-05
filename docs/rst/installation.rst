@@ -163,7 +163,13 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
       
       2.Select "Run DESeq2: in "DESeq2 run" choice field
       
-      3.Fill in the DESeq2 category boxes as follow:
+      3.Select Mus_musculus(mm10) in the "Genome" field
+
+      4.Select mm10(Genecode) in the "Annotation" field
+      
+      5.Fill in the DESeq2 category boxes as follow:
+      
+      6.Fill in your email in the "User email" field, if the field is empty
 
          MG_cont
                      GFAP_reporter_12hLPS_MG3_cont_1
@@ -199,7 +205,7 @@ Here is a screen shot of the MARS-Seq pipeline form for the example data.
 
 .. image:: ../figures/MARS_Seq_example_form.png
 
-4.click on "Run analysis" button
+   7.click on "Run analysis" button
 
 View pipeline output
 -------------------
