@@ -159,9 +159,11 @@ For testing UTAP, you can download fastq files and test files for MARS-Seq pipel
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
 
-   1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
-   2.Select "Run DESeq2: in "DESeq2 run" choice field
-   3.Fill in the DESeq2 category boxes as follow:
+      1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
+      
+      2.Select "Run DESeq2: in "DESeq2 run" choice field
+      
+      3.Fill in the DESeq2 category boxes as follow:
 
    MG_cont
                GFAP_reporter_12hLPS_MG3_cont_1
