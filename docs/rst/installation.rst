@@ -167,9 +167,9 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
 
       4.Select mm10(Genecode) in the "Annotation" field
       
-      5.Fill in the DESeq2 category boxes as follow:
+      5.Fill in your email in the "User email" field, if the field is empty
       
-      6.Fill in your email in the "User email" field, if the field is empty
+      6.Fill in the DESeq2 category boxes as follow: 
 
          MG_cont
                      GFAP_reporter_12hLPS_MG3_cont_1
