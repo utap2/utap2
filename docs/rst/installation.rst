@@ -165,7 +165,7 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
       
       3.Select Mus_musculus(mm10) in the "Genome" field
 
-      4.Select mm10(Genecode) in the "Annotation" field
+      4.Select Mus_musculus(genecode) in the "Annotation" field
       
       5.Fill in your email in the "User email" field, if the field is empty
       
