@@ -198,7 +198,10 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
 
                      GFAP_reporter_12hLPS_CD45_2_LPS_2
 
-It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
+      
+      It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
+   
+   7.click on "Run analysis" button
 
 
 Here is a screen shot of the MARS-Seq pipeline form for the example data.
@@ -209,7 +212,7 @@ Here is a screen shot of the MARS-Seq pipeline form for the example data.
    
    
    
-   7.click on "Run analysis" button
+  
 
 View pipeline output
 -------------------
