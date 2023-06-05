@@ -165,32 +165,32 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
       
       3.Fill in the DESeq2 category boxes as follow:
 
-   MG_cont
-               GFAP_reporter_12hLPS_MG3_cont_1
+         MG_cont
+                     GFAP_reporter_12hLPS_MG3_cont_1
 
-   MG_LPS
-               GFAP_reporter_12hLPS_MG1_LPS_1
-               
-               
-               GFAP_reporter_12hLPS_MG2_LPS_2
+         MG_LPS
+                     GFAP_reporter_12hLPS_MG1_LPS_1
 
-   astro_cont
-               GFAP_reporter_12hLPS_astro3_cont_1
 
-   astro_LPS
-               GFAP_reporter_12hLPS_astro1_LPS_1
-               
-               
-               GFAP_reporter_12hLPS_astro2_LPS_2
+                     GFAP_reporter_12hLPS_MG2_LPS_2
 
-   CD45_cont
-               GFAP_reporter_12hLPS_CD45_3_cont_1
+         astro_cont
+                     GFAP_reporter_12hLPS_astro3_cont_1
 
-   CD45_LPS
-               GFAP_reporter_12hLPS_CD45_1_LPS_1
-               
-               
-               GFAP_reporter_12hLPS_CD45_2_LPS_2
+         astro_LPS
+                     GFAP_reporter_12hLPS_astro1_LPS_1
+
+
+                     GFAP_reporter_12hLPS_astro2_LPS_2
+
+         CD45_cont
+                     GFAP_reporter_12hLPS_CD45_3_cont_1
+
+         CD45_LPS
+                     GFAP_reporter_12hLPS_CD45_1_LPS_1
+
+
+                     GFAP_reporter_12hLPS_CD45_2_LPS_2
 
 It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
 
