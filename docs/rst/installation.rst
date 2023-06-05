@@ -205,6 +205,10 @@ Here is a screen shot of the MARS-Seq pipeline form for the example data.
 
 .. image:: ../figures/MARS_Seq_example_form.png
 
+   
+   
+   
+   
    7.click on "Run analysis" button
 
 View pipeline output
