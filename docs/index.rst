@@ -1,6 +1,6 @@
 .. _manual-main:
 
-UTAP: User-friendly Transcriptome and Epigenome Analysis Pipeline
+UTAP2: User-friendly Transcriptome and Epigenome Analysis Pipeline
 ===================================================
 
 NGS technology is routinely used to characterize the genome and detect gene expression differences among cell types, genotypes and conditions. Advances in short-read sequencing instruments such as Illumina Next-Seq, have yielded easy-to-operate machines, with higher throughput, at a lower price per base. However, processing this data requires bioinformatics expertise to tailor and execute specific solutions for each type of library preparation.
