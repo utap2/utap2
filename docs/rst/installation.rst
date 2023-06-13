@@ -219,7 +219,7 @@ The folder "4_reports/<report_name>_<run_id>" contains graphs, statistics, and a
 
 An example of the pipeline output can be found at:
 ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq
-
+                                                      
 For further details, please refer to the "Help" tab in the site navigation bar.
 
 
@@ -234,8 +234,8 @@ To run the script, follow the instructions below:
 ::
 
     cd $HOST_MOUNT
-    chmod +x $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
-    .  $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
+    chmod +x $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
+    .  $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
     
 If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
 
@@ -543,15 +543,15 @@ For further details, please refer to the "Help" tab in the site navigation bar.
 
 Check pipeline output
 --------------------------
-After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
+After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exammple_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
 
 To run the script, follow the instructions below:
 
 ::
 
     cd $HOST_MOUNT
-    chmod +x $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
-    .  $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    chmod +x $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    .  $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
     
 If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
 
