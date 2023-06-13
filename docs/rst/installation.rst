@@ -461,25 +461,6 @@ SINGULARITY_CLUSTER_COMMAND
 
 
 
-REMARKS
-=======
-
-
-1. PBS cluster installation was prepared but not tested.
-2. Within the $DB_PATH folder, a file named db.sqlite3 will be created.
-
-The db.sqlite3 file serves as the application's database, storing user details and links to results within the $HOST_MOUNT folder.
-
-The $HOST_MOUNT folder contains data for all users, including input and output files.
-
-It is important to note that the db.sqlite3 database and $HOST_MOUNT folder are located on the host server, outside of the container. Consequently, deleting or stopping the "utap" container will not remove the database or $HOST_MOUNT folder.
-
-In the event of a temporary Singularity deletion, it is advised to retain the database ("db.sqlite3") and the corresponding $HOST_MOUNT folder. Upon rerunning Singularity using the install_UTAP_singularity.sh script, the existing database ("db.sqlite3") and $HOST_MOUNT folder will be utilized.
-
-
-
-
-
 Additional example for testing
 ==============================
 
@@ -578,4 +559,23 @@ If the run is successfully completed, the output message "UTAP test run succeede
 
    
    
+REMARKS
+=======
+
+
+1. PBS cluster installation was prepared but not tested.
+2. Within the $DB_PATH folder, a file named db.sqlite3 will be created.
+
+The db.sqlite3 file serves as the application's database, storing user details and links to results within the $HOST_MOUNT folder.
+
+The $HOST_MOUNT folder contains data for all users, including input and output files.
+
+It is important to note that the db.sqlite3 database and $HOST_MOUNT folder are located on the host server, outside of the container. Consequently, deleting or stopping the "utap" container will not remove the database or $HOST_MOUNT folder.
+
+In the event of a temporary Singularity deletion, it is advised to retain the database ("db.sqlite3") and the corresponding $HOST_MOUNT folder. Upon rerunning Singularity using the install_UTAP_singularity.sh script, the existing database ("db.sqlite3") and $HOST_MOUNT folder will be utilized.
+
+
+
+
+
 
