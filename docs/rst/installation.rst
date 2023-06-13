@@ -159,7 +159,7 @@ For testing UTAP, you can download fastq files and test files for RNA-Seq pipeli
 ::
 
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*' -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome RNA-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
@@ -471,7 +471,7 @@ For testing UTAP, you can download fastq files and test files for MARS-Seq pipel
 ::
 
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*' -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
