@@ -10,7 +10,7 @@ Uploading folder of fastq files
 
 * Fastq files must be organized, within the selected folder (root folder), into subfolders as shown below. Subfolders names are derived from sample names.
 * Each subfolder contains the relevant fastq file, which can be compressed into the "gz" format.
-* Fastq file names must end with "_R1.fastq(.gz)" or "_R1.fq(.gz)" for single-read data. The "R" prefix donates the read number.
+* Fastq file names must end with "_R1.fastq(.gz)" or "_R1.fq(.gz)" for single-read data. The "R" prefix denotes the read number.
 * In the case of paired-end data (required for Mars-Seq), corresponding files must exist, with suffix "_R2.fastq(.gz)" instead of "_R1.fastq(.gz)".
 
 **For example:**

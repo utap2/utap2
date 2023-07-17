@@ -30,8 +30,11 @@ The user should then do the following:
 
 
 
+
+
 Run UTAP
 ========
+
 
 Create a directory for UTAP software and its output
 ---------------------------------------------------
@@ -42,6 +45,8 @@ Note: Since user output data will be written in this folder, please verify that 
    HOST_MOUNT=<the relevant path>
    mkdir $HOST_MOUNT
    cd $HOST_MOUNT
+
+
 
 
 Download the UTAP installation folder 
@@ -68,11 +73,15 @@ The UTAP installation folder includes the following files:
    tar -xvzf UTAP_installation_files.tar.gz && mv UTAP_installation_files/* $HOST_MOUNT
 
 
+
+
 Pull UTAP image from the public repository
 ------------------------------------------
 ::
 
    singularity pull library://utap2/utap/utap:latest
+
+
 
 
 Download genomes indexes
@@ -100,7 +109,9 @@ If you are using multiple genomes, it is important to ensure that they are synch
     wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
     tar -xvzf Human.tar.gz
     rsync -a Human/* genomes/
-    
+   
+   
+   
 
 Execute UTAP
 --------------
@@ -137,16 +148,18 @@ if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 
 
 
+
 Test UTAP
 =========
-   
+
+
 Run RNA-Seq pipeline with example data
 --------------------------------------
 For testing UTAP, you can download fastq files and test files for RNA-Seq pipeline folder using your browser or via ftp as noted below.
 ::
 
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*' -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome RNA-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
@@ -165,20 +178,28 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
       
          siTAZ
                      IQ-siTAZ
+                     
                      IY-siTAZ
+                     
                      IZ-siTAZ
 
          siC
                      IQ-siC
+                     
                      IY-siC
+                     
                      IZ-siC
       
       It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
    
    7.Add batch effect by clicking on "Add Batch Effect" button. 
-     Select IQ-siTAZ and IQ-siC samples and mark them as Batch 1 (red color) by clicking on the button "Batch 1".
-     Select IY-siTAZ and IY-siC samples and mark them as Batch 2 (brown color) by clicking on the button "Batch 2".
-     Select IZ-siTAZ and IZ-siC samples and mark them as Batch 3 (green color) by clicking on the button "Batch 3".
+   
+   Select IQ-siTAZ and IQ-siC samples and mark them as Batch 1 (red color) by clicking on the button "Batch 1".
+     
+   Select IY-siTAZ and IY-siC samples and mark them as Batch 2 (brown color) by clicking on the button "Batch 2".
+     
+   Select IZ-siTAZ and IZ-siC samples and mark them as Batch 3 (green color) by clicking on the button "Batch 3".
+     
    
    8.click on "Run analysis" button
 
@@ -186,6 +207,8 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
 Here is a screen shot of the RNA-Seq pipeline form for the example data.
 
 .. image:: ../figures/RNA_Seq_example_form.png 
+
+
 
 
 View pipeline output
@@ -196,26 +219,33 @@ The folder "4_reports/<report_name>_<run_id>" contains graphs, statistics, and a
 
 An example of the pipeline output can be found at:
 ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq
-
+                                                      
 For further details, please refer to the "Help" tab in the site navigation bar.
+
+
+
 
 Check pipeline output
 --------------------------
 After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq.
 
-To run the script, follow the instructions below:
+To run the script, follow the instructions below (no need to download the results example):
 
 ::
 
     cd $HOST_MOUNT
-    chmod +x $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_hg38_MARS-seq/test_files/test_UTAP.sh
-    .  $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
+    chmod +x $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
+    .  $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
     
-If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
+If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance (utap@weizmann.ac.il).
+
+
+
 
 
 Parameters
 ==========
+
 
 Required parameters
 -------------------
@@ -248,6 +278,7 @@ MAX_CORES
 
 MAX_MEMORY                                      
                        Maximum memory in MB in the host computer or in each node of the cluster.
+
 
 
 
@@ -429,24 +460,10 @@ SINGULARITY_CLUSTER_COMMAND
 
 
 
-REMARKS
-=======
-
-1. PBS cluster installation was prepared but not tested.
-2. Within the $DB_PATH folder, a file named db.sqlite3 will be created.
-
-The db.sqlite3 file serves as the application's database, storing user details and links to results within the $HOST_MOUNT folder.
-
-The $HOST_MOUNT folder contains data for all users, including input and output files.
-
-It is important to note that the db.sqlite3 database and $HOST_MOUNT folder are located on the host server, outside of the container. Consequently, deleting or stopping the "utap" container will not remove the database or $HOST_MOUNT folder.
-
-In the event of a temporary Singularity deletion, it is advised to retain the database ("db.sqlite3") and the corresponding $HOST_MOUNT folder. Upon rerunning Singularity using the install_UTAP_singularity.sh script, the existing database ("db.sqlite3") and $HOST_MOUNT folder will be utilized.
-
-
 
 Additional example for testing
 ==============================
+
 
 Run MARS-Seq pipeline with example data
 --------------------------------------
@@ -454,7 +471,7 @@ For testing UTAP, you can download fastq files and test files for MARS-Seq pipel
 ::
 
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*' -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
@@ -507,6 +524,9 @@ Here is a screen shot of the MARS-Seq pipeline form for the example data.
 
 .. image:: ../figures/MARS_Seq_example_form.png
 
+
+
+
 View pipeline output
 -------------------
 After submitting the run, you will be directed to the "User Datasets" page, which can also be accessed by navigating to "User Datasets" in the site navigation bar. This page allows you to track the progress of all the runs. Within a few seconds of starting the run, a folder named $HOST_MOUNT/utap-output/admin/<run_id>_<run_name>_Transcriptome_MARS-Seq will be generated. This folder contains the pipeline output for each step, organized in separate folders.
@@ -518,17 +538,20 @@ ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_t
 
 For further details, please refer to the "Help" tab in the site navigation bar.
 
+
+
+
 Check pipeline output
 --------------------------
-After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
+After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exammple_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
 
 To run the script, follow the instructions below:
 
 ::
 
     cd $HOST_MOUNT
-    chmod +x $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
-    .  $HOST_MOUNT/utap-output/admin/exmaple_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    chmod +x $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
+    .  $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/test_files/test_UTAP.sh
     
 If the run is successfully completed, the output message "UTAP test run succeeded" will be displayed. In case any issues arise during the run or testing process, please contact us for further assistance.
 
@@ -536,4 +559,23 @@ If the run is successfully completed, the output message "UTAP test run succeede
 
    
    
+REMARKS
+=======
+
+
+1. PBS cluster installation was prepared but not tested.
+2. Within the $DB_PATH folder, a file named db.sqlite3 will be created.
+
+The db.sqlite3 file serves as the application's database, storing user details and links to results within the $HOST_MOUNT folder.
+
+The $HOST_MOUNT folder contains data for all users, including input and output files.
+
+It is important to note that the db.sqlite3 database and $HOST_MOUNT folder are located on the host server, outside of the container. Consequently, deleting or stopping the "utap" container will not remove the database or $HOST_MOUNT folder.
+
+In the event of a temporary Singularity deletion, it is advised to retain the database ("db.sqlite3") and the corresponding $HOST_MOUNT folder. Upon rerunning Singularity using the install_UTAP_singularity.sh script, the existing database ("db.sqlite3") and $HOST_MOUNT folder will be utilized.
+
+
+
+
+
 

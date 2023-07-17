@@ -19,12 +19,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u'UTAP'
+project = u'UTAP2'
 copyright = u'2023, '
 author = u'UTAP team'
 
 # The short X.Y version
-version = u''
+version = u'2.0'
 # The full version, including alpha/beta/rc tags
 release = u'1.0.0'
 
