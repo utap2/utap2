@@ -1,0 +1,8 @@
+[submodule "utap"]
+	path = utap
+	url = bitbucket.org:bbcu/utap.git
+	branch = upgrade_utap
+[submodule "ngs-snakemake"]
+	path = ngs-snakemake
+	url = bitbucket.org:bbcu/ngs-snakemake.git
+	branch = update_utap
