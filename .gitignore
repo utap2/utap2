@@ -1,0 +1,15 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
+utap_web_application/static/*
+utap_web_application/logs-utap/
+utap_web_application/db.sqlite3
+utap_web_application/*.pyc
+utap_web_application/.project
+utap_web_application/.settings
+utap_web_application/.pydevproject
+utap_web_application/.idea
+utap_web_application/.tox
+utap_web_application/nosetests.xml
+utap_web_application/*.egg*
+utap_web_application/build/
+utap_web_application/dist/
