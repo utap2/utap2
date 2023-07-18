@@ -1,14 +1,8 @@
 Source code
 ===========
 
-UTAP source code
+UTAP2 source code
 ----------------
 
-https://bitbucket.org/bbcu/utap
-
-Dependencies
-------------
-`Software <https://utap.readthedocs.io/en/latest/rst/installation.html#create-a-directory-for-utap-software-and-its-output>`_
-
-`Genomes <https://utap.readthedocs.io/en/latest/rst/installation.html#create-genomes>`_
+https://github.com/utap2/utap2
 
