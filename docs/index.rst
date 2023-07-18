@@ -22,6 +22,7 @@ UTAP is a web-based intuitive platform currently installed on Weizmann institute
     rst/user-guide
     rst/releases
     rst/source-code
+    rst/demo-site
 
 License
 =======
