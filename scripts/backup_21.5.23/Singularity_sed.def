@@ -1,0 +1,44 @@
+Bootstrap: localimage
+From: utap_latest.sif
+Stage: spython-base
+
+
+
+%setup
+mkdir -p $SINGULARITY_ROOTFS_HOST_MOUNT
+mkdir -p $SINGULARITY_ROOTFS_DB_PATH
+mkdir -p $SINGULARITY_ROOTFS/opt/settings
+_GENOMES_DIR
+_CONDA_DIR
+
+%files
+utap_install_image.sh /opt/
+update-db.sh /opt/
+all_parameters /opt/settings
+ports.conf /etc/apache2/ports.conf
+
+%post -c /bin/bash
+chmod +x /opt/update-db.sh
+chmod +x /opt/utap_install_image.sh
+chmod +x /opt/settings/all_parameters
+set -a 
+source /opt/settings/all_parameters
+exec /opt/utap_install_image.sh
+set +a 
+
+%environment
+export HOME=_HOST_MOUNT/UTAP_HOME_DIR
+export PATH=/opt/miniconda3/envs/ngsplot/bin:/opt/miniconda3/envs/utap/bin:_CONDA_PATH:$PATH
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+
+%startscript
+/bin/bash -c "source _HOST_MOUNT/UTAP_HOME_DIR/.bashrc"
+if [ _DEVELOPMENT = "None" ]; then 
+  service apache2 restart 
+else 
+  /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py runserver --insecure 0.0.0.0:2000
+fi
+nohup /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py update_status >> _HOST_MOUNT/update_status.txt & 
+
+

@@ -146,8 +146,25 @@ http://host_ip:7000
 if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 
 
+Install UTAP on Google Cloud platform
+-------------------------------------
+requirments:
+google account
+quoatas on network and vm  
 
-
+enter google cloud shell 
+wget --no-check-certificate https://dors4.weizmann.ac.il/utap/GCP_slurm_installation/
+chmod +x  ~/GCP_slurm_installation/install_GCP_slurm.sh ~/GCP_slurm_installation/hpc-slurm-utap.yaml
+. ~/GCP_slurm_installation/install_GCP_slurm.sh
+enetr Y when asked "do you want to continue (see screen shot bellow)
+enetr the link in the console and approve all indicated steps as shown in screen shots bellow
+make sure to choose your correct google accout (the one you used to open the project)
+copy the code and paste it in the google shell  console as indicated in the image bellow 
+enetr a for applying all proposed changes as indicated in the image bellow 
+enter the the machine:
+VM istances -> choose the login VM  -> ssh -> view gcloud command -> paste the coomand to the editor 
+mkdir $HOME/data && gcsfuse --file-mode 775 $bucket_name "$HOME/data"
+on the installation process, press y 
 
 Test UTAP
 =========
