@@ -1,1 +1,3 @@
-sphinx-rtd-theme==latest_version
+sphinx==7.2.6
+sphinx-autobuild==2021.3.14
+sphinx-rtd-theme==2.0.0
