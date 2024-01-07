@@ -152,7 +152,8 @@ texinfo_documents = [
 
 import sys
 
-from mock import Mock as MagicMock
+#from mock import Mock as MagicMock
+from unittest.mock import MagicMock
 
 
 class Mock(MagicMock):
