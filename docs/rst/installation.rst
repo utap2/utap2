@@ -148,14 +148,32 @@ if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 
 Install UTAP on Google Cloud platform
 -------------------------------------
-requirments:
+requirments: 
+
 google account
 quoatas on network and vm  
 
-enter google cloud shell 
-wget --no-check-certificate https://dors4.weizmann.ac.il/utap/GCP_slurm_installation/
-chmod +x  ~/GCP_slurm_installation/install_GCP_slurm.sh ~/GCP_slurm_installation/hpc-slurm-utap.yaml
-. ~/GCP_slurm_installation/install_GCP_slurm.sh
+
+1. Enter google cloud shell as described in the bellow image 
+
+.. image:: ../figures/Google_shell.png
+
+
+2. Clone scripts for installing Google cloud slurm cluster VMs:
+
+::
+   git clone --filter=blob:none --sparse  https://github.com/utap2/utap2.git --branch devel && cd utap2 && git sparse-checkout init && git sparse-checkout set GCP_installation_scripts
+   chmod +X ~/utap2/GCP_installation_scripts/*
+   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>"
+
+   Click on autorize to give permissions to GCP shell as described in the image bellow 
+
+.. image:: ../figures/autorize_GCP_shell.png
+
+   When promped "Do you want to continue, enter Y as decribed in the image bellow
+
+.. image:: ../figures/authentication_promped.png
+ 
 enetr Y when asked "do you want to continue (see screen shot bellow)
 enetr the link in the console and approve all indicated steps as shown in screen shots bellow
 make sure to choose your correct google accout (the one you used to open the project)
