@@ -165,6 +165,8 @@ quoatas on network and vm
 2. Clone scripts for installing Google cloud slurm cluster VMs:
 
 ::
+
+
    git clone --filter=blob:none --sparse  https://github.com/utap2/utap2.git --branch devel && cd utap2 && git sparse-checkout init && git sparse-checkout set GCP_installation_scripts
    chmod +X ~/utap2/GCP_installation_scripts/*
    bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>"
@@ -201,7 +203,17 @@ quoatas on network and vm
 
 .. image:: ../figures/apply_hpc_changes.png
 
-After 
+The installation is is takin ~10 minutes  
+
+After the installation is done, run the following command in Google shell
+::
+
+   export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
+   export REGION=`gcloud config list --format 'value(compute.region)'`
+   export ZONE=`gcloud config list --format 'value(compute.zone)'`
+   export LOGIN_VM=`gcloud compute instances list --sort-by creation_time | grep NAME | head -n 2 | grep login | awk '{print $2}'`
+   gcloud compute ssh --zone "us-central1-a" "$LOGIN_VM" --project "$GOOGLE_CLOUD_PROJECT"
+
 enetr Y when asked "do you want to continue (see screen shot bellow)
 enetr the link in the console and approve all indicated steps as shown in screen shots bellow
 make sure to choose your correct google accout (the one you used to open the project)
