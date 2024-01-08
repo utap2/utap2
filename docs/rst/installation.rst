@@ -171,6 +171,8 @@ quoatas on network and vm
    chmod +X ~/utap2/GCP_installation_scripts/*
    bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>"
 
+
+
    Click on autorize to give permissions to GCP shell as described in the image bellow 
 
 .. image:: ../figures/autorize_GCP_shell.png
@@ -218,18 +220,9 @@ Once entered the vm enter the following commands:
 ::
 
    cd $HOME && mkdir data	&& gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data"
-   nohup bash data/install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf 
+   nohup bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
 
 
-enetr Y when asked "do you want to continue (see screen shot bellow)
-enetr the link in the console and approve all indicated steps as shown in screen shots bellow
-make sure to choose your correct google accout (the one you used to open the project)
-copy the code and paste it in the google shell  console as indicated in the image bellow 
-enetr a for applying all proposed changes as indicated in the image bellow 
-enter the the machine:
-VM istances -> choose the login VM  -> ssh -> view gcloud command -> paste the coomand to the editor 
-mkdir $HOME/data && gcsfuse --file-mode 775 $bucket_name "$HOME/data"
-on the installation process, press y 
 
 Test UTAP
 =========
