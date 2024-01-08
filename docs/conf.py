@@ -38,7 +38,20 @@ release = u'1.0.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.duration',
+    'sphinx.ext.doctest',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx',
 ]
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+    'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
+}
+
+intersphinx_disabled_domains = ['std']
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -57,7 +70,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = u'Python2.7'
+language = u'Python3.10'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -75,9 +88,7 @@ pygments_style = 'sphinx'
 # html_theme = 'alabaster'
 
 html_theme = 'sphinx_rtd_theme'
-html_theme_options = {
-    'clean': True,
-}
+
 
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -169,3 +180,6 @@ class Mock(MagicMock):
 
 MOCK_MODULES = ['pygtk', 'gtk', 'gobject', 'argparse', 'numpy', 'pandas', 'python-ldap', 'django-auth-ldap']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
+# -- Options for EPUB output
+epub_show_urls = 'footnote'
