@@ -146,7 +146,7 @@ http://host_ip:7000
 if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 
 
-Install UTAP on Google Cloud platform
+Install UTAP on Google Cloud platform (GCP)
 -------------------------------------
 requirments: 
 
@@ -170,10 +170,30 @@ quoatas on network and vm
 
 .. image:: ../figures/autorize_GCP_shell.png
 
-   When promped "Do you want to continue, enter Y as decribed in the image bellow
+   When promped for authentication , enter Y as decribed in the image bellow
 
 .. image:: ../figures/authentication_promped.png
- 
+
+   Click on the link to authenticate with you google account 
+
+.. image:: ../figures/authentication_link.png
+
+  Select the Google account with which your project has been shared
+
+.. image:: ../figures/choose_google_account.png
+
+   Click on Allow
+
+.. image:: ../figures/allow_auth.png
+
+   Click on copy
+
+.. image:: ../figures/copy_code.png
+
+   paste the code in the Google shell console and click "ENTER"
+
+.. image:: ../figures/paste_code.png 
+
 enetr Y when asked "do you want to continue (see screen shot bellow)
 enetr the link in the console and approve all indicated steps as shown in screen shots bellow
 make sure to choose your correct google accout (the one you used to open the project)
