@@ -214,7 +214,7 @@ After the installation is done, run the following command in Google shell:
    export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
    export LOGIN_IP=`gcloud compute instances describe hpcutap-login-i56oilhq-001  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' --zone us-central1-a`
    scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
-   scp -i ~/.ssh/google_compute_engine.pub ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
+   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
    export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
    export REGION=`gcloud config list --format 'value(compute.region)'`
    export ZONE=`gcloud config list --format 'value(compute.zone)'`
