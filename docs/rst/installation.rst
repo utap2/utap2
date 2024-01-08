@@ -205,7 +205,7 @@ quoatas on network and vm
 
 The installation is is takin ~10 minutes  
 
-After the installation is done, run the following command in Google shell
+After the installation is done, run the following command in Google shell:
 ::
 
    export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
@@ -213,6 +213,13 @@ After the installation is done, run the following command in Google shell
    export ZONE=`gcloud config list --format 'value(compute.zone)'`
    export LOGIN_VM=`gcloud compute instances list --sort-by creation_time | grep NAME | head -n 2 | grep login | awk '{print $2}'`
    gcloud compute ssh --zone "us-central1-a" "$LOGIN_VM" --project "$GOOGLE_CLOUD_PROJECT"
+
+Once entered the vm enter the following commands:
+::
+
+   cd $HOME && mkdir data	&& gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data"
+   nohup bash data/install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf 
+
 
 enetr Y when asked "do you want to continue (see screen shot bellow)
 enetr the link in the console and approve all indicated steps as shown in screen shots bellow
