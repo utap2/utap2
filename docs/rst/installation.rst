@@ -147,12 +147,15 @@ if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 
 
 Install UTAP on Google Cloud platform (GCP)
--------------------------------------
+===========================================
+
+Install Google cloud Slurm cluster VMs
+--------------------------------------
+
 requirments: 
 
 google account
 quoatas on network and vm  
-
 
 1. Enter google cloud shell as described in the bellow image 
 
@@ -194,6 +197,11 @@ quoatas on network and vm
 
 .. image:: ../figures/paste_code.png 
 
+   Enter 'A' to apply all proposed changes 
+
+.. image:: ../figures/apply_hpc_changes.png
+
+After 
 enetr Y when asked "do you want to continue (see screen shot bellow)
 enetr the link in the console and approve all indicated steps as shown in screen shots bellow
 make sure to choose your correct google accout (the one you used to open the project)
