@@ -208,13 +208,20 @@ quoatas on network and vm
 The installation is is takin ~10 minutes  
 
 After the installation is done, run the following command in Google shell:
+
 ::
 
+   export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
+   export LOGIN_IP=`gcloud compute instances describe hpcutap-login-i56oilhq-001  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' --zone us-central1-a`
+   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
+   scp -i ~/.ssh/google_compute_engine.pub ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
    export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
    export REGION=`gcloud config list --format 'value(compute.region)'`
    export ZONE=`gcloud config list --format 'value(compute.zone)'`
    export LOGIN_VM=`gcloud compute instances list --sort-by creation_time | grep NAME | head -n 2 | grep login | awk '{print $2}'`
    gcloud compute ssh --zone "us-central1-a" "$LOGIN_VM" --project "$GOOGLE_CLOUD_PROJECT"
+
+
 
 Once entered the vm enter the following commands:
 ::
