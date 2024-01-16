@@ -31,11 +31,12 @@ MACS2_EXE=$MAIN_CONDA/bin/macs2
 BEDTOOLS_EXE=$MAIN_CONDA/bin/bedtools
 HTSEQ_COUNT_EXE=$MAIN_CONDA/bin/htseq-count
 BCL2FASTQ_EXE=$MAIN_CONDA/bin/bcl2fastq
+FASTQ_MULTX=$MAIN_CONDA/bin/fastq-multx
 
 #these are old software versions which are not compatible with python3.10 in main conda and are instlled in another conda env calles ngsplot 
 MACS_EXE=/opt/miniconda3/envs/ngsplot/bin/macs 
 TOPHAT_EXE=/opt/miniconda3/envs/ngsplot/bin/tophat
-if [ "$RUN_NGSPLOT" != "None" ]; then # Run ngsplot
+if [ "$RUN_NGSPLOT" = 1 ]; then # Run ngsplot
   NGS_PLOT_EXE='\"export PATH=/opt/miniconda3/envs/ngsplot/bin:$PATH; /opt/miniconda3/envs/ngsplot/bin/ngs.plot.r\"'
 else
   NGS_PLOT_EXE=""
@@ -88,15 +89,15 @@ fi
 
 #Change the code of the settings file:
 
-sed "s/HOST_MOUNT=PROJECT_ROOT/HOST_MOUNT='${HOST_MOUNT//\//\\/}'/" /opt/utap/analysis/backend/settings_base_template.py | sed "s/'PIPELINE_SERVER'/'$DNS_HOST'/" | sed "s/'NOTIFICATION_INTERNAL_MAILING_LIST_SED_TEMPLATE'/'$NOTIFICATION_EMAILS'/" | sed "s/DEMO_SITE\=False/$DEMO_SITE/" | sed "s/RUN_LOCAL\=True/$RUN_LOCAL/"  | sed "s/RUN_LOCAL_HOST_CONDA\=True/$RUN_LOCAL_HOST_CONDA/"  | sed "s/'INSTITUTE_NAME'/'${INSTITUTE_NAME//\//\\/}'/" | sed "s/'CLUSTER_QUEUE'/'$CLUSTER_QUEUE'/" | sed "s/'DB_PATH'/'${DB_PATH//\//\\/}'/" | sed "s/'MAIL_SERVER'/'$MAIL_SERVER'/" | sed "s/'PIPELINE_SERVER_PORT_SED'/$HOST_APACHE_PORT/" | sed "s/'BIOUTILS_PACKAGE'/'${BIOUTILS_PACKAGE//\//\\/}'/" | sed "s/'SNAKEFILE_PACKAGE'/'${SNAKEFILE_PACKAGE//\//\\/}'/" | sed "s/'CONDA_ROOT'/'${CONDA_ROOT//\//\\/}'/" | sed "s/'GS_EXE'/'${GS_EXE//\//\\/}'/" | sed "s/'RSCRIPT'/'${RSCRIPT//\//\\/}'/" | sed "s/'R_LIB_PATHS'/'${R_LIB_PATHS//\//\\/}'/" | sed "s/'CUTADAPT_EXE'/'${CUTADAPT_EXE//\//\\/}'/" | sed "s/'FASTQC_EXE'/'${FASTQC_EXE//\//\\/}'/" | sed "s/'STAR_EXE'/'${STAR_EXE//\//\\/}'/" | sed "s/'SAMTOOLS_EXE'/'${SAMTOOLS_EXE//\//\\/}'/" | sed "s/'NGS_PLOT_EXE'/'${NGS_PLOT_EXE//\//\\/}'/" | sed "s/'HTSEQ_COUNT_EXE'/'${HTSEQ_COUNT_EXE//\//\\/}'/" | sed "s/'CLUSTER_EXE'/'${CLUSTER_EXE//\//\\/}'/" | sed "s/'SNAKEMAKE_EXE'/'${SNAKEMAKE_EXE//\//\\/}'/" | sed "s/'BCL2FASTQ_EXE'/'${BCL2FASTQ_EXE//\//\\/}'/" | sed "s/'CELLRANGER_EXE'/'${CELLRANGER_EXE//\//\\/}'/" | sed "s/'JAVA_EXE'/'${JAVA_EXE//\//\\/}'/" | sed "s/'MULTIQC_EXE'/'${MULTIQC_EXE//\//\\/}'/" | sed "s/'BOWTIE2_EXE'/'${BOWTIE2_EXE//\//\\/}'/" | sed "s/'PICARD_EXE'/'${PICARD_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE'/'${IGVTOOLS_EXE//\//\\/}'/" | sed "s/'MACS2_EXE'/'${MACS2_EXE//\//\\/}'/" | sed "s/'BEDTOOLS_EXE'/'${BEDTOOLS_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE_FOR_RIBOSEQ'/'${IGVTOOLS_EXE_FOR_RIBOSEQ//\//\\/}'/" | sed "s/'JRE_EXE'/'${JRE_EXE//\//\\/}'/" | sed "s/'PYTHON_EXE'/'${PYTHON_EXE//\//\\/}'/" | sed "s/'PEAKSPLITTER_EXE'/'${PEAKSPLITTER_EXE//\//\\/}'/" | sed "s/'HOMER_EXE'/'${HOMER_EXE//\//\\/}'/" | sed "s/'KENTUTILS_EXE'/'${KENTUTILS_EXE//\//\\/}'/" | sed "s/'BOWTIE1_EXE'/'${BOWTIE1_EXE//\//\\/}'/" | sed "s/'MACS_EXE'/'${MACS_EXE//\//\\/}'/" | sed "s/'TOPHAT_EXE'/'${TOPHAT_EXE//\//\\/}'/" | sed "s/'MAX_UPLOAD_SIZE'/${MAX_UPLOAD_SIZE}/" | sed "s/'USER_CLUSTER'/'${USER}'/" | sed "s/'CLUSTER_TYPE'/'${CLUSTER_TYPE}'/" | sed "s/'CLUSTER_RESOURCES_PARAMS'/'${CLUSTER_RESOURCES_PARAMS}'/" | sed "s/'MAX_CORES'/'${MAX_CORES}'/" | sed "s/'MAX_MEMORY'/'${MAX_MEMORY}'/" | sed "s/'PROXY_URL'/'${PROXY_URL//\//\\/}'/" | sed "s/'HOST_MOUNT_CLUSTER'/'${HOST_MOUNT_CLUSTER//\//\\/}'/" | sed "s/'SINGULARITY_CLUSTER_COOMAND'/'${SINGULARITY_CLUSTER_COMMAND//\//\\/}'/" | sed "s@'IMAGE_PATH'@'${IMAGE_PATH}'@" | sed "s@'SINGULARITY_MOUNTS'@'${SINGULARITY_MOUNTS}'@" | sed "s/'BEDGRAPH_TO_BIGWIG'/'${BEDGRAPH_TO_BIGWIG//\//\\/}'/" | sed "s/'BEDCLIP'/'${BEDCLIP//\//\\/}'/" | sed "s/'MAIL_PASSWORD'/'${MAIL_PASSWORD//\//\\/}'/" | sed "s/TLS_USE_IN_MAIL\=False/$EMAIL_USE_TLS/" | sed "s/'MAIL_SERVER_PORT'/'${EMAIL_PORT//\//\\/}'/" > /opt/utap/analysis/backend/settings_base.py
+sed "s/HOST_MOUNT=PROJECT_ROOT/HOST_MOUNT='${HOST_MOUNT//\//\\/}'/" /opt/utap/analysis/backend/settings_base_template.py | sed "s/'PIPELINE_SERVER'/'$DNS_HOST'/" | sed "s/'NOTIFICATION_INTERNAL_MAILING_LIST_SED_TEMPLATE'/'$NOTIFICATION_EMAILS'/" | sed "s/DEMO_SITE\=False/$DEMO_SITE/" | sed "s/RUN_LOCAL\=True/$RUN_LOCAL/"  | sed "s/RUN_LOCAL_HOST_CONDA\=True/$RUN_LOCAL_HOST_CONDA/"  | sed "s/'INSTITUTE_NAME'/'${INSTITUTE_NAME//\//\\/}'/" | sed "s/'CLUSTER_QUEUE'/'$CLUSTER_QUEUE'/" | sed "s/'DB_PATH'/'${DB_PATH//\//\\/}'/" | sed "s/'MAIL_SERVER'/'$MAIL_SERVER'/" | sed "s/'PIPELINE_SERVER_PORT_SED'/$HOST_APACHE_PORT/" | sed "s/'BIOUTILS_PACKAGE'/'${BIOUTILS_PACKAGE//\//\\/}'/" | sed "s/'SNAKEFILE_PACKAGE'/'${SNAKEFILE_PACKAGE//\//\\/}'/" | sed "s/'CONDA_ROOT'/'${CONDA_ROOT//\//\\/}'/" | sed "s/'GS_EXE'/'${GS_EXE//\//\\/}'/" | sed "s/'RSCRIPT'/'${RSCRIPT//\//\\/}'/" | sed "s/'R_LIB_PATHS'/'${R_LIB_PATHS//\//\\/}'/" | sed "s/'CUTADAPT_EXE'/'${CUTADAPT_EXE//\//\\/}'/" | sed "s/'FASTQC_EXE'/'${FASTQC_EXE//\//\\/}'/" | sed "s/'STAR_EXE'/'${STAR_EXE//\//\\/}'/" | sed "s/'SAMTOOLS_EXE'/'${SAMTOOLS_EXE//\//\\/}'/" | sed "s/'NGS_PLOT_EXE'/'${NGS_PLOT_EXE//\//\\/}'/" | sed "s/'HTSEQ_COUNT_EXE'/'${HTSEQ_COUNT_EXE//\//\\/}'/" | sed "s/'SNAKEMAKE_EXE'/'${SNAKEMAKE_EXE//\//\\/}'/" | sed "s/'BCL2FASTQ_EXE'/'${BCL2FASTQ_EXE//\//\\/}'/" | sed "s/'CELLRANGER_EXE'/'${CELLRANGER_EXE//\//\\/}'/" | sed "s/'JAVA_EXE'/'${JAVA_EXE//\//\\/}'/" | sed "s/'MULTIQC_EXE'/'${MULTIQC_EXE//\//\\/}'/" | sed "s/'BOWTIE2_EXE'/'${BOWTIE2_EXE//\//\\/}'/" | sed "s/'PICARD_EXE'/'${PICARD_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE'/'${IGVTOOLS_EXE//\//\\/}'/" | sed "s/'MACS2_EXE'/'${MACS2_EXE//\//\\/}'/" | sed "s/'BEDTOOLS_EXE'/'${BEDTOOLS_EXE//\//\\/}'/" | sed "s/'IGVTOOLS_EXE_FOR_RIBOSEQ'/'${IGVTOOLS_EXE_FOR_RIBOSEQ//\//\\/}'/" | sed "s/'JRE_EXE'/'${JRE_EXE//\//\\/}'/" | sed "s/'PYTHON_EXE'/'${PYTHON_EXE//\//\\/}'/" | sed "s/'PEAKSPLITTER_EXE'/'${PEAKSPLITTER_EXE//\//\\/}'/" | sed "s/'HOMER_EXE'/'${HOMER_EXE//\//\\/}'/" | sed "s/'KENTUTILS_EXE'/'${KENTUTILS_EXE//\//\\/}'/" | sed "s/'BOWTIE1_EXE'/'${BOWTIE1_EXE//\//\\/}'/" | sed "s/'MACS_EXE'/'${MACS_EXE//\//\\/}'/" | sed "s/'TOPHAT_EXE'/'${TOPHAT_EXE//\//\\/}'/" | sed "s/'MAX_UPLOAD_SIZE'/${MAX_UPLOAD_SIZE}/" | sed "s/'USER_CLUSTER'/'${USER}'/" | sed "s/'CLUSTER_TYPE'/'${CLUSTER_TYPE}'/" | sed "s/'MAX_CORES'/'${MAX_CORES}'/" | sed "s/'MAX_MEMORY'/'${MAX_MEMORY}'/" | sed "s/'PROXY_URL'/'${PROXY_URL//\//\\/}'/" | sed "s/'HOST_MOUNT_CLUSTER'/'${HOST_MOUNT_CLUSTER//\//\\/}'/" | sed  "s@'SINGULARITY_CLUSTER_COMMAND'@'${SINGULARITY_CLUSTER_COMMAND//&/\\&}'@" | sed "s@'IMAGE_PATH'@'${IMAGE_PATH}'@" | sed "s@'SINGULARITY_MOUNTS'@'${SINGULARITY_MOUNTS}'@" | sed "s/'BEDGRAPH_TO_BIGWIG'/'${BEDGRAPH_TO_BIGWIG//\//\\/}'/" | sed "s/'BEDCLIP'/'${BEDCLIP//\//\\/}'/" | sed "s/'MAIL_PASSWORD'/'${MAIL_PASSWORD//\//\\/}'/" | sed "s/TLS_USE_IN_MAIL\=False/$EMAIL_USE_TLS/" | sed "s/'MAIL_SERVER_PORT'/'${EMAIL_PORT//\//\\/}'/" | sed "s/'FASTQ_MULTX'/'${FASTQ_MULTX//\//\\/}'/" > /opt/utap/analysis/backend/settings_base.py
 
 
-if [ $INTERNAL_USERS != "None" ]; then # if not empty variable - it is internal users
+if [ $INTERNAL_USERS = 1 ]; then # if not empty variable - it is internal users
   cp /opt/utap/analysis/backend/settings_internal_template.py /opt/utap/analysis/backend/settings.py
   if [ -d  "$INTERNAL_OUTPUT" ]; then
     sed -i "s/'INTERNAL_OUTPUT'/'${INTERNAL_OUTPUT//\//\\/}'/" /opt/utap/analysis/backend/settings.py
   else
-    sed -i "s/'INTERNAL_OUTPUT'//" /opt/utap/analysis/backend/settings.py
+    sed -i "s/'INTERNAL_OUTPUT'/None/" /opt/utap/analysis/backend/settings.py
   fi
 else #external users
   cp /opt/utap/analysis/backend/settings_external_template.py /opt/utap/analysis/backend/settings.py
@@ -112,8 +113,6 @@ echo "Start build database of Djnago"
 
 
 echo yes | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py collectstatic
-
-
 
 
 cp /root/{.bashrc,.profile}  $HOME

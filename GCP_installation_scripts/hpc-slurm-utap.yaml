@@ -17,8 +17,8 @@
 blueprint_name: hpc-slurm
 
 vars:
-  project_id:  devops-279708
-  deployment_name: hpc-small-utap
+  project_id: PROJECT_ID
+  deployment_name: hpc-utap
   region: us-central1
   zone: us-central1-a
 
@@ -34,11 +34,11 @@ deployment_groups:
   - id: network1
     source: modules/network/pre-existing-vpc
 
-  - id: homefs
-    source: modules/file-system/filestore
-    use: [network1]
-    settings:
-      local_mount: /home
+#  - id: homefs
+#    source: modules/file-system/filestore
+#    use: [network1]
+#    settings:
+#      local_mount: /home
 
   - id: debug_node_group
     source: community/modules/compute/schedmd-slurm-gcp-v5-node-group
@@ -50,7 +50,7 @@ deployment_groups:
     source: community/modules/compute/schedmd-slurm-gcp-v5-partition
     use:
     - network1
-    - homefs
+    #- homefs
     - debug_node_group
     settings:
       partition_name: debug
@@ -68,7 +68,7 @@ deployment_groups:
     source: community/modules/compute/schedmd-slurm-gcp-v5-partition
     use:
     - network1
-    - homefs
+    #- homefs
     - compute_node_group
     settings:
       partition_name: compute
@@ -87,7 +87,7 @@ deployment_groups:
     source: community/modules/compute/schedmd-slurm-gcp-v5-partition
     use:
     - network1
-    - homefs
+    #- homefs
     - h3_node_group
     settings:
       partition_name: h3
@@ -100,8 +100,9 @@ deployment_groups:
     - debug_partition
     - compute_partition
     - h3_partition
-    - homefs
+    #- homefs
     settings:
+      disk_size_gb: 100
       disable_controller_public_ips: false
 
   - id: slurm_login
@@ -110,5 +111,6 @@ deployment_groups:
     - network1
     - slurm_controller
     settings:
+      disk_size_gb: 100
       machine_type: n2-standard-4
       disable_login_public_ips: false

@@ -17,7 +17,12 @@ update-db.sh /opt/
 all_parameters /opt/settings
 ports.conf /etc/apache2/ports.conf
 
+
 %post -c /bin/bash
+export cluster_commands=_HOST_MOUNT/cluster_commands.py
+if [ -f "$cluster_commands" ]; then
+    cp "$cluster_commands" /opt/miniconda3/envs/utap/lib/python3.10/site-packages/ngs-snakemake/cluster_scripts/
+fi
 chmod +x /opt/update-db.sh
 chmod +x /opt/install_UTAP_image.sh
 chmod +x /opt/settings/all_parameters

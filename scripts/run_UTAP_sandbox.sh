@@ -2,6 +2,10 @@
 
 cp /mnt/host_mount/{install_UTAP_image.sh,update-db.sh} /opt/
 cp /mnt/host_mount/all_parameters /opt/settings
+export cluster_commands=/mnt/host_mount/cluster_commands.py
+if [ -f "$cluster_commands" ]; then
+    cp "$cluster_commands" /opt/miniconda3/envs/utap/lib/python3.10/site-packages/ngs-snakemake/cluster_scripts/
+fi
 cp /mnt/host_mount/ports.conf /etc/apache2/ports.conf
 
 chmod +x /opt/update-db.sh

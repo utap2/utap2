@@ -63,7 +63,8 @@ do
 done < "$file"
 
 #merge all paresed parameters together
-cat ${required_parameters} ${optional_parameters} > all_parameters
+cat ${required_parameters} ${optional_parameters} > all_parameters 
+echo -e "\n" >> all_parameters 
 sed -i -e 's/\r.*//g' all_parameters
 source all_parameters
 
@@ -130,6 +131,12 @@ override_param () {
 
 }
 
+validate_param () {
+if [ "$1" != 0 ] && [ "$1" != 1 ] && [ "$1" != "None" ]; then  
+ echo "ERROR: invalid value given for parameter $2, valid values are: 0, 1 and None"; 
+ exit
+fi 
+}
 
 run_utap () {
   if [ "$1" = "instance" ]
@@ -142,7 +149,12 @@ run_utap () {
     export DB_MNT=$DB_PATH
     export CONDA_MNT=$CONDA
     export UTAP_MNT=$UTAP_CODE
-    export run_UTAP="singularity instance stop utap-instance; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity instance start --writable-tmpfs utap.SIF utap-instance" #change after testing
+    if [ "$RUN_SANDBOX" != "None" ]; then
+      echo "installing UTAP sandbox from instance image"
+      export run_UTAP="singularity instance stop utap-staging; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity build --sandbox utap.sandbox utap.SIF" #change after testing
+    else
+      export run_UTAP="singularity instance stop utap-staging; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity instance start --writable-tmpfs utap.SIF utap-staging" #change after testing
+    fi
     #modify Singularity.def file
     cp Singularity_sed.def Singularity.def
     sed -ibak -e "s@_CONDA_DIR@$CONDA_DIR@g" -e "s@_GENOMES_DIR@$GENOMES@g" -e "s@_CONDA_PATH@$MAIN_CONDA@g" -e "s@_DEVELOPMENT@$DEVELOPMENT@g" -e "s@_HOST_MOUNT@$HOST_MOUNT@g"  -e "s@_DB_PATH@$DB_PATH@g" Singularity.def  
@@ -162,7 +174,7 @@ run_utap () {
     #echo "GENOMES_DIR=$GENOMES_MNT" >> all_parameters
     #echo "HOST_MOUNT=$HOST_MOUNT_MNT"  >> all_parameters
     #echo "INTERNAL_OUTPUT=$INTERNAL_MNT" >> all_parameters
-    if [ "$FAKEROOT" = "TRUE" ]; then
+    if [ "$FAKEROOT" = 1 ]; then
       export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable --fakeroot utap.sandbox service postfix start && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
     else
       export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
@@ -212,8 +224,30 @@ run_utap () {
 
 ##validation for all parameters :
 
+#validate testing parameter
+validate_param "$TEST" "TEST"
+
+#validate development parameter
+validate_param "$DEVELOPMENT" "DEVELOPMENT"
+
+#validate ngsplot parameter
+validate_param "$RUN_NGSPLOT" "RUN_NGSPLOT"
+
+#validate internal users parameter
+validate_param "$INTERNAL_USERS" "INTERNAL_USERS"
+
+#validate GCP parameter 
+validate_param "$GCP" "GCP"
+
+
+if [ $GCP = 1 ];  then  # use the function, save the code
+  bash ~/data/install_UTAP_GCP.sh
+  wait $!
+fi
+
 #check if DEMO installation
-if [ "$DEMO_SITE" != "None" ]; then # It is demo site
+validate_param "$DEMO_SITE" "DEMO_SITE"
+if [ "$DEMO_SITE" = 1 ]; then # It is demo site
   echo "You are installing demo version of UTAP"
   echo "DEMO_SITE=\"DEMO_SITE\=True\"" >> all_parameters
 else
@@ -261,7 +295,7 @@ host_mount_size=`get_dir_df "Avail" "$HOST_MOUNT"`
 if [ "$host_mount_size" -lt 100000000 ];
 then
   echo "There is not enough space on HOST_MOUNT $HOST_MOUNT directory for UTAP installation"
-  exit
+#  exit
 fi
 
 #check if the provided MAIL_SERVER is responding 
@@ -301,13 +335,14 @@ fi
 
 #set MAX_MEMORY and MAX_CORES if not provided 
 if [ "$MAX_MEMORY" = "None" ]; then 
-    if [ "$CLUSTER_TYPE" != "local" ]; then
+    if [ "$CLUSTER_TYPE" = "lsf" ]; then
       {
         max_mem=`get_max_resources "maxmem"`
         max_mem=${max_mem%.*}
       } || {echo "ERROR: failed setting MAX_MEMORY , please set it manually" && exit}
     else 
     {
+      echo "Warning: MAX_MEMORY is not defined, setting MAX_MEMORY as the host max memory available" 
       max_mem=`awk '/MemFree/ { printf "%.0f \n", $2/1024 }' /proc/meminfo`
       } || {echo "ERROR: failed setting MAX_MEMORY , please set it manually" && exit }
     fi
@@ -315,13 +350,14 @@ if [ "$MAX_MEMORY" = "None" ]; then
 fi
 
 if [ "$MAX_CORES" = "None" ]; then 
-    if [ "$CLUSTER_TYPE" != "local" ]; then
+    if [ "$CLUSTER_TYPE" = "lsf" ]; then
       {
         max_cpu=`get_max_resources "ncpus"`
         max_cpu=${max_cpu%.*}
       } || {echo "ERROR: failed setting  MAX_CORES, please it them manually" && exit}
     else 
     {
+      echo "Warning: MAX_CORES is not defined, setting MAX_CORES as the host max cores available" 
       max_cpu=`grep -c ^processor /proc/cpuinfo`
       max_cpu=$(expr "$max_cpu" + 0)
       max_mem=`awk '/MemFree/ { printf "%.0f \n", $2/1024 }' /proc/meminfo`
@@ -330,48 +366,13 @@ if [ "$MAX_CORES" = "None" ]; then
     export MAX_CORES=$((max_cpu-5)) 
 fi
 
+if [ ! -f  $HOST_HOME_DIR/.ssh/id_rsa.pub ]; then
+  ssh-keygen -t rsa -N "" -f $HOST_HOME_DIR/.ssh/id_rsa
+fi	
+cat $HOST_HOME_DIR/.ssh/id_rsa.pub >> $HOST_HOME_DIR/.ssh/authorized_keys
+chmod 700 $HOST_HOME_DIR/.ssh
+chmod 600 $HOST_HOME_DIR/.ssh/*
 
-#set cluster resources and commands
-if [ "$CLUSTER_TYPE" != "local" ]; then
-  echo "CLUSTER_RESOURCES_PARAMS=\"-n {threads} -R \"rusage[mem={mem}]\" -R \"span[hosts=1]\"\"" >> all_parameters
-  if [ ! -f  $HOST_HOME_DIR/.ssh/id_rsa.pub ]; then
-    ssh-keygen -t rsa -N "" -f $HOST_HOME_DIR/.ssh/id_rsa
-  fi	
-	cat $HOST_HOME_DIR/.ssh/id_rsa.pub >> $HOST_HOME_DIR/.ssh/authorized_keys
-	chmod 700 $HOST_HOME_DIR/.ssh
-	chmod 600 $HOST_HOME_DIR/.ssh/*
-  if [ "$CLUSTER_TYPE" = "lsf" ]; then
-    echo "CLUSTER_EXE=bsub" >> all_parameters
-    echo "You are installing UTAP that run on lsf cluster"
-    echo "RUN_LOCAL=\"RUN_LOCAL\=False\"" >> all_parameters
-    if [ "$SINGULARITY_CLUSTER_COMMAND" = "None" ]; then
-       bsub '(module load Singularity && echo "SINGULARITY_CLUSTER_COMMAND=\"module load Singularity;\""  >> all_parameters) || (module load singularity && echo "SINGULARITY_CLUSTER_COMMAND=\"module load singularity;\""  >> all_parameters) || (singularity --version && echo "SINGULARITY_CLUSTER_COMMAND=\"\"" >> all_parameters) || (touch $HOST_MOUNT/cluster_singualrity_error )'
-    fi  
-  else
-    echo "CLUSTER_EXE=qsub" >> all_parameters
-    echo "You are installing UTAP that run on lsf cluster"
-    echo "RUN_LOCAL=\"RUN_LOCAL\=False\"" >> all_parameters
-    if [ "$SINGULARITY_CLUSTER_COMMAND" = "None" ]; then
-      qsub '(module load Singularity && echo "SINGULARITY_CLUSTER_COMMAND=\"module load Singularity;\""  >> all_parameters) || (module load singularity && echo "SINGULARITY_CLUSTER_COMMAND=\"module load singularity;\""  >> all_parameters) || (singularity --version && echo "SINGULARITY_CLUSTER_COMMAND=\"\"" >> all_parameters) || (touch $HOST_MOUNT/cluster_singualrity_error )'
-    fi
-  fi
-  if [  -d "$HOST_MOUNT/cluster_singualrity_error" ]; then  
-   echo "ERROR: no singularity found on the cluster"; 
-   exit
-  fi
-  if [  "$CLUSTER_QUEUE" = "None" ]; then  
-    export CLUSTER_QUEUE=""
-    override_param CLUSTER_QUEUE $CLUSTER_QUEUE
-  fi  
-else
-  echo "CLUSTER_EXE=\"\"" >> all_parameters
-  echo "You are installing UTAP that runs on the local server"
-  echo "RUN_LOCAL=\"RUN_LOCAL\=True\"" >> all_parameters
-  echo "CLUSTER_RESOURCES_PARAMS=None" >> all_parameters
-  if [ "$CLUSTER_QUEUE" != "None" ]; then
-    echo "WARNING: cluster type is local but CLUSTER_QUEUE is not None" 
-  fi
-fi
 
 #set singularity commands on the host
 if [ "$SINGULARITY_HOST_COMMAND" = "None" ]; then
@@ -379,7 +380,6 @@ if [ "$SINGULARITY_HOST_COMMAND" = "None" ]; then
 else
   eval $SINGULARITY_HOST_COMMAND
 fi
-
 
 
 #check if specify UTAP DB path, if not create one 
@@ -400,15 +400,74 @@ then
     echo "You are installing UTAP that runs with external conda environment on the host" 
     CONDA_DIR='mkdir -p $SINGULARITY_ROOTFS'
     CONDA_DIR="$CONDA_DIR$CONDA"
-    MAIN_CONDA=$CONDA
+    export MAIN_CONDA=$CONDA
     echo "RUN_LOCAL_HOST_CONDA=\"RUN_LOCAL_HOST_CONDA\=True\"" >> all_parameters    
 else
    echo "You are installing UTAP that runs local conda environment inside the image"   
    CONDA_DIR=""
-   MAIN_CONDA=/opt/miniconda3/envs/utap
+   export MAIN_CONDA=/opt/miniconda3/envs/utap
    echo "RUN_LOCAL_HOST_CONDA=\"RUN_LOCAL_HOST_CONDA\=False\"" >> all_parameters 
 fi
-echo "MAIN_CONDA=$MAIN_CONDA" >> all_parameters 
+echo "MAIN_CONDA=$MAIN_CONDA" >> all_parameters
+
+
+
+#set cluster resources and commands
+ 
+if [ "$CLUSTER_TYPE" != "local" ]; then
+  singularity exec --bind $HOST_MOUNT:/mnt/host_mount $HOST_MOUNT/utap_latest.sif $MAIN_CONDA/bin/python $MAIN_CONDA/lib/python3.10/site-packages/ngs-snakemake/cluster_scripts/cluster_type.py "$CLUSTER_TYPE" "/mnt/host_mount" ||  (echo "ERROR: failed to create cluster commands file" && exit)
+  source "$HOST_MOUNT/cluster_commands.py"  
+  if [ "$GCP" = 1 ]; then
+    if [ "$GCP_BUCKET" != "None" ]; then
+      export  SINGULARITY_CLUSTER_COMMAND='[ ! \"$(ls -A ~/data)\" ] && gcsfuse --file-mode 775 $GCP_BUCKET ~/data && module load singularity;'
+    else
+      export  SINGULARITY_CLUSTER_COMMAND="module load singularity;"
+    fi
+    echo "SINGULARITY_CLUSTER_COMMAND=\"$SINGULARITY_CLUSTER_COMMAND\"" >> all_parameters   
+  fi
+  if [ -n "$cluster_wraper" ]; then
+    export cluster_exe="$cluster_exe $cluster_wraper"
+  fi
+  echo "RUN_LOCAL=\"RUN_LOCAL\=False\"" >> all_parameters
+  echo "You are installing UTAP that run on $CLUSTER_TYPE cluster"
+  if [ "$SINGULARITY_CLUSTER_COMMAND" = "None" ]; then
+    #$cluster_exe bash -c "(module load Singularity && echo 'SINGULARITY_CLUSTER_COMMAND=\"module load Singularity;\"' >> all_parameters) || (module load singularity && echo 'SINGULARITY_CLUSTER_COMMAND=\"module load singularity;\"' >> all_parameters) || (singularity --version && echo 'SINGULARITY_CLUSTER_COMMAND=\"\"' >> all_parameters) || (touch $HOST_MOUNT/cluster_singularity_error)" 
+    $cluster_exe /bin/bash -c "
+if module load Singularity; then
+     echo 'SINGULARITY_CLUSTER_COMMAND=\"module load Singularity;\"' >> all_parameters
+elif module load singularity; then
+     echo 'SINGULARITY_CLUSTER_COMMAND=\"module load singularity;\"' >> all_parameters
+elif singularity --version; then
+     echo 'SINGULARITY_CLUSTER_COMMAND=\"\"' >> all_parameters
+else
+    touch $HOST_MOUNT/cluster_singularity_error
+fi
+"
+  else
+    $cluster_exe /bin/bash -c  "
+if ! $SINGULARITY_CLUSTER_COMMAND then
+    touch $HOST_MOUNT/cluster_singualrity_error
+fi
+"
+  fi
+  if [  "$CLUSTER_QUEUE" = "None" ]; then  
+    export CLUSTER_QUEUE=""
+    override_param CLUSTER_QUEUE $CLUSTER_QUEUE
+  else  
+    if [ "$cluster_queues" != "None" ]; then
+      eval "$cluster_queues $CLUSTER_QUEUE" || (echo "Warning: could not find the defined cluster queue $CLUSTER_QUEUE, the default cluster queue will be used" && export CLUSTER_QUEUE="" && override_param CLUSTER_QUEUE $CLUSTER_QUEUE)
+    fi    
+  fi
+else
+  echo "You are installing UTAP that runs on the local server"
+  echo "RUN_LOCAL=\"RUN_LOCAL\=True\"" >> all_parameters
+  if [ "$CLUSTER_QUEUE" != "None" ]; then
+    echo "WARNING: cluster type is local but CLUSTER_QUEUE is not None" 
+  fi
+fi
+
+
+
 #check if  SINGULARITY_TMP_DIR path exist, if not set one
 
 if [ ! -d "$SINGULARITY_TMP_DIR" ]; then  
@@ -451,23 +510,19 @@ echo "EMAIL_USE_TLS=$EMAIL_USE_TLS" >> all_parameters
 
 
 #If fakeroot, singularity container will be built from definition file otherwise singularity container will be built from sandbox and mounts points are created
-if [ "$FAKEROOT" = "None" ]
-then 
-  cat /etc/subuid | grep `id -u` && export FAKEROOT=TRUE || export FAKEROOT=FALSE
-else
-  export FAKEROOT=TRUE
+validate_param "$FAKEROOT" "FAKEROOT"
+if [ "$FAKEROOT" = "None" ]; then 
+  cat /etc/subuid | grep `id -u` && export FAKEROOT=1 || export FAKEROOT=0
 fi
 
 
 
-
- 
-if [ "$FAKEROOT" = "TRUE" ];
+if [ "$FAKEROOT" = 1 ];
 then
   echo "user has fakeroot privileges, installing utap instance"
   type=`get_dir_df "Type" "$SINGULARITY_TMPDIR"`
   size=`get_dir_df "Avail" "$SINGULARITY_TMPDIR"`
-  if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 36000000  -lt "$size" ];
+  if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 40000000  -lt "$size" ];
   then 
     run_utap "instance" || run_utap "sandbox"  || echo "ERROR: failed to install UTAP sandbox, please contact UTAP team at utap@weizmann.ac.il"
   else 
@@ -475,7 +530,7 @@ then
     export SINGULARITY_TMPDIR=$HOST_MOUNT
     type=`get_dir_df "Type" "$SINGULARITY_TMPDIR"`
     size=`get_dir_df "Avail" "$SINGULARITY_TMPDIR"`
-    if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 36000000  -lt "$size" ];
+    if [[ "$type" != *"nfs"* ]] && [[ "$type" != *"gpfs"* ]] && [ 40000000  -lt "$size" ];
     then 
       run_utap "instance" || run_utap "sandbox"  || echo "ERROR: failed to install UTAP sandbox, please contact UTAP team at utap@weizmann.ac.il"
     else 

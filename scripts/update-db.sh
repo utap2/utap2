@@ -23,13 +23,16 @@ echo "Start build database of Djnago"
 
 if [ $INTERNAL_USERS = "None" ]; then # if not empty variable - it is NOT internal users
 
-  echo "from analysis.models import CustomUser; CustomUser.objects.create_superuser('admin', '$REPLY_EMAIL', '$ADMIN_PASS')" |  /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
+
+  echo "from analysis.models import CustomUser; 
+if not CustomUser.objects.filter(username='admin').exists(): 
+          CustomUser.objects.create_superuser('admin', '$REPLY_EMAIL', '$ADMIN_PASS')" |  /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
 
 
   # Update DB with the genomes and annotations:
 
   # Remove old genomes and annotations:
-  declare -a genomes_db=("StarGenome","StarAnnotation","CellRangerGenome","Bowtie2Genome","TssFile","AllGenomes","ChromosomeInfo","Bowtie1Rrna","InterMine")
+  declare -a genomes_db=("StarGenome","StarAnnotation","CellRangerGenome","Bowtie2Genome","TssFile","AllGenomes","BlackList","ChromosomeInfo","Bowtie1Rrna","InterMine")
   for i in "${genomes_db[@]}"
   do
     echo "from analysis.models import $i; \
@@ -46,58 +49,49 @@ if [ $INTERNAL_USERS = "None" ]; then # if not empty variable - it is NOT intern
   declare -a genomes_path_bowtie1_rRNA="$GENOMES_DIR/bowtie1_rRNA"
   declare -a chromosomes_sizes="$GENOMES_DIR/chromosomes_sizes"
   declare -a tss_files="$GENOMES_DIR/tss_files"
+  declare -a black_lists="$GENOMES_DIR/black_lists"
   
   if [ -d "$genomes_path_star/homo_sapiens" ]; then
-    echo "from analysis.models import StarGenome; \
+    echo "from analysis.models import StarGenome, Bowtie2Genome, Bowtie1Rrna, ChromosomeInfo, AllGenomes, BlackList, InterMine, StarAnnotation, TssFile; \
     sh=StarGenome(creature=\"Homo_sapiens\", alias=\"hg38\", version=38.0, source=\"iGenomes\", path=\"$genomes_path_star/homo_sapiens/hg38/star_index/\"); \
     sh.save(); \
-    from analysis.models import StarAnnotation; \
-    StarAnnotation(genome=sh,creature=\"Homo_sapiens\", alias=\"Refseq\", version=38.0, source=\"refGene\", path=\"$genomes_path_star/homo_sapiens/hg38/annotation/refseq/hg38.genes.gtf\", path3p=\"$genomes_path_star/homo_sapiens/hg38/annotation/refseq/hg38.genes.3utr.gtf\", path_UTR_CDS=\"$genomes_path_star/homo_sapiens/hg38/annotation/cds_utr_without_overlap/hg38_cds_UTR_without_overlap.gtf\").save(); \
-    StarAnnotation(genome=sh,creature=\"Homo_sapiens\", alias=\"genecode\", version=38.0, source=\"genecode\", path=\"$genomes_path_star/homo_sapiens/hg38/annotation/gencode/hg38-gencode.genes.gtf\", path3p=\"$genomes_path_star/homo_sapiens/hg38/annotation/gencode/hg38-gencode.genes.3utr.gtf\").save(); \
-    from analysis.models import Bowtie2Genome; \
     bh=Bowtie2Genome(creature=\"Homo_sapiens\", alias=\"hg38\", version=38.0, source=\"iGenomes\", path=\"$genomes_path_bowtie2/homo_sapiens/hg38/bowtie2_index/genome\", fasta=\"$genomes_path_bowtie2/homo_sapiens/hg38/fasta/genome.fa\"); \
     bh.save(); \
-    from analysis.models import Bowtie1Rrna; \
     b1h=Bowtie1Rrna(creature=\"Homo_sapiens\", alias=\"hg38\",path=\"$genomes_path_bowtie1_rRNA/homo_sapiens/hg38/bowtie1_rRNA_index/rRNA\", fasta=\"$genomes_path_bowtie1_rRNA/homo_sapiens/hg38/fasta/rRNA_hg38.fasta\"); \
     b1h.save(); \
-    from analysis.models import ChromosomeInfo; \
     ch=ChromosomeInfo(genome=bh, creature=\"Homo_sapiens\", alias=\"hg38\", path=\"$chromosomes_sizes/homo_sapiens/hg38/hg38.chrom.sizes\"); \
     ch.save(); \
-    from analysis.models import AllGenomes; \
     ah=AllGenomes(creature=\"Homo_sapiens\", alias=\"hg38\", star_genome=sh, bowtie2_genome=bh, bowtie1_rRNA=b1h, chromosomes_sizes=ch); \
-    ah.save()" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell 
+    ah.save(); \
+    BlackList(genome=bh,creature=\"Homo_sapiens\", alias=\"hg38\", path=\"$black_lists/homo_sapiens/hg38/hg38-blacklist.v2.bed\").save(); \
+    InterMine(interMine_creature=\"H. sapiens\", genome=sh, creature=\"Homo_sapiens\", alias=\"hg38\", interMine_web_query=\"http:\/\/www.humanmine.org\/humanmine\", intermine_web_base=\"INTERMINE_WEB_QUERY\").save(); \
+    StarAnnotation(genome=sh,bowtie2_genome=bh,all_genome=ah,creature=\"Homo_sapiens\", alias=\"Refseq\", version=38.0, source=\"refGene\", path=\"$genomes_path_star/homo_sapiens/hg38/annotation/refseq/hg38.genes.gtf\", path3p=\"$genomes_path_star/homo_sapiens/hg38/annotation/refseq/hg38.genes.3utr.gtf\", path_UTR_CDS=\"$genomes_path_star/homo_sapiens/hg38/annotation/cds_utr_without_overlap/hg38_cds_UTR_without_overlap.gtf\").save(); \
+    StarAnnotation(genome=sh,bowtie2_genome=bh,all_genome=ah,creature=\"Homo_sapiens\", alias=\"genecode\", version=38.0, source=\"genecode\", path=\"$genomes_path_star/homo_sapiens/hg38/annotation/gencode/hg38-gencode.genes.gtf\", path3p=\"$genomes_path_star/homo_sapiens/hg38/annotation/gencode/hg38-gencode.genes.3utr.gtf\", path_UTR_CDS=\"$genomes_path_star/homo_sapiens/hg38/annotation/cds_utr_without_overlap/hg38_cds_UTR_without_overlap.gtf\").save()" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
   fi
   
   
   if [ -d "$genomes_path_star/mouse" ]; then
-    echo "from analysis.models import StarGenome; \
+    echo "from analysis.models import StarGenome, Bowtie2Genome, Bowtie1Rrna, ChromosomeInfo, AllGenomes, BlackList, InterMine, StarAnnotation, TssFile; \
     sm=StarGenome(creature=\"Mus_musculus\", alias=\"mm10\", version=10.0, source=\"iGenomes\", path=\"$genomes_path_star/mouse/mm10/star_index/\"); \
     sm.save(); \
-    from analysis.models import StarAnnotation; \
-    StarAnnotation(genome=sm,creature=\"Mus_musculus\", alias=\"Refseq\", version=10.0, source=\"iGenomes\", path=\"$genomes_path_star/mouse/mm10/annotation/refseq/mm10.genes.gtf\", path3p=\"$genomes_path_star/mouse/mm10/annotation/refseq/mm10.genes.3utr.gtf\").save(); \
-    StarAnnotation(genome=sm,creature=\"Mus_musculus\", alias=\"gencode\", version=10.0, source=\"gencode\", path=\"$genomes_path_star/mouse/mm10/annotation/gencode/mm10-gencode.genes.gtf\", path3p=\"$genomes_path_star/mouse/mm10/annotation/gencode/mm10-gencode.genes.3utr.gtf\").save()" \
-    | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
-    
-    #Bowtie2 index: - change the names:
-    echo "from analysis.models import Bowtie2Genome; \
     bm=Bowtie2Genome(creature=\"Mus_musculus\", alias=\"mm10\", version=10.0, source=\"iGenomes\", path=\"$genomes_path_bowtie2/mouse/mm10/bowtie2_index/mm10\", fasta=\"$genomes_path_bowtie2/mouse/mm10/fasta/genome.fa\"); \
     bm.save(); \
-    from analysis.models import TssFile; \
     TssFile(genome=bm, creature=\"Mus_musculus\", alias=\"+-2500\", version=10.0, source=\"gencode\",path=\"$tss_files/mouse/mm10/mm10.TSS_+2500_-2500_uniqueProm.bed\").save(); \
-    from analysis.models import TssFile; \
     TssFile(genome=bm, creature=\"Mus_musculus\", alias=\"+-500\", version=10.0, source=\"gencode\",path=\"$tss_files/mouse/mm10/mm10.TSS_+500_-500_uniqueProm.bed\").save(); \
-    from analysis.models import ChromosomeInfo; \
     cm=ChromosomeInfo(genome=bm, creature=\"Mus_musculus\", alias=\"mm10\", path=\"$chromosomes_sizes/mouse/mm10/mm10.chrom.sizes\"); \
-    cm.save()" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
-    fi
+    cm.save(); \
+    BlackList(genome=bm,creature=\"Mus_musculus\", alias=\"mm10\", path=\"$black_lists/mouse/mm10/mm10-blacklist.v2.bed\").save(); \
+    InterMine(interMine_creature=\"M. musculus\", genome=sm, creature=\"Mus_musculus\", alias=\"mm10\", interMine_web_query=\"http:\/\/www.mousemine.org\/mousemine\", intermine_web_base=\"INTERMINE_WEB_QUERY\").save(); \
+    StarAnnotation(genome=sm,bowtie2_genome=bm,creature=\"Mus_musculus\", alias=\"Refseq\", version=10.0, source=\"iGenomes\", path=\"$genomes_path_star/mouse/mm10/annotation/refseq/mm10.genes.gtf\", path3p=\"$genomes_path_star/mouse/mm10/annotation/refseq/mm10.genes.3utr.gtf\").save(); \
+    StarAnnotation(genome=sm,bowtie2_genome=bm,creature=\"Mus_musculus\", alias=\"gencode\", version=10.0, source=\"gencode\", path=\"$genomes_path_star/mouse/mm10/annotation/gencode/mm10-gencode.genes.gtf\", path3p=\"$genomes_path_star/mouse/mm10/annotation/gencode/mm10-gencode.genes.3utr.gtf\").save();" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
+  fi
 
 
-    if [ -d "$genomes_path_star/zebra_fish" ]; then
-    echo "from analysis.models import StarGenome; \
+  if [ -d "$genomes_path_star/zebra_fish" ]; then
+    echo "from analysis.models import StarGenome, Bowtie2Genome, Bowtie1Rrna, ChromosomeInfo, AllGenomes, BlackList, InterMine, StarAnnotation, TssFile; \
     g=StarGenome(creature=\"Danio_rerio\", alias=\"danRer11\", version=11.0, source=\"iGenomes\", path=\"$genomes_path_star/zebra_fish/danRer11/star_index/\"); \
     g.save(); \
-    from analysis.models import StarAnnotation; \
-    StarAnnotation(genome=g,creature=\"Danio_rerio\", alias=\"iGenomes-Refseq\", version=10.0, source=\"iGenomes-Refseq\", path=\"$genomes_path_star/zebra_fish/danRer11/annotation/refseq/danRer11.genes.gtf\", path3p=\"$genomes_path_star/zebra_fish/danRer11/annotation/refseq/danRer11.genes.3utr.gtf\").save()" \
-    | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
-    fi
+    InterMine(interMine_creature=\"D. rerio\", genome=g, creature=\"Zebrafish\", alias=\"danRer11\", interMine_web_query=\"	http:\/\/www.zebrafishmine.org\", intermine_web_base=\"INTERMINE_WEB_QUERY\").save(); \
+    StarAnnotation(genome=g,creature=\"Danio_rerio\", alias=\"iGenomes-Refseq\", version=10.0, source=\"iGenomes-Refseq\", path=\"$genomes_path_star/zebra_fish/danRer11/annotation/refseq/danRer11.genes.gtf\", path3p=\"$genomes_path_star/zebra_fish/danRer11/annotation/refseq/danRer11.genes.3utr.gtf\").save();" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell
+  fi
 fi
