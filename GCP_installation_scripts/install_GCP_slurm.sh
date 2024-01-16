@@ -33,7 +33,7 @@ gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE
 #cd hpc-toolkit/ && make 
 #./ghpc create -w ~/utap2/GCP_installation_scripts/hpc-slurm-utap.yaml && ./ghpc deploy hpc-utap
 #clone the Cloud SchedMD  GitHub repository
-git clone https://github.com/SchedMD/slurm-gcp.git
+cd ~ && git clone https://github.com/SchedMD/slurm-gcp.git
 sed -i "s/project_id = .*/project_id = \"${project_id//\//\\/}\"/" ~/utap2/GCP_installation_scripts/example.tfvars
 sed -i "s/bucket_name = .*/bucket_name = \"${bucket_name//\//\\/}\"/" ~/utap2/GCP_installation_scripts/example.tfvars
 cp ~/utap2/GCP_installation_scripts/example.tfvars ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud
