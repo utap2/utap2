@@ -146,25 +146,90 @@ http://host_ip:7000
 if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 
 
-Install UTAP on Google Cloud platform
--------------------------------------
-requirments:
+Install UTAP on Google Cloud platform (GCP)
+===========================================
+
+Install Google cloud Slurm cluster VMs
+--------------------------------------
+
+requirments: 
+
 google account
 quoatas on network and vm  
 
-enter google cloud shell 
-wget --no-check-certificate https://dors4.weizmann.ac.il/utap/GCP_slurm_installation/
-chmod +x  ~/GCP_slurm_installation/install_GCP_slurm.sh ~/GCP_slurm_installation/hpc-slurm-utap.yaml
-. ~/GCP_slurm_installation/install_GCP_slurm.sh
-enetr Y when asked "do you want to continue (see screen shot bellow)
-enetr the link in the console and approve all indicated steps as shown in screen shots bellow
-make sure to choose your correct google accout (the one you used to open the project)
-copy the code and paste it in the google shell  console as indicated in the image bellow 
-enetr a for applying all proposed changes as indicated in the image bellow 
-enter the the machine:
-VM istances -> choose the login VM  -> ssh -> view gcloud command -> paste the coomand to the editor 
-mkdir $HOME/data && gcsfuse --file-mode 775 $bucket_name "$HOME/data"
-on the installation process, press y 
+1. Enter google cloud shell as described in the bellow image 
+
+.. image:: ../figures/Google_shell.png
+
+
+2. Clone scripts for installing Google cloud slurm cluster VMs:
+
+::
+
+
+   git clone --filter=blob:none --sparse  https://github.com/utap2/utap2.git --branch devel && cd utap2 && git sparse-checkout init && git sparse-checkout set GCP_installation_scripts
+   chmod +X ~/utap2/GCP_installation_scripts/*
+   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>"
+
+
+
+   Click on autorize to give permissions to GCP shell as described in the image bellow 
+
+.. image:: ../figures/autorize_GCP_shell.png
+
+   When promped for authentication , enter Y as decribed in the image bellow
+
+.. image:: ../figures/authentication_promped.png
+
+   Click on the link to authenticate with you google account 
+
+.. image:: ../figures/authentication_link.png
+
+  Select the Google account with which your project has been shared
+
+.. image:: ../figures/choose_google_account.png
+
+   Click on Allow
+
+.. image:: ../figures/allow_auth.png
+
+   Click on copy
+
+.. image:: ../figures/copy_code.png
+
+   paste the code in the Google shell console and click "ENTER"
+
+.. image:: ../figures/paste_code.png 
+
+   Enter 'A' to apply all proposed changes 
+
+.. image:: ../figures/apply_hpc_changes.png
+
+The installation is is takin ~10 minutes  
+
+After the installation is done, run the following command in Google shell:
+
+::
+
+   export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
+   export LOGIN_IP=`gcloud compute instances describe hpcutap-login-i56oilhq-001  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' --zone us-central1-a`
+   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
+   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
+   export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
+   export REGION=`gcloud config list --format 'value(compute.region)'`
+   export ZONE=`gcloud config list --format 'value(compute.zone)'`
+   export LOGIN_VM=`gcloud compute instances list --sort-by creation_time | grep NAME | head -n 2 | grep login | awk '{print $2}'`
+   gcloud compute ssh --zone "us-central1-a" "$LOGIN_VM" --project "$GOOGLE_CLOUD_PROJECT"
+
+
+
+Once entered the vm enter the following commands:
+::
+
+   cd $HOME && mkdir data	&& gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data"
+   nohup bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
+
+
 
 Test UTAP
 =========
