@@ -31,7 +31,6 @@ region = "us-central1"
 controller_instance_config = {
   # Template By Definition
   service_account = {
-    email  = null
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
     role = "roles/owner"
   }
@@ -54,9 +53,7 @@ bucket_dir = null
 
 login_nodes = [
   {
-       scopes = [
-        "https://www.googleapis.com/auth/cloud-platform",
+       scopes = ["https://www.googleapis.com/auth/cloud-platform"]
         role = "roles/owner"
-      ]
     },
 ]

@@ -1,10 +1,8 @@
 #!/bin/bash
-
 # Generate bucket with all files first
 # Generate project
-
 # Get required and optional parameters files as input
-while getopts "i:n:" option; do
+while getopts "b:i:n:" option; do
   case "${option}" in
     i) export project_id=${OPTARG};;
     n) export project_num=${OPTARG};;
@@ -36,8 +34,8 @@ gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE
 #./ghpc create -w ~/utap2/GCP_installation_scripts/hpc-slurm-utap.yaml && ./ghpc deploy hpc-utap
 #clone the Cloud SchedMD  GitHub repository
 git clone https://github.com/SchedMD/slurm-gcp.git
-sed -i "s/project_id = .*/project_id = '${project_id//\//\\/}'/" ~/utap2/GCP_installation_scripts/example.tfvars
-sed -i "s/bucket_name = .*/bucket_name = '${bucket_name//\//\\/}'/" ~/utap2/GCP_installation_scripts/example.tfvars
+sed -i "s/project_id = .*/project_id = \"${project_id//\//\\/}\"/" ~/utap2/GCP_installation_scripts/example.tfvars
+sed -i "s/bucket_name = .*/bucket_name = \"${bucket_name//\//\\/}\"/" ~/utap2/GCP_installation_scripts/example.tfvars
 cp ~/utap2/GCP_installation_scripts/example.tfvars ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud
 cp ~/utap2/GCP_installation_scripts/main_terrform.tf ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud/main.tf
 cd ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud/ 
