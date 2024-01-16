@@ -177,6 +177,8 @@ quoatas on network and vm
 
 .. image:: ../figures/autorize_GCP_shell.png
 
+
+
    When promped for authentication , enter Y as decribed in the image bellow
 
 .. image:: ../figures/authentication_promped.png
