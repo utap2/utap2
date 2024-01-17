@@ -40,27 +40,28 @@ deployment_groups:
 #    settings:
 #      local_mount: /home
 
-  - id: debug_node_group
-    source: community/modules/compute/schedmd-slurm-gcp-v5-node-group
-    settings:
-      node_count_dynamic_max: 4
-      machine_type: n2-highmem-4
-
-  - id: debug_partition
-    source: community/modules/compute/schedmd-slurm-gcp-v5-partition
-    use:
-    - network1
-    #- homefs
-    - debug_node_group
-    settings:
-      partition_name: debug
-      exclusive: false # allows nodes to stay up after jobs are done
-      enable_placement: false # the default is: true
-      is_default: true
+#  - id: debug_node_group
+#    source: community/modules/compute/schedmd-slurm-gcp-v5-node-group
+#    settings:
+#      node_count_dynamic_max: 4
+#      machine_type: n2-highmem-4
+#
+#  - id: debug_partition
+#    source: community/modules/compute/schedmd-slurm-gcp-v5-partition
+#    use:
+#    - network1
+#    #- homefs
+#    - debug_node_group
+#    settings:
+#      partition_name: debug
+#      exclusive: false # allows nodes to stay up after jobs are done
+#      enable_placement: false # the default is: true
+#      is_default: true
 
   - id: compute_node_group
     source: community/modules/compute/schedmd-slurm-gcp-v5-node-group
     settings:
+      machine_type: n2-highmem-4
       node_count_dynamic_max: 20
       bandwidth_tier: gvnic_enabled
 
@@ -72,34 +73,35 @@ deployment_groups:
     - compute_node_group
     settings:
       partition_name: compute
+      is_default: true
 
-  - id: h3_node_group
-    source: community/modules/compute/schedmd-slurm-gcp-v5-node-group
-    settings:
-      node_count_dynamic_max: 20
-      machine_type: h3-standard-88
-      # H3 does not support pd-ssd and pd-standard
-      # https://cloud.google.com/compute/docs/compute-optimized-machines#h3_disks
-      disk_type: pd-balanced
-      bandwidth_tier: gvnic_enabled
-
-  - id: h3_partition
-    source: community/modules/compute/schedmd-slurm-gcp-v5-partition
-    use:
-    - network1
-    #- homefs
-    - h3_node_group
-    settings:
-      partition_name: h3
-      #is_default: true
+#  - id: h3_node_group
+#    source: community/modules/compute/schedmd-slurm-gcp-v5-node-group
+#    settings:
+#      node_count_dynamic_max: 20
+#      machine_type: h3-standard-88
+#      # H3 does not support pd-ssd and pd-standard
+#      # https://cloud.google.com/compute/docs/compute-optimized-machines#h3_disks
+#      disk_type: pd-balanced
+#      bandwidth_tier: gvnic_enabled
+#
+#  - id: h3_partition
+#    source: community/modules/compute/schedmd-slurm-gcp-v5-partition
+#    use:
+#    - network1
+#    #- homefs
+#    - h3_node_group
+#    settings:
+#      partition_name: h3
+#      #is_default: true
 
   - id: slurm_controller
     source: community/modules/scheduler/schedmd-slurm-gcp-v5-controller
     use:
     - network1
-    - debug_partition
+    #- debug_partition
     - compute_partition
-    - h3_partition
+    #- h3_partition
     #- homefs
     settings:
       disk_size_gb: 100

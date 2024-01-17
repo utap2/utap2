@@ -25,17 +25,20 @@ locals {
     machine_type    = "n1-standard-4"
     service_account = module.slurm_sa_iam["controller"].service_account
     subnetwork      = data.google_compute_subnetwork.default.self_link
+    role = "roles/owner"
+    enable_public_ip   = false
   }
 
   login_nodes = [
     {
       group_name = "l0"
-
       disk_size_gb    = 32
       disk_type       = "pd-standard"
       machine_type    = "n1-standard-2"
       service_account = module.slurm_sa_iam["login"].service_account
       subnetwork      = data.google_compute_subnetwork.default.self_link
+      role = "roles/owner"
+      enable_public_ip   = true
     }
   ]
 
@@ -43,11 +46,11 @@ locals {
     {
       nodeset_name           = "n2h4"
       node_count_dynamic_max = 20
-
       disk_size_gb    = 32
       machine_type    = "n2-highmem-4"
       service_account = module.slurm_sa_iam["compute"].service_account
       subnetwork      = data.google_compute_subnetwork.default.self_link
+      role = "roles/owner"
     },
   ]
 

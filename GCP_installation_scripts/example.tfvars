@@ -24,36 +24,3 @@ slurm_cluster_name = "simple"
 
 region = "us-central1"
 
-##############
-# CONTROLLER #
-##############
-
-controller_instance_config = {
-  # Template By Definition
-  service_account = {
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-    role = "roles/owner"
-  }
-}
-
-##########
-# BUCKET #
-##########
-
-create_bucket = false
-
-bucket_name = "<BUCKET_NAME>"
-
-bucket_dir = null
-
-
-#########
-# LOGIN #
-#########
-
-login_nodes = [
-  {
-       scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-        role = "roles/owner"
-    },
-]
