@@ -28,7 +28,6 @@ gcloud auth application-default login
 #enable VM connection to your cluster by using ssh with os-login at project level
 gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE
 #clone the Cloud HPC Toolkit GitHub repository
-git clone https://github.com/GoogleCloudPlatform/hpc-toolkit.git
 sed -i "s/project_id: .*/project_id: '${project_id//\//\\/}'/" ~/utap2/GCP_installation_scripts/hpc-slurm-utap.yaml
 cd ~ && git clone https://github.com/GoogleCloudPlatform/hpc-toolkit.git
 cd hpc-toolkit/ && make 
@@ -43,7 +42,7 @@ cd hpc-toolkit/ && make
 #terraform init && terraform validate && terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster" && exit)
 export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
 export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
-ssh -i ~/.ssh/google_compute_engine -o StrictHostKeyChecking=no -l $USER_LOGIN $LOGIN_IP "mkdir ~/.ssh;
+ssh -i ~/.ssh/google_compute_engine -o StrictHostKeyChecking=no -l $USER_LOGIN $LOGIN_IP "mkdir ~/.ssh;"
 scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
 scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
 export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
