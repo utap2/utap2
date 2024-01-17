@@ -167,9 +167,9 @@ quoatas on network and vm
 ::
 
 
-   git clone --filter=blob:none --sparse  https://github.com/utap2/utap2.git --branch devel && cd utap2 && git sparse-checkout init && git sparse-checkout set GCP_installation_scripts
+   cd ~ && git clone --filter=blob:none --sparse  https://github.com/utap2/utap2.git --branch devel && cd utap2 && git sparse-checkout init && git sparse-checkout set GCP_installation_scripts
    chmod +X ~/utap2/GCP_installation_scripts/*
-   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>"
+   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>" -b "<bucket_name>"
 
 
 
