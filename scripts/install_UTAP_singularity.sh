@@ -44,7 +44,7 @@ sed -i 's/^[[:space:]]*//g' ${required_parameters}
 sed -i 's/^[[:space:]]*//g' ${optional_parameters}
 
 #parse all parameters - remove spaces, special characters and check if parameter exist
-file="required_parameters.conf"
+file="${required_parameters}"
 while read -r line; 
 do 
   [ -z "$line" ] &&  continue;
