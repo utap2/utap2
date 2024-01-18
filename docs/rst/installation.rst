@@ -183,35 +183,50 @@ quoatas on network and vm
 
 .. image:: ../figures/authentication_promped.png
 
+
+
    Click on the link to authenticate with you google account 
 
 .. image:: ../figures/authentication_link.png
+
+
 
   Select the Google account with which your project has been shared
 
 .. image:: ../figures/choose_google_account.png
 
+
+
    Click on Allow
 
 .. image:: ../figures/allow_auth.png
+
+
 
    Click on copy
 
 .. image:: ../figures/copy_code.png
 
+
+
    paste the code in the Google shell console and click "ENTER"
 
 .. image:: ../figures/paste_code.png 
 
+
+
    Enter 'A' to apply all proposed changes 
 
 .. image:: ../figures/apply_hpc_changes.png
+
+
 
 The installation is is takin ~10 minutes  
 
 After the installation is done, run the following command in Google shell:
 
 ::
+
 
    export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
    export LOGIN_IP=`gcloud compute instances describe hpcutap-login-i56oilhq-001  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' --zone us-central1-a`
@@ -225,11 +240,14 @@ After the installation is done, run the following command in Google shell:
 
 
 
+
+
 Once entered the vm enter the following commands:
 ::
 
+
  mkdir -p data && gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data"
-   nohup bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
+      nohup bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
 
 
 
