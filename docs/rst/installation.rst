@@ -170,52 +170,52 @@ quoatas on network and vm
    cd ~ && git clone --filter=blob:none --sparse  https://github.com/utap2/utap2.git --branch devel && cd utap2 && git sparse-checkout init && git sparse-checkout set GCP_installation_scripts
    chmod +X ~/utap2/GCP_installation_scripts/*
    bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>" -b "<bucket_name>"
+   
 
 
-
-   Click on autorize to give permissions to GCP shell as described in the image bellow 
+Click on autorize to give permissions to GCP shell as described in the image bellow 
 
 .. image:: ../figures/autorize_GCP_shell.png
 
 
 
-   When promped for authentication , enter Y as decribed in the image bellow
+When promped for authentication , enter Y as decribed in the image bellow
 
 .. image:: ../figures/authentication_promped.png
 
 
 
-   Click on the link to authenticate with you google account 
+Click on the link to authenticate with you google account 
 
 .. image:: ../figures/authentication_link.png
 
 
 
-  Select the Google account with which your project has been shared
+Select the Google account with which your project has been shared
 
 .. image:: ../figures/choose_google_account.png
 
 
 
-   Click on Allow
+Click on Allow
 
 .. image:: ../figures/allow_auth.png
 
 
 
-   Click on copy
+Click on copy
 
 .. image:: ../figures/copy_code.png
 
 
 
-   paste the code in the Google shell console and click "ENTER"
+Paste the code in the Google shell console and click "ENTER"
 
 .. image:: ../figures/paste_code.png 
 
 
 
-   Enter 'A' to apply all proposed changes 
+Enter 'A' to apply all proposed changes 
 
 .. image:: ../figures/apply_hpc_changes.png
 
@@ -227,9 +227,12 @@ After the installation is done, run the following command in Google shell:
 
 ::
 
-
+   exit 
+   ssh -i ~/.ssh/google_compute_engine -o StrictHostKeyChecking=no -l $USER_LOGIN $LOGIN_IP "mkdir ~/.ssh;"
+   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
+   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
    export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
-   export LOGIN_IP=`gcloud compute instances describe hpcutap-login-i56oilhq-001  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' --zone us-central1-a`
+   export LOGIN_IP=`gcloud compute instances describe hpcutap-login-i56oilhq-001  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' --    zone us-central1-a`
    scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
    scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
    export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
