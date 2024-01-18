@@ -4,20 +4,36 @@
 #sudo yum update
 # Install basic tools for compiling
 sudo yum groupinstall -y 'Development Tools'
-# Install RPM packages for dependencies
+## Install RPM packages for dependencies centos-7
+#sudo yum install -y \
+#   autoconf \
+#   automake \
+#   cryptsetup \
+#   fuse3-devel \
+#   git \
+#   glib2-devel \
+#   libseccomp-devel \
+#   libtool \
+#   runc \
+#   squashfs-tools \
+#   wget \
+#   zlib-devel
+#   
+# Install RPM packages for dependencies rocky
 sudo yum install -y \
    autoconf \
    automake \
+   crun \
    cryptsetup \
    fuse3-devel \
    git \
    glib2-devel \
    libseccomp-devel \
    libtool \
-   runc \
    squashfs-tools \
    wget \
    zlib-devel
+#
 # Ensure EPEL repository is available
 #sudo yum install -y epel-release
 # Install RPM packages for dependencies
@@ -45,9 +61,10 @@ prepend_path("PATH", singularity_install.."/bin")
 prepend_path("LD_LIBRARY_PATH", singularity_install.."/lib")
 prepend_path("MANPATH", singularity_install.."/share/man")' >  /opt/apps/modulefiles/singularity/latest.lua
 #Create soft links to the bucket:
-mkdir -p data/utap-output/
-mkdir -p data/logs-utap/
-ln -s ~/data/genomes/ genomes
+cd $HOME
+mkdir -p ~/data/utap-output/
+mkdir -p ~/data/logs-utap/
+ln -s ~/data/genomes/ 
 ln -s ~/data/install_UTAP_image.sh
 ln -s ~/data/optional_parameters.conf
 ln -s ~/data/ports.conf
@@ -59,5 +76,5 @@ ln -s ~/data/utap-output
 ln -s ~/data/logs-utap
 ln -s ~/data/install_UTAP_singularity.sh
 ln -s ~/data/utap_latest.sif
-cd $HOME
+
 #cp  data/utap_latest.sif $HOME
