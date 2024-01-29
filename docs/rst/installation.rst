@@ -167,9 +167,17 @@ quoatas on network and vm
 ::
 
 
-   cd ~ && git clone --filter=blob:none --sparse  https://github.com/utap2/utap2.git --branch devel && cd utap2 && git sparse-checkout init && git sparse-checkout set GCP_installation_scripts
+   cd ~ && git clone https://github.com/utap2/utap2.git && mv ~/utap2/GCP_installation_scripts/required_parameters.conf  ~/utap2/scripts/required_parameters.conf 
    chmod +X ~/utap2/GCP_installation_scripts/*
-   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i "<project id>" -n "<project num>" -b "<bucket_name>"
+
+In this installation the required paraemters get also default values. The default parameters can be modified in the files ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf.
+
+
+3.Execute slurm cluster installation on GCP:
+
+::
+
+   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh
    
 
 
