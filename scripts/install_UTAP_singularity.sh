@@ -7,6 +7,7 @@ UTAP_CODE=None
 INTERNAL_OUTPUT=None
 DEMO_SITE=None
 INTERNAL_USERS=None
+BUILD_SANDBOX=None
 EMAIL_USE_TLS="TLS_USE_IN_MAIL\=False"
 EMAIL_PORT=25
 
@@ -149,7 +150,7 @@ run_utap () {
     export DB_MNT=$DB_PATH
     export CONDA_MNT=$CONDA
     export UTAP_MNT=$UTAP_CODE
-    if [ "$RUN_SANDBOX" != "None" ]; then
+    if [ "$BUILD_SANDBOX" = 1 ]; then
       echo "installing UTAP sandbox from instance image"
       export run_UTAP="singularity instance stop utap-staging; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity build --sandbox utap.sandbox utap.SIF" #change after testing
     else
@@ -174,11 +175,16 @@ run_utap () {
     #echo "GENOMES_DIR=$GENOMES_MNT" >> all_parameters
     #echo "HOST_MOUNT=$HOST_MOUNT_MNT"  >> all_parameters
     #echo "INTERNAL_OUTPUT=$INTERNAL_MNT" >> all_parameters
-    if [ "$FAKEROOT" = 1 ]; then
-      export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable --fakeroot utap.sandbox service postfix start && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
-    else
-      export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
-    fi   
+    if [ "$BUILD_SANDBOX" != 0 ]; then
+      if [ "$FAKEROOT" = 1 ]; then
+        export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable --fakeroot utap.sandbox service postfix start && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
+      else
+        export run_UTAP="singularity build --sandbox utap.sandbox utap_latest.sif && source singularity_variables && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh" #change after testing
+      fi
+    else 
+       echo "UTAP sandbox installation allready exist, reconfiguring UTAP sandbox installation"
+       export run_UTAP="source singularity_variables && singularity exec --writable utap.sandbox bash /opt/run_UTAP_sandbox.sh"
+    fi 
   fi
   
   #crete mount points from the host to singularity image
@@ -239,9 +245,38 @@ validate_param "$INTERNAL_USERS" "INTERNAL_USERS"
 #validate GCP parameter 
 validate_param "$GCP" "GCP"
 
+#validate BUILD_SANDBOX parameter
+validate_param "$BUILD_SANDBOX" "BUILD_SANDBOX"
+
 
 if [ $GCP = 1 ];  then  # use the function, save the code
-  bash ~/data/install_UTAP_GCP.sh
+  export BUILD_SANDBOX=0
+  if [ "$GCP_BUCKET" != "None" ]; then
+    export  SINGULARITY_CLUSTER_COMMAND="(ls $HOME/data && mount | grep $HOME/data) || (fusermount -uz $HOME/data; gcsfuse -o rw,allow_other -file-mode=777 -dir-mode=777 --implicit-dirs $GCP_BUCKET $HOME/data)"
+  else
+    export  SINGULARITY_CLUSTER_COMMAND="module load singularity;"
+  fi
+  override_param SINGULARITY_CLUSTER_COMMAND \"$SINGULARITY_CLUSTER_COMMAND\"
+  echo "SINGULARITY_CLUSTER_COMMAND=\"$SINGULARITY_CLUSTER_COMMAND\"" >> all_parameters   
+  mkdir -p ~/data/utap-output/
+  mkdir -p ~/data/logs-utap/
+  mkdir -p ~/data/reports/
+  ln -s ~/data/genomes/ $HOST_MOUNT
+  ln -s ~/data/optional_parameters.conf $HOST_MOUNT
+  ln -s ~/data/required_parameters.conf $HOST_MOUNT
+  ln -s ~/data/run_UTAP_sandbox.sh $HOST_MOUNT
+  ln -s ~/data/install_UTAP_image.sh $HOST_MOUNT
+  ln -s ~/data/update-db.sh $HOST_MOUNT
+  ln -s ~/data/utap-output $HOST_MOUNT
+  ln -s ~/data/logs-utap $HOST_MOUNT
+  ln -s ~/data/reports $HOST_MOUNT
+  ln -s ~/data/ports.conf $HOST_MOUNT
+  ln -s ~/data/install_UTAP_singularity.sh $HOST_MOUNT
+  ln -s ~/data/utap_latest.sif $HOST_MOUNT
+  if [ ! -d "$HOST_MOUNT/utap.sandbox" ]; then
+    ln -s ~/utap.sandbox $HOST_MOUNT
+  fi
+  #bash ~/data/install_UTAP_GCP.sh
   wait $!
 fi
 
@@ -417,14 +452,6 @@ echo "MAIN_CONDA=$MAIN_CONDA" >> all_parameters
 if [ "$CLUSTER_TYPE" != "local" ]; then
   singularity exec --bind $HOST_MOUNT:/mnt/host_mount $HOST_MOUNT/utap_latest.sif $MAIN_CONDA/bin/python $MAIN_CONDA/lib/python3.10/site-packages/ngs-snakemake/cluster_scripts/cluster_type.py "$CLUSTER_TYPE" "/mnt/host_mount" ||  (echo "ERROR: failed to create cluster commands file" && exit)
   source "$HOST_MOUNT/cluster_commands.py"  
-  if [ "$GCP" = 1 ]; then
-    if [ "$GCP_BUCKET" != "None" ]; then
-      export  SINGULARITY_CLUSTER_COMMAND="df -h | grep $HOME/data || gcsfuse --file-mode 775 $GCP_BUCKET $HOME/data && module load singularity;"
-    else
-      export  SINGULARITY_CLUSTER_COMMAND="module load singularity;"
-    fi
-    echo "SINGULARITY_CLUSTER_COMMAND=\"$SINGULARITY_CLUSTER_COMMAND\"" >> all_parameters   
-  fi
   if [ -n "$cluster_wraper" ]; then
     export cluster_exe="$cluster_exe $cluster_wraper"
   fi
