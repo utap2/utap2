@@ -62,7 +62,7 @@ fi
 echo "project id: $project_id, project num: $project_num, bucket name: $bucket_name" 
 
 override_optional_param "GCP" "1"
-override_optional_param "GCP_BUCKET" "\"$bucket_name\""
+override_optional_param "GCP_BUCKET" "$bucket_name"
 
 gcloud storage cp ~/utap2/scripts/* gs://$bucket_name
 gcloud transfer jobs create https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/* gs://$bucket_name
