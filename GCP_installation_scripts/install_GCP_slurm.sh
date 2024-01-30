@@ -7,21 +7,15 @@ override_optional_param () {
   sed -i "s/$1=.*/$1='${2//\//\\/}'/" ~/utap2/scripts/optional_parameters.conf
 } 
 
-export TIME_STEMP=`date +"%d-%m-%Y-%H-%M-%S"`
-export project_id="utap-$TIME_STEMP"
-gcloud projects create $project_id
-export project_num=`gcloud projects list --format="json" | jq '.[] | select(.name=="$project_id") | .projectNumber'`
-export bucket_name="utap-data-$TIME_STEMP"
-gcloud storage buckets create gs://$bucket_name --location us-central1 
+
+#export project_id="utap-$TIME_STEMP"
+#gcloud projects create $project_id
+
 #check if the provided MAIL_SERVER is responding 
 
-override_optional_param "GCP" "1"
-override_optional_param "GCP_BUCKET" "\"$bucket_name\""
 
-gcloud storage cp ~/utap2/scripts/* gs://$bucket_name
-gcloud transfer jobs create https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/* gs://$bucket_name
 
-wait $!
+#wait $!
 #
 #while getopts "b:i:n:" option; do
 #  case "${option}" in
@@ -35,8 +29,44 @@ wait $!
 #  esac
 #done
 
-echo "project id: $project_id, project num: $project_num, bucket name: $bucket_name"
+while getopts "b:i:" option; do
+  case "${option}" in
+    i) export project_id=${OPTARG};;
+    b) export bucket_name=${OPTARG};;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
 
+
+
+export project_num=`gcloud projects describe  $project_id --format="value(projectNumber)"`
+# Check if required parameters are provided
+if [ -z "$project_id" ]; then
+  echo "Error: Missing required project id"
+  exit 1
+fi
+
+# Check if required parameters are provided
+if [ -z "$bucket_name" ]; then
+  export TIME_STEMP=`date +"%d-%m-%Y-%H-%M-%S"`
+  export bucket_name="utap-data-$TIME_STEMP"
+  gcloud storage buckets create gs://$bucket_name --project=$project_id --default-storage-class=STANDARD --location=us-central1  --uniform-bucket-level-access
+  wait $!
+fi
+
+
+
+echo "project id: $project_id, project num: $project_num, bucket name: $bucket_name" 
+
+override_optional_param "GCP" "1"
+override_optional_param "GCP_BUCKET" "\"$bucket_name\""
+
+gcloud storage cp ~/utap2/scripts/* gs://$bucket_name
+gcloud transfer jobs create https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/* gs://$bucket_name
+gcloud transfer jobs create https://dors4.weizmann.ac.il/utap/UTAP_genomes/All_genomes gs://$bucket_name/genomes
 
 #set default project 
 gcloud config set project $project_id
