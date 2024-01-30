@@ -419,7 +419,7 @@ if [ "$CLUSTER_TYPE" != "local" ]; then
   source "$HOST_MOUNT/cluster_commands.py"  
   if [ "$GCP" = 1 ]; then
     if [ "$GCP_BUCKET" != "None" ]; then
-      export  SINGULARITY_CLUSTER_COMMAND='[ ! \"$(ls -A ~/data)\" ] && gcsfuse --file-mode 775 $GCP_BUCKET ~/data && module load singularity;'
+      export  SINGULARITY_CLUSTER_COMMAND="df -h | grep $HOME/data || gcsfuse --file-mode 775 $GCP_BUCKET $HOME/data && module load singularity;"
     else
       export  SINGULARITY_CLUSTER_COMMAND="module load singularity;"
     fi
