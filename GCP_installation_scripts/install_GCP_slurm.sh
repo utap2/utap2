@@ -12,7 +12,7 @@ export project_id="utap-$TIME_STEMP"
 gcloud projects create $project_id
 export project_num=`gcloud projects list --format="json" | jq '.[] | select(.name=="$project_id") | .projectNumber'`
 export bucket_name="utap-data-$TIME_STEMP"
-gcloud storage buckets create $bucket_name --location us-central1 --project $project_id
+gcloud storage buckets create gs://$bucket_name --location us-central1 
 #check if the provided MAIL_SERVER is responding 
 
 override_optional_param "GCP" "1"
