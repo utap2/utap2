@@ -326,8 +326,18 @@ check_dir "$HOST_HOME_DIR"
 chmod  +rwx $HOST_MOUNT || (echo "ERROR: USER $USER doesn't have permissions to $HOST_MOUNT directory" && exit)
 
 #check HOST_MOUNT contains sufficient space
-host_mount_size=`get_dir_df "Avail" "$HOST_MOUNT"`
-if [ "$host_mount_size" -lt 100000000 ];
+if [ "$GCP_BUCKET" != "None" ] && [ "$GCP" = 1 ]; then
+  bucket_size=`get_dir_df "Avail" "$HOME/data"` #results are in Bytes
+  bucket_size=$(($bucket_size * 1024))
+  bucket_used=` gsutil du -s  gs://utap-data-devops-279708 | awk '{print $1}'`
+  avail_size=$(($bucket_size - $bucket_used))
+  min_size=107374182400 #100GB in bytes 
+else
+  min_size=104857600 #100GB in kilobytes 
+  avail_size=`get_dir_df "Avail" "$HOST_MOUNT"`
+fi
+
+if [ "$avail_size" -lt $min_size ];
 then
   echo "There is not enough space on HOST_MOUNT $HOST_MOUNT directory for UTAP installation"
 #  exit
