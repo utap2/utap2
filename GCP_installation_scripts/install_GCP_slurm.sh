@@ -48,10 +48,10 @@ export project_num=`gcloud projects describe  $project_id --format="value(projec
 
 echo "project id: $project_id, project num: $project_num, bucket name: $bucket_name" 
 
-override_optional_param "GCP" "1"
+#override_optional_param "GCP" "1"
 override_optional_param "GCP_BUCKET" "$bucket_name"
-override_optional_param "MAIL_PASSWORD" "zhytvkqzokgoarsl"
-
+#override_optional_param "MAIL_PASSWORD" "zhytvkqzokgoarsl"
+#override_optional_param "CLUSTER_TYPE" "slurm"
 
 #set default project 
 gcloud auth login
@@ -106,7 +106,8 @@ sed -i "s/PROJECT_ID/${project_id//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster
 sed -i "s/BUCKET_NAME/${bucket_name//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap/main.tf
 cd ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap
 terraform init && terraform validate && terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster" && exit)
-
+wait 
+sleep 20
 #copy ssh files from host to login VM 
 export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
 export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
