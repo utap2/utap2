@@ -167,8 +167,9 @@ quoatas on network and vm
 ::
 
 
-   cd ~ && git clone https://github.com/utap2/utap2.git && mv ~/utap2/GCP_installation_scripts/required_parameters.conf  ~/utap2/scripts/required_parameters.conf 
+   cd ~ && git clone -b devel https://github.com/utap2/utap2.git && mv ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf   ~/utap2/scripts/
    chmod +X ~/utap2/GCP_installation_scripts/*
+
 
 In this installation the required paraemters get also default values. The default parameters can be modified in the files ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf.
 
@@ -177,7 +178,7 @@ In this installation the required paraemters get also default values. The defaul
 
 ::
 
-   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh
+   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -b -i 
    
 
 
@@ -257,9 +258,7 @@ After the installation is done, run the following command in Google shell:
 Once entered the vm enter the following commands:
 ::
 
-
- mkdir -p data && gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data"
-      nohup bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
+ gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data" && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
 
 
 
