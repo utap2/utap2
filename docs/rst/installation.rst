@@ -12,7 +12,7 @@ Requirements
 The application should be installed on a Linux server.
 
 
-If the server supports LSF cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF cluster, the UTAP pipelines will need to be executed locally.
+If the server supports LSF or Slurm cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF or Slurm cluster, the UTAP pipelines will need to be executed locally.
 
 
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory.
@@ -67,10 +67,8 @@ The UTAP installation folder includes the following files:
 
 
    #Download the zipped folder into $HOST_MOUNT folder:
-   wget ftp://dors.weizmann.ac.il/UTAP/UTAP_installation_files/UTAP_installation_files.tar.gz -P $HOST_MOUNT
-   
-   cd $HOST_MOUNT
-   tar -xvzf UTAP_installation_files.tar.gz && mv UTAP_installation_files/* $HOST_MOUNT
+   cd  $HOST_MOUNT && git clone https://github.com/utap2/utap2.git
+   mv  $HOST_MOUNT/utap2/scripts/* $HOST_MOUNT
 
 
 
@@ -96,17 +94,17 @@ If you are using multiple genomes, it is important to ensure that they are synch
 
     #Download the zipped folder into $HOST_MOUNT folder:
     #For Zebrafish genome:
-    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
+    wget https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
     tar -xvzf Zebrafish.tar.gz
     rsync -a Zebrafish/* genomes/
     
     #For Mouse genome:
-    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
+    wget https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
     tar -xvzf Mouse.tar.gz
     rsync -a Mouse/* genomes/
     
     #For Human genome:
-    wget ftp://dors.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
+    wget https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
     tar -xvzf Human.tar.gz
     rsync -a Human/* genomes/
    
@@ -154,8 +152,18 @@ Install Google cloud Slurm cluster VMs
 
 requirments: 
 
-google account
-quoatas on network and vm  
+1. Gmail Account:
+   You need a Gmail account to sign in to Google Cloud Console.
+2. Active Project on Google Cloud:
+   You should have an active project on Google Cloud with a valid billing account.
+   To create a project on Google Cloud, you can refer to the official documentation at: https://cloud.google.com/free?_ga=2.113028676.-1500123117.1693913602&hl=en.
+3. Quotas on Google Cloud Project:
+   Ensure that your Google Cloud project has the following default quotas:
+      -At least 32 CPUs (across all regions).
+      -At least 8 N2 CPUs for the region us-central1.
+These are the default quotas, and it's recommended to request more quotas for better performance. You can find information on how to request additional quotas in the Google Cloud documentation on Quotas at: https://cloud.google.com/docs/quotas#docs .
+
+
 
 1. Enter google cloud shell as described in the bellow image 
 
