@@ -155,7 +155,7 @@ requirments:
 1. Gmail Account:
    You need a Gmail account to sign in to Google Cloud Console.
 2. Active Project on Google Cloud:
-   You should have an active project on Google Cloud with a valid billing account.
+   You should have an active project on Google Cloud with an associated billing account.
    To create a project on Google Cloud, you can refer to the official documentation at: https://cloud.google.com/free?_ga=2.113028676.-1500123117.1693913602&hl=en.
 3. Quotas on Google Cloud Project:
    Ensure that your Google Cloud project has the following default quotas:
