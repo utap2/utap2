@@ -55,7 +55,7 @@ override_optional_param "GCP_BUCKET" "$bucket_name"
 #override_optional_param "CLUSTER_TYPE" "slurm"
 
 #set default project 
-gcloud auth login
+#gcloud auth login - you are allready authenticated with gcloud when running inside the Cloud Shell and so do not need to run this command.
 gcloud config set project $project_id
 
 #grant user access credentials to terraform 
@@ -117,7 +117,7 @@ gcloud projects add-iam-policy-binding $project_id \
 
 #grant the roles/compute.admin role to the Cloud Build service account. 
 gcloud projects add-iam-policy-binding $project_id \
-   --member='serviceAccount:$project_num@cloudbuild.gserviceaccount.com" \
+   --member="serviceAccount:$project_num@cloudbuild.gserviceaccount.com" \
    --role='roles/compute.admin'
 
 #grant the roles/iam.serviceAccountUser role
@@ -132,7 +132,7 @@ gcloud projects add-iam-policy-binding $project_id \
 
 #grant the roles/compute.networkUser role
 gcloud projects add-iam-policy-binding $project_id \
-   --member='serviceAccount:$project_num@cloudbuild.gserviceaccount.com" \
+   --member="serviceAccount:$project_num@cloudbuild.gserviceaccount.com" \
    --role='roles/compute.networkUser'
    
 
@@ -151,9 +151,9 @@ if [ -z "$utap_login" ] && [ -z "$utap_controller" ]; then
     curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://utap-data-devops-279708/utap-controller-latest.vmdk
     wait $!
     #convert vmdk files to bootable images availble on GCP (public images are also availble but can only be stored in private account)
-    gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-latest.vmdk
+    gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-latest.vmdk --timeout=24h
     wait $!
-    gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-latest.vmdk
+    gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-latest.vmdk --timeout=24h
     wait $!
 fi
 
