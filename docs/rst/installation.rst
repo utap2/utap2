@@ -227,17 +227,17 @@ Make sure to select the Google account with which your project has been shared.
 .. image:: ../figures/choose_google_account.PNG
 
 
-Click on continue, to sign in Google cloud SDK.
+Click on continue to sign in Google cloud SDK.
 
 .. image:: ../figures/sign_in_sdk.PNG
 
-Click on Allow, to access your Google Account.
+Click on Allow to access your Google Account.
 
 .. image:: ../figures/allow_auth.PNG
 
 
 
-Click on copy
+Click on copy to copy the indicated password.
 
 .. image:: ../figures/copy_code.PNG
 
@@ -255,8 +255,7 @@ Enter 'A' to apply all proposed changes
 
 
 
-The installation is is takin ~10 minutes  
-
+If Google project allrady contains UTAP images, then the installation will takes only few minutes. Otherwise, the installation will takes a few houres since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
 After the installation is done, run the following command in Google shell:
 
 ::
