@@ -294,10 +294,11 @@ To upload data, such as fastq files, either from your local PC or a mounted loca
 For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> with your actual bucket name, to copy the data from the bucket to the cluster:
 ::
 
-export bucket_name=<bucket_name>   
-export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
-export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
-ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "source ~/data/data/required_parameters.conf && mkdir ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data && cp -r ~/data2/* $HOST_MOUNT/utap-output/admin"
+
+   export bucket_name=<bucket_name>   
+   export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
+   export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
+   ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "source ~/data/data/required_parameters.conf && mkdir ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data && cp -r ~/data2/* $HOST_MOUNT/utap-output/admin"
 
 
 
