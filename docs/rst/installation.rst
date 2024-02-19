@@ -195,7 +195,7 @@ In this installation the required paraemters get also default values.
 The default parameters can be modified in the files ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf.
 
 
-3.Execute slurm cluster installation on GCP:
+3. Execute slurm cluster installation on GCP:
 
 ::
 
@@ -204,45 +204,48 @@ The default parameters can be modified in the files ~/utap2/GCP_installation_scr
 
 Dont forget to replace project_id parametrs. 
 
-Click on autorize to give permissions to GCP shell as described in the image bellow 
+Click on autorize to give permissions to GCP shell as described in the image bellow :
 
 .. image:: ../figures/autorize_GCP_shell.PNG
 
 
 
-When promped for authentication , enter Y as decribed in the image bellow
+When promped for authentication, enter 'Y' as decribed in the image bellow:
 
-.. image:: ../figures/authentication_promped.png
-
-
-
-Click on the link to authenticate with you google account 
-
-.. image:: ../figures/authentication_link.png
+.. image:: ../figures/authentication_promped.PNG
 
 
 
-Select the Google account with which your project has been shared
+Click on the link to authenticate with youe google account: 
 
-.. image:: ../figures/choose_google_account.png
+.. image:: ../figures/authentication_link.PNG
 
 
 
-Click on Allow
+Make sure to select the Google account with which your project has been shared.
 
-.. image:: ../figures/allow_auth.png
+.. image:: ../figures/choose_google_account.PNG
+
+
+Click on continue, to sign in Google cloud SDK.
+
+.. image:: ../figures/sign_in_sdk.PNG
+
+Click on Allow, to access your Google Account.
+
+.. image:: ../figures/allow_auth.PNG
 
 
 
 Click on copy
 
-.. image:: ../figures/copy_code.png
+.. image:: ../figures/copy_code.PNG
 
 
 
 Paste the code in the Google shell console and click "ENTER"
 
-.. image:: ../figures/paste_code.png 
+.. image:: ../figures/paste_code.PNG 
 
 
 
