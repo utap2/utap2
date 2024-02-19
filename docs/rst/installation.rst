@@ -204,7 +204,7 @@ In this installation the required paraemters get also default values. The defaul
 
 Click on autorize to give permissions to GCP shell as described in the image bellow 
 
-.. image:: ../figures/autorize_GCP_shell.png
+.. image:: ../figures/autorize_GCP_shell.PNG
 
 
 
