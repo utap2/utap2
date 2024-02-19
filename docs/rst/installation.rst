@@ -178,7 +178,7 @@ requirments:
 
 1. Enter google cloud shell as described in the bellow image 
 
-.. image:: ../figures/Google_shell.png
+.. image:: ../figures/google_cloud_shell.png
 
 
 2. Clone scripts for installing Google cloud slurm cluster VMs:
