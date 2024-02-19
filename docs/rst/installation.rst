@@ -62,7 +62,7 @@ The UTAP installation folder includes the following files:
   g.	install_UTAP_image.sh
   h.	run_UTAP_sandbox.sh
 
- You can download it using your browser or via ftp as noted below, and then unpack it in the $HOST_MOUNT folder.
+ You can download it using as noted below, and then unpack it in the $HOST_MOUNT folder.
 ::
 
 
@@ -87,7 +87,7 @@ Download genomes indexes
 
 The genomes folder contains indexes for human (hg38), mouse (mm10), and zebrafish (danRer11). You have the option to download any one of these genomes individually, as specified below. If you require a genome that is not provided, please refer to the instructions in the "Generate new genome index and annotation file" section.
 
-You can download the genomes folder either through your browser or via FTP, as indicated below. After downloading, unpack the folder in the $HOST_MOUNT directory under the "genomes" folder. If you choose to download the genomes to a different location, you will need to overwrite the GENOMES_DIR parameter in the optional_parameters.conf file.
+You can download the genomes folder as indicated below. After downloading, unpack the folder in the $HOST_MOUNT directory under the "genomes" folder. If you choose to download the genomes to a different location, you will need to overwrite the GENOMES_DIR parameter in the optional_parameters.conf file.
 
 If you are using multiple genomes, it is important to ensure that they are synchronized under the same directory. You can achieve this by utilizing the "rsync" command as demonstrated below.
 ::
@@ -170,7 +170,7 @@ Requirments
          -At least 8 N2 CPUs for the region us-central1.
 
    These are the default quotas, and it's recommended to request more quotas for better performance. 
-   If using more than the default quotas, adjust MAX_CPU and MAX memory optional parameters accordingly. 
+   If using more than the default quotas, adjust MAX_CPU and MAX_MEMORY optional parameters accordingly. 
    You can find information on how to request additional quotas in the Google Cloud documentation on Quotas at: https://cloud.google.com/docs/quotas#docs.
    
 
@@ -191,20 +191,22 @@ Install Google cloud Slurm cluster VMs
    chmod +X ~/utap2/GCP_installation_scripts/*
 
 
-In this installation the required paraemters get also default values. The default parameters can be modified in the files ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf.
+In this installation the required paraemters get also default values. 
+The default parameters can be modified in the files ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf.
 
 
 3.Execute slurm cluster installation on GCP:
 
 ::
 
-   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -b -i 
+   bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i <project_id> 
    
 
+Dont forget to replace project_id parametrs. 
 
 Click on autorize to give permissions to GCP shell as described in the image bellow 
 
-.. image:: ../figures/autorize_GCP_shell.png
+.. image:: ../figures/autorize_GCP_shell.PNG
 
 
 
@@ -288,11 +290,11 @@ Test UTAP
 
 Run RNA-Seq pipeline with example data
 --------------------------------------
-For testing UTAP, you can download fastq files and test files for RNA-Seq pipeline folder using your browser or via ftp as noted below.
+For testing UTAP, you can download fastq files and test files for RNA-Seq pipeline folder as noted below.
 ::
 
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome RNA-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
@@ -351,7 +353,7 @@ After submitting the run, you will be directed to the "User Datasets" page, whic
 The folder "4_reports/<report_name>_<run_id>" contains graphs, statistics, and additional information for all the pipeline steps. Once the run is completed, you will receive an email with links to the results report. For a detailed interactive explanation of the report, you can utilize the relevant e-learning module available in the site navigation bar.
 
 An example of the pipeline output can be found at:
-ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq
+https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq
                                                       
 For further details, please refer to the "Help" tab in the site navigation bar.
 
@@ -360,7 +362,7 @@ For further details, please refer to the "Help" tab in the site navigation bar.
 
 Check pipeline output
 --------------------------
-After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq.
+After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq.
 
 To run the script, follow the instructions below (no need to download the results example):
 
@@ -600,11 +602,11 @@ Additional example for testing
 
 Run MARS-Seq pipeline with example data
 --------------------------------------
-For testing UTAP, you can download fastq files and test files for MARS-Seq pipeline folder using your browser or via ftp as noted below.
+For testing UTAP, you can download fastq files and test files for MARS-Seq pipeline folderas noted below.
 ::
 
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
+    wget  -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
@@ -667,7 +669,7 @@ After submitting the run, you will be directed to the "User Datasets" page, whic
 The folder "10_reports/<report_name>_umi_counts_<run_id>" contains graphs, statistics, and additional information for all the pipeline steps. Once the run is completed, you will receive an email with links to the results report. For a detailed interactive explanation of the report, you can utilize the relevant e-learning module available in the site navigation bar.
 
 An example of the pipeline output can be found at:
-ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
+https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
 
 For further details, please refer to the "Help" tab in the site navigation bar.
 
@@ -676,7 +678,7 @@ For further details, please refer to the "Help" tab in the site navigation bar.
 
 Check pipeline output
 --------------------------
-After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at ftp://dors.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exammple_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
+After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exammple_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
 
 To run the script, follow the instructions below:
 
