@@ -243,7 +243,7 @@ Click on copy to copy the indicated password.
 
 
 
-Paste the code in the Google shell console and click "ENTER"
+Paste the code in the Google shell console and click "ENTER".
 
 .. image:: ../figures/paste_code.PNG 
 
@@ -284,6 +284,25 @@ Once entered the vm enter the following commands:
 
  gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data" && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
 
+
+Upload data to UTAP
+-------------------
+
+For uploading data (such as: fastq files) found on your local PC or mounted to your local PC, use the upload feuture at UTAP site.
+
+For admin users only:
+if your data is located on Google bucket run the following commands on your Google shell with your bucket name as <bucket_name> to copy the data from the bucket to the cluster:
+::
+
+export bucket_name=<bucket_name>   
+export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
+export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
+ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "source ~/data/data/required_parameters.conf && mkdir ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data && cp -r ~/data2/* $HOST_MOUNT/utap-output/admin"
+
+
+
+If your data is located on AWS S3 bucket then use Google transfer data service to transfer the data from AWS S3 bucket to the Google bucket generated when running UTAP installation script. For more detailed refer to the official documentation https://cloud.google.com/storage-transfer/docs/overview.
+After the data transfer to Google bucket, run the above commands on your Google shell.
 
 
 Test UTAP
