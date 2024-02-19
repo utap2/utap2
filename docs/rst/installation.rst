@@ -147,10 +147,10 @@ if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 Install UTAP on Google Cloud platform (GCP)
 ===========================================
 
-Install Google cloud Slurm cluster VMs
---------------------------------------
 
-requirments: 
+
+Requirments
+-----------
 
    1. Gmail Account:
 
@@ -174,11 +174,12 @@ requirments:
    You can find information on how to request additional quotas in the Google Cloud documentation on Quotas at: https://cloud.google.com/docs/quotas#docs.
    
 
-
+Install Google cloud Slurm cluster VMs
+--------------------------------------
 
 1. Enter google cloud shell as described in the bellow image 
 
-.. image:: ../figures/google_cloud_shell.png
+.. image:: ../figures/google_cloud_shell.PNG
 
 
 2. Clone scripts for installing Google cloud slurm cluster VMs:
