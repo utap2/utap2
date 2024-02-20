@@ -278,7 +278,7 @@ For admin users exclusively, if your data resides in a Google bucket, execute th
    export bucket_name=<bucket_name>
    export input=<input>
    export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
-   export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
+   export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | sed -e '/^[[:space:]]*$/d' | head -n 1`
    ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "mkdir -p ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data &&  source ~/data/required_parameters.conf && cp -r ~/input_data/$input &&  $HOST_MOUNT/utap-output/admin"
 
 
