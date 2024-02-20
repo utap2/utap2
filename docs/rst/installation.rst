@@ -147,6 +147,12 @@ if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 Install UTAP on Google Cloud platform (GCP)
 ===========================================
 
+UTAP can be executed on Google Cloud following the installation process. The installation is carried out using the Terraform application, deploying a Slurm cluster with 20 potential nodes of type N2- high memory, where each node is equipped with 2 CPUs and 32GB of memory on Google Cloud.
+
+The installation encompasses two VMDK images – one serving as the login node and the other as the controller node. These images are fetched from our public server and stored in the Google Storage bucket created during the installation. Subsequently, the images are transferred to your Google Cloud project as bootable images, a time-consuming procedure.
+
+These images comprise the entire UTAP installation and include software that streamlines the installation process and ensures its stability.
+For installing UTAP, follow the instructions below.
 
 
 Requirments
