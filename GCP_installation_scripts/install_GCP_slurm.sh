@@ -188,7 +188,9 @@ rm ~/.ssh/known_hosts
 scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
 scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
 ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/data && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf"
-
+wait
+source  ~/utap2/scripts/optional_parameters.conf
+echo "UTAP has been installed successfully. Please visit the site http://$LOGIN_IP:$HOST_APACHE_PORT"
 #enter login VM
 #export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
 #export REGION=`gcloud config list --format 'value(compute.region)'`

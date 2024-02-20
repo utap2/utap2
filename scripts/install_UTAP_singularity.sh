@@ -251,33 +251,37 @@ validate_param "$BUILD_SANDBOX" "BUILD_SANDBOX"
 
 if [ $GCP = 1 ];  then  # use the function, save the code
   export BUILD_SANDBOX=0
-  if [ "$GCP_BUCKET" != "None" ]; then
-    export  SINGULARITY_CLUSTER_COMMAND="(ls $HOME/data && mount | grep $HOME/data) || (fusermount -uz $HOME/data; gcsfuse -o rw,allow_other -file-mode=777 -dir-mode=777 --implicit-dirs $GCP_BUCKET $HOME/data)"
-  else
-    export  SINGULARITY_CLUSTER_COMMAND="module load singularity;"
-  fi
+  #export  SINGULARITY_CLUSTER_COMMAND="(ls $HOME/data && mount | grep $HOME/data) | (fusermount -uz $HOME/data; gcsfuse -o rw -file-mode=777 -dir-mode=777 --implicit-dirs $GCP_BUCKET $HOME/data); module load singularity;"
+  export  SINGULARITY_CLUSTER_COMMAND="export PATH=/opt/apps/singularity_latest/bin/:$PATH;"
   override_param SINGULARITY_CLUSTER_COMMAND \"$SINGULARITY_CLUSTER_COMMAND\"
   echo "SINGULARITY_CLUSTER_COMMAND=\"$SINGULARITY_CLUSTER_COMMAND\"" >> all_parameters   
-  mkdir -p ~/data/utap-output/
-  mkdir -p ~/data/logs-utap/
-  mkdir -p ~/data/reports/
-  ln -s ~/data/genomes/ $HOST_MOUNT
+  #mkdir -p ~/data/utap-output/admin
+  #mkdir -p ~/data/logs-utap/
+  #mkdir -p ~/data/reports/
+  #ln -s ~/data/genomes/ $HOST_MOUNT
   ln -s ~/data/optional_parameters.conf $HOST_MOUNT
   ln -s ~/data/required_parameters.conf $HOST_MOUNT
   ln -s ~/data/run_UTAP_sandbox.sh $HOST_MOUNT
   ln -s ~/data/install_UTAP_image.sh $HOST_MOUNT
   ln -s ~/data/update-db.sh $HOST_MOUNT
-  ln -s ~/data/utap-output $HOST_MOUNT
-  ln -s ~/data/logs-utap $HOST_MOUNT
-  ln -s ~/data/reports $HOST_MOUNT
+  #ln -s ~/data/utap-output $HOST_MOUNT
+  #ln -s ~/data/logs-utap $HOST_MOUNT
+  #ln -s ~/data/reports $HOST_MOUNT
   ln -s ~/data/ports.conf $HOST_MOUNT
   ln -s ~/data/install_UTAP_singularity.sh $HOST_MOUNT
   ln -s ~/data/utap_latest.sif $HOST_MOUNT
   if [ ! -d "$HOST_MOUNT/utap.sandbox" ]; then
     ln -s ~/utap.sandbox $HOST_MOUNT
   fi
-  #bash ~/data/install_UTAP_GCP.sh
+  if [ ! -d "$HOST_MOUNT/genomes" ]; then
+    ln -s ~/genomes $HOST_MOUNT
+  fi
   wait $!
+  if [ "$CLUSTER_TYPE" != "local" ] && [ "$CLUSTER_TYPE" = "slurm" ]; then
+    export CLUSTER_TYPE="slurm"
+    override_param CLUSTER_TYPE "slurm"  
+  #bash ~/data/install_UTAP_GCP.sh
+  fi
 fi
 
 #check if DEMO installation
@@ -359,8 +363,7 @@ else
     EMAIL_PORT="587"
     override_param MAIL_SERVER "smtp.gmail.com"
     if [[ $MAIL_PASSWORD = *"None"* ]] || [[ $MAIL_PASSWORD = "" ]] ; then 
-      echo "ERROR: if gmail address is specified, you must provide gmail app password"
-      exit
+      echo "WARNING: if gmail address is specified, you must provide gmail app password,otherwise UTAP default email adress will be used"
     fi
   else
      if [ $MAIL_PASSWORD = "None" ]; then  
@@ -486,6 +489,10 @@ if ! $SINGULARITY_CLUSTER_COMMAND then
     touch $HOST_MOUNT/cluster_singualrity_error
 fi
 "
+  fi
+  if [  -d "$HOST_MOUNT/cluster_singualrity_error" ]; then  
+    echo "ERROR: no singularity found on the cluster"; 
+    exit
   fi
   if [  "$CLUSTER_QUEUE" = "None" ]; then  
     export CLUSTER_QUEUE=""
