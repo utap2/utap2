@@ -139,22 +139,20 @@ gcloud projects add-iam-policy-binding $project_id \
 gcloud storage cp ~/utap2/scripts/* gs://$bucket_name
 
 #download all installation files from dors4 to bucket, this option takes very long time and only available if transfer data service is functional
-gcsfuse -o rw -file-mode=777 -dir-mode=777 --implicit-dirs $bucket_name "$HOME/data"
+mkdir "$HOME/data" && gcsfuse -o rw -file-mode=777 -dir-mode=777 --implicit-dirs $bucket_name "$HOME/data"
 
 export utap_login=$(gcloud compute images list | grep "utap-login")
 export utap_controller=$(gcloud compute images list | grep "utap-controller")
 
 if [ -z "$utap_login" ] && [ -z "$utap_controller" ]; then
     echo "downloading and transffering images to Google cloud, this is going to take very long time"
-    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://utap-data-devops-279708/utap-login-latest.vmdk
-    wait $!
-    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://utap-data-devops-279708/utap-controller-latest.vmdk
-    wait $!
+    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://$bucket_name/utap-login-latest.vmdk &
+    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://$bucket_name/utap-controller-latest.vmdk &
+    wait 
     #convert vmdk files to bootable images availble on GCP (public images are also availble but can only be stored in private account)
-    gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-latest.vmdk --timeout=24h
-    wait $!
-    gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-latest.vmdk --timeout=24h
-    wait $!
+    gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-latest.vmdk --timeout=24h &
+    gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-latest.vmdk --timeout=24h &
+    wait
 fi
 
 #wget -nH -nc -P ~/data/genomes https://dors4.weizmann.ac.il/utap/UTAP_genomes/All_genomes/*  && wget -nH -nc -P ~/data https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk && wget -nH -nc -P ~/data https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-latest.vmdk 
@@ -177,17 +175,22 @@ sed -i "s/project_id = .*/project_id = \"${project_id//\//\\/}\"/" ~/slurm-gcp/t
 sed -i "s/PROJECT_ID/${project_id//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap/main.tf
 sed -i "s/BUCKET_NAME/${bucket_name//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap/main.tf
 cd ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap
-terraform init && terraform validate && terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster" && exit)
-wait 
+terraform init && terraform validate && terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster")
+wait
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+    echo "Error: One or more processes failed with exit status $STATUS"
+    exit $STATUS
+fi
 sleep 100
 #copy ssh files from host to login VM 
 export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
 export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
 rm ~/.ssh/known_hosts
-#ssh -i ~/.ssh/google_compute_engine -o StrictHostKeyChecking=no -l $USER_LOGIN $LOGIN_IP "mkdir ~/.ssh;"
+ssh -i ~/.ssh/google_compute_engine -o StrictHostKeyChecking=no -l $USER_LOGIN $LOGIN_IP "mkdir ~/.ssh;"
 scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
 scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
-ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/data && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf"
+ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "mkdir -p ~/data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/data && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf"
 wait
 sed -i 's/\r$//'  ~/utap2/scripts/optional_parameters.conf
 source  ~/utap2/scripts/optional_parameters.conf
