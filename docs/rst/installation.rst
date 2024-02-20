@@ -268,7 +268,12 @@ Enter 'yes' to enable ssh to the cluster login node.
 
 If Google project allrady contains UTAP images, then the installation will takes only few minutes (~10). Otherwise, the installation will takes a few houres (~5 houres) since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
 
-Upon successful installation, a link to the UTAP website will be visible in your Google Shell. This link corresponds to https://<external login node IP>:7000 (the default Apache2 port is 7000 unless the HOST_APACHE_PORT optional parameter was modified).
+Upon successful installation, two new VM will be created on your Google project as shown in the image bellow:
+
+.. image:: ../figures/VMs.PNG
+
+
+The login VM is assigned an external IP address (as displayed in the image). Please copy this IP address to access the UTAP site using the following link: https://<external login node IP>:7000 (the default Apache2 port is 7000 unless the HOST_APACHE_PORT optional parameter has been altered).
 
 
 
