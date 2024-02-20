@@ -252,9 +252,9 @@ validate_param "$BUILD_SANDBOX" "BUILD_SANDBOX"
 if [ $GCP = 1 ];  then  # use the function, save the code
   export BUILD_SANDBOX=0
   #export  SINGULARITY_CLUSTER_COMMAND="(ls $HOME/data && mount | grep $HOME/data) | (fusermount -uz $HOME/data; gcsfuse -o rw -file-mode=777 -dir-mode=777 --implicit-dirs $GCP_BUCKET $HOME/data); module load singularity;"
-  export  SINGULARITY_CLUSTER_COMMAND="export PATH=/opt/apps/singularity_latest/bin/:$PATH;"
-  override_param SINGULARITY_CLUSTER_COMMAND \"$SINGULARITY_CLUSTER_COMMAND\"
-  echo "SINGULARITY_CLUSTER_COMMAND=\"$SINGULARITY_CLUSTER_COMMAND\"" >> all_parameters   
+  #export  SINGULARITY_CLUSTER_COMMAND="export PATH=/opt/apps/singularity_latest/bin/:$PATH;"
+  #override_param SINGULARITY_CLUSTER_COMMAND \"$SINGULARITY_CLUSTER_COMMAND\"
+  #echo "SINGULARITY_CLUSTER_COMMAND=\"$SINGULARITY_CLUSTER_COMMAND\"" >> all_parameters   
   #mkdir -p ~/data/utap-output/admin
   #mkdir -p ~/data/logs-utap/
   #mkdir -p ~/data/reports/
