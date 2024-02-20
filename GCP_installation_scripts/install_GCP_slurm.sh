@@ -175,8 +175,13 @@ sed -i "s/project_id = .*/project_id = \"${project_id//\//\\/}\"/" ~/slurm-gcp/t
 sed -i "s/PROJECT_ID/${project_id//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap/main.tf
 sed -i "s/BUCKET_NAME/${bucket_name//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap/main.tf
 cd ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap
-terraform init && terraform validate && terraform apply -var-file=example.tfvars || echo "ERROR installing GCP Slurm cluster" && exit
-wait 
+terraform init && terraform validate && terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster")
+wait
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+    echo "Error: One or more processes failed with exit status $STATUS"
+    exit $STATUS
+fi
 sleep 100
 #copy ssh files from host to login VM 
 export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
