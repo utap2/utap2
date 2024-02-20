@@ -152,7 +152,8 @@ UTAP can be executed on Google Cloud following the installation process. The ins
 The installation encompasses two VMDK images – one serving as the login node and the other as the controller node. These images are fetched from our public server and stored in the Google Storage bucket created during the installation. Subsequently, the images are transferred to your Google Cloud project as bootable images, a time-consuming procedure.
 
 These images comprise the entire UTAP installation and include software that streamlines the installation process and ensures its stability.
-For installing UTAP, follow the instructions below.
+
+For installing UTAP on Google cloud, follow the instructions below.
 
 
 Requirments
@@ -188,7 +189,7 @@ Install Google cloud Slurm cluster VMs
 .. image:: ../figures/google_cloud_shell.PNG
 
 
-2. Clone scripts for installing Google cloud slurm cluster VMs:
+2. Clone from our git repository the scripts for installing Google cloud slurm cluster login and controller VMs:
 
 ::
 
@@ -208,7 +209,7 @@ The default parameters can be modified in the files ~/utap2/GCP_installation_scr
    bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i <project_id> 
    
 
-Dont forget to replace project_id parametrs. 
+Dont forget to replace project_id parametr with your actual project id. 
 
 Click on autorize to give permissions to GCP shell as described in the image bellow :
 
@@ -228,7 +229,7 @@ Click on the link to authenticate with youe google account:
 
 
 
-Make sure to select the Google account with which your project has been shared.
+Make sure to select the Google account with which your project has been created.
 
 .. image:: ../figures/choose_google_account.PNG
 
@@ -249,13 +250,13 @@ Click on copy to copy the indicated password.
 
 
 
-Paste the code in the Google shell console and click "ENTER".
+Paste the code in the Google shell console and click on  "ENTER".
 
 .. image:: ../figures/paste_code.PNG 
 
 
 
-Enter 'yes' to apply all proposed changes and install slurm cluster with terraform.
+Enter 'yes' to apply all proposed changes and install slurm cluster with Terraform.
 
 .. image:: ../figures/accept_terraform.PNG
 
@@ -265,9 +266,14 @@ Enter 'yes' to enable ssh to the cluster login node.
 .. image:: ../figures/login_vm.PNG
 
 
-If Google project allrady contains UTAP images, then the installation will takes only few minutes. Otherwise, the installation will takes a few houres since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
-After the installation is done, run the following command in Google shell:
+If Google project allrady contains UTAP images, then the installation will takes only few minutes (~10). Otherwise, the installation will takes a few houres (~5 houres) since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
 
+Upon successful installation, a link to the UTAP website will be visible in your Google Shell. This link corresponds to https://<external login node IP>:7000 (the default Apache2 port is 7000 unless the HOST_APACHE_PORT optional parameter was modified).
+
+
+
+
+ 
 
 
 
@@ -277,7 +283,7 @@ Upload data to UTAP
 
 To upload data, such as fastq files, either from your local PC or a mounted location, please utilize the upload feature on the UTAP site.
 
-For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> and <input> with your actual bucket name and input files (the default HOST_MOUNT directory is $HOME, if you changed it in the optional_parameters.conf during the  UTAP installation, you will need to change it here as well), to copy the data from the bucket to the cluster:
+For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> and <input> with your actual bucket name and input files (the default HOST_MOUNT directory is $HOME, if you changed it in the optional_parameters.conf during UTAP installation, you will need to change it here as well), to copy the data from the bucket to the cluster:
 ::
 
 
@@ -291,7 +297,7 @@ For admin users exclusively, if your data resides in a Google bucket, execute th
 
 
 If your data is stored in an AWS S3 bucket, utilize the Google Transfer Data service to move the data from the AWS S3 bucket to the Google bucket "
-slurm-us-central1-simple" generated during the UTAP installation script. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
+slurm-us-central1-simple" generated during the UTAP installation process. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
 
 Test UTAP
 =========
