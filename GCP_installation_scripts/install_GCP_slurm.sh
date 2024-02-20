@@ -146,15 +146,13 @@ export utap_controller=$(gcloud compute images list | grep "utap-controller")
 
 if [ -z "$utap_login" ] && [ -z "$utap_controller" ]; then
     echo "downloading and transffering images to Google cloud, this is going to take very long time"
-    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://utap-data-devops-279708/utap-login-latest.vmdk
-    wait $!
-    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://utap-data-devops-279708/utap-controller-latest.vmdk
-    wait $!
+    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://utap-data-devops-279708/utap-login-latest.vmdk &
+    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://utap-data-devops-279708/utap-controller-latest.vmdk &
+    wait 
     #convert vmdk files to bootable images availble on GCP (public images are also availble but can only be stored in private account)
-    gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-latest.vmdk --timeout=24h
-    wait $!
-    gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-latest.vmdk --timeout=24h
-    wait $!
+    gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-latest.vmdk --timeout=24h &
+    gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-latest.vmdk --timeout=24h &
+    wait
 fi
 
 #wget -nH -nc -P ~/data/genomes https://dors4.weizmann.ac.il/utap/UTAP_genomes/All_genomes/*  && wget -nH -nc -P ~/data https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk && wget -nH -nc -P ~/data https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-latest.vmdk 
@@ -177,7 +175,7 @@ sed -i "s/project_id = .*/project_id = \"${project_id//\//\\/}\"/" ~/slurm-gcp/t
 sed -i "s/PROJECT_ID/${project_id//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap/main.tf
 sed -i "s/BUCKET_NAME/${bucket_name//\//\\/}/" ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap/main.tf
 cd ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap
-terraform init && terraform validate && terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster" && exit)
+terraform init && terraform validate && terraform apply -var-file=example.tfvars || echo "ERROR installing GCP Slurm cluster" && exit
 wait 
 sleep 100
 #copy ssh files from host to login VM 
