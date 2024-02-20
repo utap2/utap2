@@ -139,7 +139,7 @@ gcloud projects add-iam-policy-binding $project_id \
 gcloud storage cp ~/utap2/scripts/* gs://$bucket_name
 
 #download all installation files from dors4 to bucket, this option takes very long time and only available if transfer data service is functional
-gcsfuse -o rw -file-mode=777 -dir-mode=777 --implicit-dirs $bucket_name "$HOME/data"
+mkdir "$HOME/data" && gcsfuse -o rw -file-mode=777 -dir-mode=777 --implicit-dirs $bucket_name "$HOME/data"
 
 export utap_login=$(gcloud compute images list | grep "utap-login")
 export utap_controller=$(gcloud compute images list | grep "utap-controller")
