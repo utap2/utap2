@@ -278,7 +278,8 @@ For admin users exclusively, if your data resides in a Google bucket, execute th
 
 
 
-If your data is stored in an AWS S3 bucket, utilize the Google Transfer Data service to move the data from the AWS S3 bucket to the Google bucket generated during the UTAP installation script. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
+If your data is stored in an AWS S3 bucket, utilize the Google Transfer Data service to move the data from the AWS S3 bucket to the Google bucket "
+slurm-us-central1-simple" generated during the UTAP installation script. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
 
 Test UTAP
 =========
