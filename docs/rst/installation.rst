@@ -227,23 +227,23 @@ Make sure to select the Google account with which your project has been shared.
 .. image:: ../figures/choose_google_account.PNG
 
 
-Click on continue, to sign in Google cloud SDK.
+Click on continue to sign in Google cloud SDK.
 
 .. image:: ../figures/sign_in_sdk.PNG
 
-Click on Allow, to access your Google Account.
+Click on Allow to access your Google Account.
 
 .. image:: ../figures/allow_auth.PNG
 
 
 
-Click on copy
+Click on copy to copy the indicated password.
 
 .. image:: ../figures/copy_code.PNG
 
 
 
-Paste the code in the Google shell console and click "ENTER"
+Paste the code in the Google shell console and click "ENTER".
 
 .. image:: ../figures/paste_code.PNG 
 
@@ -255,8 +255,7 @@ Enter 'A' to apply all proposed changes
 
 
 
-The installation is is takin ~10 minutes  
-
+If Google project allrady contains UTAP images, then the installation will takes only few minutes. Otherwise, the installation will takes a few houres since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
 After the installation is done, run the following command in Google shell:
 
 ::
@@ -286,6 +285,24 @@ Once entered the vm enter the following commands:
  gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data" && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
 
 
+Upload data to UTAP
+-------------------
+
+
+To upload data, such as fastq files, either from your local PC or a mounted location, please utilize the upload feature on the UTAP site.
+
+For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> with your actual bucket name, to copy the data from the bucket to the cluster:
+::
+
+
+   export bucket_name=<bucket_name>   
+   export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
+   export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
+   ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "source ~/data/data/required_parameters.conf && mkdir ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data && cp -r ~/data2/* $HOST_MOUNT/utap-output/admin"
+
+
+
+If your data is stored in an AWS S3 bucket, utilize the Google Transfer Data service to move the data from the AWS S3 bucket to the Google bucket generated during the UTAP installation script. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
 
 Test UTAP
 =========
