@@ -10,7 +10,7 @@ INTERNAL_USERS=None
 BUILD_SANDBOX=None
 EMAIL_USE_TLS="TLS_USE_IN_MAIL\=False"
 EMAIL_PORT=25
-
+UTAP_IMAGE=$HOST_MOUNT/utap_latest.sif
 
 
 #get required and optional parameters files as input 
@@ -251,6 +251,7 @@ validate_param "$BUILD_SANDBOX" "BUILD_SANDBOX"
 
 if [ $GCP = 1 ];  then  # use the function, save the code
   export BUILD_SANDBOX=0
+  UTAP_IMAGE=$HOME/utap.sandbox
   #export  SINGULARITY_CLUSTER_COMMAND="(ls $HOME/data && mount | grep $HOME/data) | (fusermount -uz $HOME/data; gcsfuse -o rw -file-mode=777 -dir-mode=777 --implicit-dirs $GCP_BUCKET $HOME/data); module load singularity;"
   #export  SINGULARITY_CLUSTER_COMMAND="export PATH=/opt/apps/singularity_latest/bin/:$PATH;"
   #override_param SINGULARITY_CLUSTER_COMMAND \"$SINGULARITY_CLUSTER_COMMAND\"
@@ -269,7 +270,7 @@ if [ $GCP = 1 ];  then  # use the function, save the code
   #ln -s ~/data/reports $HOST_MOUNT
   ln -s ~/data/ports.conf $HOST_MOUNT
   ln -s ~/data/install_UTAP_singularity.sh $HOST_MOUNT
-  ln -s ~/data/utap_latest.sif $HOST_MOUNT
+  #ln -s ~/data/utap_latest.sif $HOST_MOUNT
   if [ ! -d "$HOST_MOUNT/utap.sandbox" ]; then
     ln -s ~/utap.sandbox $HOST_MOUNT
   fi
@@ -463,7 +464,7 @@ echo "MAIN_CONDA=$MAIN_CONDA" >> all_parameters
 #set cluster resources and commands
  
 if [ "$CLUSTER_TYPE" != "local" ]; then
-  singularity exec --bind $HOST_MOUNT:/mnt/host_mount $HOST_MOUNT/utap_latest.sif $MAIN_CONDA/bin/python $MAIN_CONDA/lib/python3.10/site-packages/ngs-snakemake/cluster_scripts/cluster_type.py "$CLUSTER_TYPE" "/mnt/host_mount" ||  (echo "ERROR: failed to create cluster commands file" && exit)
+  singularity exec --bind $HOST_MOUNT:/mnt/host_mount $UTAP_IMAGE $MAIN_CONDA/bin/python $MAIN_CONDA/lib/python3.10/site-packages/ngs-snakemake/cluster_scripts/cluster_type.py "$CLUSTER_TYPE" "/mnt/host_mount" ||  (echo "ERROR: failed to create cluster commands file" && exit)
   source "$HOST_MOUNT/cluster_commands.py"  
   if [ -n "$cluster_wraper" ]; then
     export cluster_exe="$cluster_exe $cluster_wraper"
