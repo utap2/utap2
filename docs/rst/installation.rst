@@ -249,10 +249,14 @@ Paste the code in the Google shell console and click "ENTER".
 
 
 
-Enter 'A' to apply all proposed changes 
+Enter 'yes' to apply all proposed changes and install slurm cluster with terraform.
 
-.. image:: ../figures/apply_hpc_changes.png
+.. image:: ../figures/accept_terraform.PNG
 
+
+Enter 'yes' to enable ssh to the cluster login node.
+
+.. image:: ../figures/login_vm.PNG
 
 
 If Google project allrady contains UTAP images, then the installation will takes only few minutes. Otherwise, the installation will takes a few houres since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
