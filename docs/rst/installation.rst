@@ -271,15 +271,16 @@ Upload data to UTAP
 
 To upload data, such as fastq files, either from your local PC or a mounted location, please utilize the upload feature on the UTAP site.
 
-For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> and <input> with your actual bucket name and input files, to copy the data from the bucket to the cluster:
+For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> and <input> with your actual bucket name and input files (the default HOST_MOUNT directory is $HOME, if you changed it in the optional_parameters.conf during the  UTAP installation, you will need to change it here as well), to copy the data from the bucket to the cluster:
 ::
 
 
    export bucket_name=<bucket_name>
    export input=<input>
+   expor HOST_MOUNT=$HOME
    export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
    export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | sed -e '/^[[:space:]]*$/d' | head -n 1`
-   ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "mkdir -p ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data &&  source ~/data/required_parameters.conf && cp -r ~/input_data/$input &&  $HOST_MOUNT/utap-output/admin"
+   ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "mkdir -p ~/input_data && fusermount -u ~/input_data; gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data && cp -r ~/input_data/$input  $HOST_MOUNT/utap-output/admin"
 
 
 
