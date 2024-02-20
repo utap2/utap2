@@ -258,31 +258,7 @@ Enter 'A' to apply all proposed changes
 If Google project allrady contains UTAP images, then the installation will takes only few minutes. Otherwise, the installation will takes a few houres since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
 After the installation is done, run the following command in Google shell:
 
-::
 
-   exit
-   rm ~/.ssh/authorized_key
-   ssh -i ~/.ssh/google_compute_engine -o StrictHostKeyChecking=no -l $USER_LOGIN $LOGIN_IP "mkdir ~/.ssh;"
-   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
-   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
-   export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
-   export LOGIN_IP=`gcloud compute instances describe hpcutap-login-i56oilhq-001  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' --    zone us-central1-a`
-   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa
-   scp -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
-   export GOOGLE_CLOUD_PROJECT=`gcloud config list --format 'value(core.project)'`
-   export REGION=`gcloud config list --format 'value(compute.region)'`
-   export ZONE=`gcloud config list --format 'value(compute.zone)'`
-   export LOGIN_VM=`gcloud compute instances list --sort-by creation_time | grep NAME | head -n 2 | grep login | awk '{print $2}'`
-   gcloud compute ssh --zone "us-central1-a" "$LOGIN_VM" --project "$GOOGLE_CLOUD_PROJECT"
-
-
-
-
-
-Once entered the vm enter the following commands:
-::
-
- gcsfuse --file-mode 775 utap-data-devops-279708 "$HOME/data" && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf 
 
 
 Upload data to UTAP
@@ -298,11 +274,12 @@ For admin users exclusively, if your data resides in a Google bucket, execute th
    export bucket_name=<bucket_name>   
    export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
    export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
-   ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "source ~/data/data/required_parameters.conf && mkdir ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data && cp -r ~/data2/* $HOST_MOUNT/utap-output/admin"
+   ssh -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "mkdir -p ~/input_data && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/input_data && cp -r ~/input_data/* source ~/data/required_parameters.conf &&  $HOST_MOUNT/utap-output/admin"
 
 
 
-If your data is stored in an AWS S3 bucket, utilize the Google Transfer Data service to move the data from the AWS S3 bucket to the Google bucket generated during the UTAP installation script. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
+If your data is stored in an AWS S3 bucket, utilize the Google Transfer Data service to move the data from the AWS S3 bucket to the Google bucket "
+slurm-us-central1-simple" generated during the UTAP installation script. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
 
 Test UTAP
 =========
