@@ -143,12 +143,14 @@ export utap_controller=$(gcloud compute images list | grep "utap-controller")
 
 if [ -z "$utap_login" ] && [ -z "$utap_controller" ]; then
     echo "downloading and transffering images to Google cloud, this is going to take very long time"
-    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://$bucket_name/utap-login-latest.vmdk &
-    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-latest.vmdk" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://$bucket_name/utap-controller-latest.vmdk &
+    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-login-slurm-simple-latest.tar.gz" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://$bucket_name/utap-login-slurm-simple-latest.tar.gz  &
+    curl "https://dors4.weizmann.ac.il/utap/UTAP_installation_files/GCP_slurm_cluster/utap-controller-slurm-simple-latest.tar.gz" | gsutil -h "Cache-Control: no-cache, max-age=0" cp - gs://$bucket_name/utap-controller-slurm-simple-latest.tar.gz &
     wait 
     #convert vmdk files to bootable images availble on GCP (public images are also availble but can only be stored in private account)
-    gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-latest.vmdk --timeout=24h &
-    gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-latest.vmdk --timeout=24h &
+    gcloud compute images create utap-controller --source-uri gs://$bucket_name/utap-controller-slurm-simple-latest.tar.gz
+    gcloud compute images create utap-login --source-uri gs://$bucket_name/utap-login-slurm-simple-latest.tar.gz
+    #gcloud compute images import utap-controller --source-file gs://$bucket_name/utap-controller-slurm-simple-latest.tar.gz --timeout=24h &
+    #gcloud compute images import utap-login --source-file gs://$bucket_name/utap-login-slurm-simple-latest.tar.gz --timeout=24h &
     wait
 fi
 
