@@ -399,9 +399,7 @@ If the run is successfully completed, the output message "UTAP test run succeede
 Generate new genome index and annotation file
 =============================================
 
-Generate STAR (v2.7.10.a) index
--------------------------------
-To generate a new star index for an organism other than human, mouse and zebrafish, make sure to download first the genome fasta file and annotation file and then run the following command, replacing <organism_name>, <organism_alias>, <host_mount> and <fasta_path> with your actual values:
+Only admin users can genrate ew genome index and annotation file. To generate a new index for an organism other than human, mouse and zebrafish, make sure to download first the genome fasta file and annotation file and then run the following command, replacing <organism_name>, <organism_alias>, <host_mount> and <fasta_path> with your actual values:
 
 ::
 
@@ -411,18 +409,47 @@ To generate a new star index for an organism other than human, mouse and zebrafi
    export HOST_MOUNT=<host_mount>
    export FASTA=<fasta_path>
    cd $HOST_MOUNT
-   mkdir -p  $HOST_MOUNT\genomes\star\$ORGANISM\alias\star_index
    source all_parameters 
+
+
+For MARS-Seq and SCRB-Seq pipeline follow the bellow instructions for generating STAR index and GTF file for MARS-Seq and SCRB-Seq pipelines.
+For RNA-Seq pipeline follow the bellow instructions for generating STAR index.
+For ATAC-Seq and ChIP-Seq pipeline follow the bellow instructions for generating bowtie2 index.
+
+
+Generate STAR (v2.7.10.a) index
+-------------------------------
+
+::
+
+   
+   mkdir -p  $HOST_MOUNT\genomes\star\$ORGANISM\alias\star_index
    singularity exec $IMAGE_PATH /opt/miniconda3/envs/utap/bin/STAR --runMode genomeGenerate  --runThreadN 30  --genomeDir \"$HOST_MOUNT\genomes\star\$ORGANISM\alias\star_index\"  --genomeFastaFiles \"$FASTA\" 
 
 
-Generate gtf for MARS-Seq pipeline
-----------------------------------
+Generate GTF for MARS-Seq and SCRB-Seq pipelines
+------------------------------------------------
+if you want to run MARS-Seq pipeline, a spcial gtf file in which the 3' UTR region is extended by 1000 bases towards the 5' end.
+To generate the MARS-Seq GTF file run the following commands, replacing  
+
+::
+
+
+   export GTF=<gtf_path>
+   export GTF_NO_EXT=$(basename "$GTF" | cut -d. -f1)
+   singularity exec $IMAGE_PATH  /opt/miniconda3/envs/ngsplot/bin/python2 /opt/miniconda3/envs/utap/bin/gtfUTRutils.py --input-gtf \"$GTF\" --output-gtf \"$GTF_NO_EXT.3utr.gtf\" --w3 100 --w5 1000 --ig-margin 50
 
 
 
-Generate Bowtie index 
+Generate Bowtie2 index 
 ---------------------
+
+::
+
+
+   mkdir -p  $HOST_MOUNT\genomes\bowtie2\$ORGANISM\alias\bowtie2_index
+   singularity exec $IMAGE_PATH /opt/miniconda3/envs/utap/bin/bowtie2-build  \"$FASTA\"  \"$HOST_MOUNT\genomes\star\$ORGANISM\bowtie2\bowtie2_index\"  
+
 
 
 Parameters
