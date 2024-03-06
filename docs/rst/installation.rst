@@ -77,7 +77,7 @@ Pull UTAP image from the public repository
 ------------------------------------------
 ::
 
-   singularity pull library://utap2/utap/utap:latest
+  cd $HOST_MOUNT; wget https://dors4.weizmann.ac.il/utap/UTAP_installation_files/utap_latest.sif
 
 
 
