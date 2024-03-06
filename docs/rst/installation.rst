@@ -396,6 +396,33 @@ If the run is successfully completed, the output message "UTAP test run succeede
 
 
 
+Generate new genome index and annotation file
+=============================================
+
+Generate STAR (v2.7.10.a) index
+-------------------------------
+To generate a new star index for an organism other than human, mouse and zebrafish, make sure to download first the genome fasta file and annotation file and then run the following command, replacing <organism_name>, <organism_alias>, <host_mount> and <fasta_path> with your actual values:
+
+::
+
+
+   export ORGANISM=<organism_name>
+   export ALIAS=<organism_alias> 
+   export HOST_MOUNT=<host_mount>
+   export FASTA=<fasta_path>
+   cd $HOST_MOUNT
+   mkdir -p  $HOST_MOUNT\genomes\star\$ORGANISM\alias\star_index
+   source all_parameters 
+   singularity exec $IMAGE_PATH /opt/miniconda3/envs/utap/bin/STAR --runMode genomeGenerate  --runThreadN 30  --genomeDir \"$HOST_MOUNT\genomes\star\$ORGANISM\alias\star_index\"  --genomeFastaFiles \"$FASTA\" 
+
+
+Generate gtf for MARS-Seq pipeline
+----------------------------------
+
+
+
+Generate Bowtie index 
+---------------------
 
 
 Parameters
