@@ -414,10 +414,9 @@ Only admin users can genrate new genome index and annotation file. To generate a
    source all_parameters 
 
 
-For MARS-Seq and SCRB-Seq pipeline follow the below instructions for generating STAR index and GTF file for MARS-Seq and SCRB-Seq pipelines.
-For RNA-Seq pipeline follow the below instructions for generating STAR index.
+For RNA-Seq, MARS-Seq and SCRB-Seq pipeline follow the below instructions for generating STAR index and GTF file for RNA-Seq, MARS-Seq and SCRB-Seq pipelines.
 For ATAC-Seq and ChIP-Seq pipeline follow the below instructions for generating bowtie2 index.
-Currently, new index and annotation file cannot be generated for Ribo-Seq pipelie (all demultiplexing pipelines dont require any genome indexes and annotation files).
+Currently, new index and annotation file cannot be generated for Ribo-Seq pipelie (all demultiplexing pipelines don't require any genome indexe and annotation file).
 
 Generate STAR (v2.7.10.a) index
 -------------------------------
@@ -430,7 +429,7 @@ Generate STAR (v2.7.10.a) index
     StarGenome(creature=\"$ORGANISM\", alias=\"ALIAS\", version=\"$VERSION\", source=\"$SOURCE\", path=\"$PATH_NAME\").save()" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell 
 
 
-Generate GTF for MARS-Seq and SCRB-Seq pipelines
+Generate GTF for RNA-Seq, MARS-Seq and SCRB-Seq pipelines
 ------------------------------------------------
 MARS-Seq pipeline requires a spcial gtf file in which the 3' UTR region is extended by 1000 bases towards the 5' end.
 To generate the MARS-Seq GTF file run the following commands, replacing  gtf_path with actual value.
