@@ -183,7 +183,8 @@ if [ $STATUS -ne 0 ]; then
 fi
 sleep 100
 #copy ssh files from host to login VM 
-export USER_LOGIN=`gcloud compute os-login describe-profile --format json|jq -r '.posixAccounts[].username'`
+export home_basename="$(basename "$HOME")"
+export USER_LOGIN="$home_basename""_gmail_com"
 export LOGIN_IP=`gcloud compute instances list --sort-by=~creationTimestamp --format="value(EXTERNAL_IP)" | head -n 1`
 
 #override_optional_param "GCP" "1"
