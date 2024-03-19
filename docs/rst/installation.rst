@@ -5,8 +5,11 @@ Installation
 *Support:* utap@weizmann.ac.il
 
 
+Install UTAP on a local server
+==============================
+
 Requirements
-============
+------------
 
 
 The application should be installed on a Linux server.
@@ -28,12 +31,6 @@ If the application is run on cluster, the user is also required to have permissi
 
 The user should then do the following:
 
-
-
-
-
-Run UTAP
-========
 
 
 Create a directory for UTAP software and its output
