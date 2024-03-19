@@ -149,7 +149,7 @@ Install UTAP on Google Cloud platform (GCP)
 
 UTAP can be executed on Google Cloud following the installation process. The installation is carried out using the Terraform application, deploying a Slurm cluster with 20 potential nodes of type N2- high memory, where each node is equipped with 2 CPUs and 32GB of memory on Google Cloud.
 
-The installation encompasses two VMDK images – one serving as the login node and the other as the controller node. These images are fetched from our public server and stored in the Google Storage bucket created during the installation. Subsequently, the images are transferred to your Google Cloud project as bootable images, a time-consuming procedure.
+The installation encompasses two compressed raw images – one serving as the login node and the other as the controller node. These images are fetched from our public server and stored in the Google Storage bucket created during the installation. Subsequently, the images are transferred to your Google Cloud project as bootable images, a time-consuming procedure.
 
 These images comprise the entire UTAP installation and include software that streamlines the installation process and ensures its stability.
 
@@ -199,7 +199,7 @@ Install Google cloud Slurm cluster VMs
 
 
 In this installation the required paraemters get also default values. 
-The default parameters can be modified in the files ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf.
+The default parameters can be modified in the files ~/utap2/scripts/required_parameters.conf ~/utap2/scripts/optional_parameters.conf.
 
 
 3. Execute slurm cluster installation on GCP:
@@ -266,7 +266,7 @@ Enter 'yes' to enable ssh to the cluster login node.
 .. image:: ../figures/login_vm.PNG
 
 
-If Google project allrady contains UTAP images, then the installation will takes only few minutes (~10). Otherwise, the installation will takes a few houres (~5 houres) since UTAP images have to be coped to youre Google cloud bucket storage and trasported as bootable images to your project. 
+If the Google project already contains UTAP images, the installation will take only a few minutes (approximately 10). Otherwise, the installation will take a few hours (approximately 5 hours) because UTAP images need to be copied to your Google Cloud bucket storage and then exported as bootable images to your project.
 
 Upon successful installation, two new VM will be created on your Google project as shown in the image bellow:
 
