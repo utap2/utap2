@@ -272,10 +272,10 @@ if [ $GCP = 1 ];  then  # use the function, save the code
   ln -s ~/data/install_UTAP_singularity.sh $HOST_MOUNT
   #ln -s ~/data/utap_latest.sif $HOST_MOUNT
   if [ ! -d "$HOST_MOUNT/utap.sandbox" ]; then
-    ln -s ~/utap.sandbox $HOST_MOUNT
+    ln -s /opt/apps/utap.sandbox $HOST_MOUNT
   fi
   if [ ! -d "$HOST_MOUNT/genomes" ]; then
-    ln -s ~/genomes $HOST_MOUNT
+    ln -s /opt/apps/genomes $HOST_MOUNT
   fi
   wait $!
   if [ "$CLUSTER_TYPE" != "local" ] && [ "$CLUSTER_TYPE" = "slurm" ]; then
