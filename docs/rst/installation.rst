@@ -91,17 +91,17 @@ If you are using multiple genomes, it is important to ensure that they are synch
 
     #Download the zipped folder into $HOST_MOUNT folder:
     #For Zebrafish genome:
-    wget --no-check-certificate https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
+    wget --no-check-certificate https://dors4.weizmann.ac.il/utap/UTAP_genomes/Zebrafish.tar.gz
     tar -xvzf Zebrafish.tar.gz
     rsync -a Zebrafish/* genomes/
     
     #For Mouse genome:
-    wget --no-check-certificate https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
+    wget --no-check-certificate https://dors4.weizmann.ac.il/utap/UTAP_genomes/Mouse.tar.gz
     tar -xvzf Mouse.tar.gz
     rsync -a Mouse/* genomes/
     
     #For Human genome:
-    wget --no-check-certificate https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
+    wget --no-check-certificate https://dors4.weizmann.ac.il/utap/UTAP_genomes/Human.tar.gz
     tar -xvzf Human.tar.gz
     rsync -a Human/* genomes/
    
@@ -312,7 +312,7 @@ For testing UTAP, you can download fastq files and test files for RNA-Seq pipeli
 
     export HOST_MOUNT=<the relevant path>
     cd $HOST_MOUNT
-    wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
+    wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome RNA-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
@@ -371,7 +371,7 @@ After submitting the run, you will be directed to the "User Datasets" page, whic
 The folder "4_reports/<report_name>_<run_id>" contains graphs, statistics, and additional information for all the pipeline steps. Once the run is completed, you will receive an email with links to the results report. For a detailed interactive explanation of the report, you can utilize the relevant e-learning module available in the site navigation bar.
 
 An example of the pipeline output can be found at:
-https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq
+https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/20230613_081343_test_Transcriptome_RNA-Seq
                                                       
 For further details, please refer to the "Help" tab in the site navigation bar.
 
@@ -689,7 +689,7 @@ For testing UTAP, you can download fastq files and test files for MARS-Seq pipel
 ::
 
     cd $HOST_MOUNT
-    wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
+    wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
