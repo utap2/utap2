@@ -39,7 +39,7 @@ Create a directory for UTAP software and its output
 Note: Since user output data will be written in this folder, please verify that you have sufficient disk space -  approximately 400G per analysis.
 ::
 
-   HOST_MOUNT=<the relevant path>
+   export HOST_MOUNT=<the relevant path>
    mkdir $HOST_MOUNT
    cd $HOST_MOUNT
 
@@ -74,7 +74,7 @@ Pull UTAP image from the public repository
 ------------------------------------------
 ::
 
-  cd $HOST_MOUNT; wget https://dors4.weizmann.ac.il/utap/UTAP_installation_files/utap_latest.sif
+  cd $HOST_MOUNT; wget -no-check-certificate https://dors4.weizmann.ac.il/utap/UTAP_installation_files/utap_latest.sif
 
 
 
@@ -91,17 +91,17 @@ If you are using multiple genomes, it is important to ensure that they are synch
 
     #Download the zipped folder into $HOST_MOUNT folder:
     #For Zebrafish genome:
-    wget https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
+    wget -no-check-certificate https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Zebrafish.tar.gz
     tar -xvzf Zebrafish.tar.gz
     rsync -a Zebrafish/* genomes/
     
     #For Mouse genome:
-    wget https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
+    wget -no-check-certificate https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Mouse.tar.gz
     tar -xvzf Mouse.tar.gz
     rsync -a Mouse/* genomes/
     
     #For Human genome:
-    wget https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
+    wget -no-check-certificate https://dors4.weizmann.ac.il/UTAP/UTAP_genomes/Human.tar.gz
     tar -xvzf Human.tar.gz
     rsync -a Human/* genomes/
    
@@ -310,8 +310,9 @@ Run RNA-Seq pipeline with example data
 For testing UTAP, you can download fastq files and test files for RNA-Seq pipeline folder as noted below.
 ::
 
+    export HOST_MOUNT=<the relevant path>
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
+    wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome RNA-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
@@ -385,6 +386,7 @@ To run the script, follow the instructions below (no need to download the result
 
 ::
 
+    export HOST_MOUNT=<the relevant path>
     cd $HOST_MOUNT
     chmod +x $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
     .  $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/test_files/test_UTAP.sh
@@ -687,7 +689,7 @@ For testing UTAP, you can download fastq files and test files for MARS-Seq pipel
 ::
 
     cd $HOST_MOUNT
-    wget  -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
+    wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
  
     
 Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
