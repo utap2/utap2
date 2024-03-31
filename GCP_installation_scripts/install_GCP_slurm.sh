@@ -219,7 +219,7 @@ scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/google
 scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/google_compute_engine ~/.ssh/google_compute_engine.pub "$USER_LOGIN"@"$LOGIN_IP":.ssh/id_rsa.pub
 
 # Mount bucket to $HOME/data on the login node. The bucket will contain all UTAP installation files (genomes are already found in the controller image together with UTAP installation as utap.sandbox ) and run UTAP
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "sudo chown -R $USER:$USER /opt/apps/utap.sandbox; mkdir -p ~/data && mkdir -p ~/singularity/mnt/session/ && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/data && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf"
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i  ~/.ssh/google_compute_engine  "$USER_LOGIN"@"$LOGIN_IP" "sudo chown -R \"$USER_LOGIN\":\"$USER_LOGIN\" /opt/apps/utap.sandbox; mkdir -p ~/data && mkdir -p ~/singularity/mnt/session/ && gcsfuse -o rw -file-mode=777 -dir-mode=777 --debug_fuse_errors  --debug_fuse --debug_fs --debug_gcs --implicit-dirs \"$bucket_name\" ~/data && bash data/install_UTAP_singularity.sh -a data/required_parameters.conf -b data/optional_parameters.conf"
 
 # Show the user the login URL to UTAP
 sed -i 's/\r$//'  ~/utap2/scripts/optional_parameters.conf
