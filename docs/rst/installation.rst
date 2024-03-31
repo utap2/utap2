@@ -191,7 +191,7 @@ Install Google cloud Slurm cluster VMs
 ::
 
 
-   cd ~ && git clone -b devel https://github.com/utap2/utap2.git && mv ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf   ~/utap2/scripts/
+   cd ~ && git clone https://github.com/utap2/utap2.git && mv ~/utap2/GCP_installation_scripts/required_parameters.conf ~/utap2/GCP_installation_scripts/optional_parameters.conf   ~/utap2/scripts/
    chmod +X ~/utap2/GCP_installation_scripts/*
 
 
