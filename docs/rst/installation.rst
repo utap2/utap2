@@ -411,6 +411,10 @@ Only admin users can genrate new genome index and annotation file. To generate a
    export FASTA=<fasta_path>
    cd $HOST_MOUNT
    source all_parameters 
+   source singularity_variables
+   export FASTA_BS=$(basename "$FASTA")
+   export FASTA_DN=$(dirname "$FASTA")
+   
 
 
 For RNA-Seq, MARS-Seq and SCRB-Seq pipeline follow the below instructions for generating STAR index and GTF file for RNA-Seq, MARS-Seq and SCRB-Seq pipelines.
@@ -422,10 +426,8 @@ Generate STAR (v2.7.10.a) index
 
 ::
 
-   export PATH_NAME="$HOST_MOUNT\genomes\star\$ORGANISM\alias\star_index"
-   mkdir -p  $PATH_NAME
-   singularity exec $IMAGE_PATH /opt/miniconda3/envs/utap/bin/STAR --runMode genomeGenerate  --runThreadN 30  --genomeDir \"$HOST_MOUNT\genomes\star\$ORGANISM\alias\star_index\"  --genomeFastaFiles \"$FASTA\ && echo "from analysis.models import StarGenome; \
-    StarGenome(creature=\"$ORGANISM\", alias=\"ALIAS\", version=\"$VERSION\", source=\"$SOURCE\", path=\"$PATH_NAME\").save()" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell 
+     eval $SINGULARITY_HOST_COMMAND; singularity exec -B $FASTA_DN $IMAGE_PATH bash -c "/opt/miniconda3/envs/utap/bin/STAR --runMode genomeGenerate  --runThreadN 30  --genomeDir $GENOMES_DIR/star/$ORGANISM/alias/star_index --genomeFastaFiles $FASTA && echo \"from analysis.models import StarGenome; \
+     StarGenome(creature=\"\\'$ORGANISM\\'\", alias=\"\\'$ALIAS\\'\", version=\"\\'$VERSION\\'\", source=\"\\'$SOURCE\\'\", path=\"\\'$GENOMES_DIR/star/$ORGANISM/alias/star_index\\'\").save()\" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell"; unset
 
 
 Generate GTF for RNA-Seq, MARS-Seq and SCRB-Seq pipelines
