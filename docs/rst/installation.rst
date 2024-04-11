@@ -398,7 +398,15 @@ If the run is successfully completed, the output message "UTAP test run succeede
 Generate new genome index and annotation file
 =============================================
 
-Only admin users can genrate new genome index and annotation file. To generate a new index for an organism other than human, mouse and zebrafish, make sure to download first the genome fasta file and annotation file and then run the following command, replacing <organism_name>, <organism_alias>, <host_mount>, <version> (only numbers), <source> and <fasta_path> with your actual values:
+Only admin users can genrate new genome index and annotation file. 
+For RNA-Seq, MARS-Seq and SCRB-Seq pipeline follow the below instructions for generating STAR index and GTF file for RNA-Seq, MARS-Seq and SCRB-Seq pipelines.
+For ATAC-Seq and ChIP-Seq pipeline follow the below instructions for generating Bowtie2 index.
+Currently, new index and annotation file cannot be generated for Ribo-Seq pipelie (all demultiplexing pipelines don't require any genome indexe and annotation file).
+
+
+Generate STAR (v2.7.10.a) index and GTF for RNA-Seq, MARS-Seq and SCRB-Seq pipelines
+------------------------------------------------------------------------------------
+To generate a new index for an organism other than human, mouse and zebrafish, make sure to download first the genome fasta file and annotation file and then run the following command, replacing <organism_name>, <organism_alias>, <host_mount>, <version> (only numbers), <source>, <fasta_full_path>, <gtf_full_path> and <gtf_annotation> (such as: GENCODE/RefSeq/Ensembl etc)  with your actual values:
 
 ::
 
@@ -408,57 +416,63 @@ Only admin users can genrate new genome index and annotation file. To generate a
    export VERSION=<version> #only numbers
    export SOURCE=<source>
    export HOST_MOUNT=<host_mount>
-   export FASTA=<fasta_path>
+   export FASTA=<fasta_full_path>
+   export GTF=<gtf_full_path>
+   export GTF_ANNOTATION=<gtf_annotation>
+   
+   
+
+Then run the folowing command:
+
+::
+
+
+
    cd $HOST_MOUNT
    source all_parameters 
    source singularity_variables
    export FASTA_BS=$(basename "$FASTA")
    export FASTA_DN=$(dirname "$FASTA")
-   
-
-
-For RNA-Seq, MARS-Seq and SCRB-Seq pipeline follow the below instructions for generating STAR index and GTF file for RNA-Seq, MARS-Seq and SCRB-Seq pipelines.
-For ATAC-Seq and ChIP-Seq pipeline follow the below instructions for generating bowtie2 index.
-Currently, new index and annotation file cannot be generated for Ribo-Seq pipelie (all demultiplexing pipelines don't require any genome indexe and annotation file).
-
-Generate STAR (v2.7.10.a) index
--------------------------------
-
-::
-
-     eval $SINGULARITY_HOST_COMMAND; singularity exec -B $FASTA_DN $IMAGE_PATH bash -c "/opt/miniconda3/envs/utap/bin/STAR --runMode genomeGenerate  --runThreadN 30  --genomeDir $GENOMES_DIR/star/$ORGANISM/alias/star_index --genomeFastaFiles $FASTA && echo \"from analysis.models import StarGenome; \
-     StarGenome(creature=\"\\'$ORGANISM\\'\", alias=\"\\'$ALIAS\\'\", version=\"\\'$VERSION\\'\", source=\"\\'$SOURCE\\'\", path=\"\\'$GENOMES_DIR/star/$ORGANISM/alias/star_index\\'\").save()\" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell"; unset
-
-
-Generate GTF for RNA-Seq, MARS-Seq and SCRB-Seq pipelines
-------------------------------------------------
-MARS-Seq pipeline requires a spcial gtf file in which the 3' UTR region is extended by 1000 bases towards the 5' end.
-To generate the MARS-Seq GTF file run the following commands, replacing  gtf_path with actual value.
-
-::
-
-
-   export GTF=<gtf_path>
    export GTF_NO_EXT=$(basename "$GTF" | cut -d. -f1)
-   singularity exec $IMAGE_PATH  /opt/miniconda3/envs/ngsplot/bin/python2 /opt/miniconda3/envs/utap/bin/gtfUTRutils.py --input-gtf \"$GTF\" --output-gtf \"$GTF_NO_EXT.3utr.gtf\" --w3 100 --w5 1000 --ig-margin 50 && export GTF_3UTR=\"$GTF_NO_EXT.3utr.gtf\" ||  export GTF_3UTR=\"$GTF\"; \
-    echo "from analysis.models import StarAnnotation, StarGenome, Bowtie2Genome, AllGenomes; \
-    fk_star = StarGenome.objects.get(creature=\"$ORGANISM\").id
-    fk_bowtie = Bowtie2Genome.objects.get(creature=\"$ORGANISM\").id
-    fk_all = AllGenomes.objects.get(creature=\"$ORGANISM\").id
-    StarAnnotation(genome=fk_star,bowtie2_genome=fk_bowtie,all_genome=fk_all,creature=\"$ORGANISM\", alias=\"$ALIAS\", version=\"$VERSION\", source=\"$SOURCE\", path=\"$GTF\", path3p=\"$GTF_3UTR\", path_UTR_CDS=None).save()" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell 
+   export GTF_DN=$(dirname "$GTF")
+   export GTF_BS=$(basename "$GTF")
+   export GTF_PATH=$GENOMES_DIR/star/$ORGANISM/annotation/$GTF_BS
+   eval $SINGULARITY_HOST_COMMAND; singularity exec -B $FASTA_DN -B $GTF_DN $IMAGE_PATH bash -c "/opt/miniconda3/envs/utap/bin/STAR --runMode genomeGenerate  --runThreadN 30  --genomeDir $GENOMES_DIR/star/$ORGANISM/star_index --genomeFastaFiles $FASTA && echo \"from analysis.models import StarGenome, StarAnnotation; \
+     fk_star = StarGenome(creature=\"\\'$ORGANISM\\'\", alias=\"\\'$ALIAS\\'\", version=\"\\'$VERSION\\'\", source=\"\\'$SOURCE\\'\", path=\"\\'$GENOMES_DIR/star/$ORGANISM/star_index\\'\"); \
+     fk_star.save(); \
+     StarAnnotation(genome=fk_star, creature=\"\\'$ALIAS\\'\", alias=\"\\'$GTF_ANNOTATION\\'\", version=$VERSION, source=\"\\'$SOURCE\\'\", path=\"\\'$GTF_PATH\\'\", path3p=\"\\'$GTF_PATH\\'\").save()\" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell"; unset all_parameters
+
 
 
 
 Generate Bowtie2 index 
 ---------------------
+To generate a new index for an organism other than human, mouse, make sure to download first the genome fasta file and then run the following command, replacing <organism_name>, <organism_alias>, <host_mount>, <version> (only numbers), <source>, <fasta_full_path> with your actual values:
 
 ::
 
-   export PATH_NAME="$HOST_MOUNT\genomes\bowtie2\$ORGANISM\alias\bowtie2_index"
-   mkdir -p  $PATH_NAME
-   singularity exec $IMAGE_PATH /opt/miniconda3/envs/utap/bin/bowtie2-build  \"$FASTA\"  \"$PATH_NAME\"  && echo "from analysis.models import Bowtie2Genome; \
-    Bowtie2Genome(creature=\"$ORGANISM\", alias=\"$ALIAS\", version\"$VERSION\", source=\"$SOURCE\", path= \"$PATH_NAME\", fasta= \"$FASTA\").save()" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell 
 
+   export ORGANISM=<organism_name>
+   export ALIAS=<organism_alias> 
+   export VERSION=<version> #only numbers
+   export SOURCE=<source>
+   export HOST_MOUNT=<host_mount>
+   export FASTA=<fasta_full_path>
+
+
+Then run the folowing command:
+
+:: 
+
+
+   cd $HOST_MOUNT
+   source all_parameters 
+   source singularity_variables
+   export FASTA_BS=$(basename "$FASTA")
+   export FASTA_DN=$(dirname "$FASTA")
+   eval "$SINGULARITY_HOST_COMMAND"; singularity exec -B $FASTA_DN $IMAGE_PATH bash -c "mkdir -p $GENOMES_DIR/bowtie2/$ORGANISM/bowtie2_index && /opt/miniconda3/envs/utap/bin/bowtie2-build  $FASTA  $GENOMES_DIR/bowtie2/$ORGANISM/bowtie2_index && echo \"from analysis.models import Bowtie2Genome; \
+ Bowtie2Genome(creature=\"\\'$ORGANISM\\'\", alias=\"\\'$ALIAS\\'\", version=\"\\'$VERSION\\'\", source=\"\\'$SOURCE\\'\", path=\"\\'$GENOMES_DIR/bowtie2/$ORGANISM/bowtie2_index\\'\", fasta=\"\\'$FASTA\\'\").save()\" \ | /opt/miniconda3/envs/utap-Django/bin/python /opt/utap/manage.py shell"; unset all_parameters
+ 
 
 
 
