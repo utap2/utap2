@@ -144,13 +144,11 @@ if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 Install UTAP on Google Cloud platform (GCP)
 ===========================================
 
-UTAP can be executed on Google Cloud folowing the installation process. The installation is carried out using the Terraform application, deploying a Slurm cluster with login node (
-n1-standard-2) , controller node (
-n1-standard-4) and  20 potential nodes of type N2- high memory, where each node is equipped with 2 CPUs and 32GB of memory on Google Cloud.
 
-Once the installation is completed, all UTAP software and applications are setup and ready to run. 
-For installing UTAP on Google cloud, follow the instructions below.
+UTAP2 can be deployed on Google Cloud by following the installation process. The installation is carried out using the Terraform application, which deploys a Slurm cluster comprising a login node of n1-standard-2 type, a controller node of n1-standard-4 type, and 20 potential nodes of type N2-high memory. Each node is equipped with 2 CPUs and 32GB of memory on Google Cloud.
 
+Once the installation process is complete, all UTAP software and applications are configured and prepared for execution. 
+To install UTAP on Google Cloud, refer to the following instructions.
 
 Requirments
 -----------
@@ -172,20 +170,20 @@ Requirments
 
          -At least 8 N2 CPUs for the region us-central1.
 
-   These are the default quotas, and it's recommended to request more quotas for better performance. 
+   These are the default quotas and it's recommended to request more quotas for better performance. 
    If using more than the default quotas, adjust MAX_CPU and MAX_MEMORY optional parameters accordingly. 
-   You can find information on how to request additional quotas in the Google Cloud documentation on Quotas at: https://cloud.google.com/docs/quotas#docs.
+   You can find information on how to request additional quotas in the Google Cloud documentation on quotas at: https://cloud.google.com/docs/quotas#docs.
    
 
 Install Google cloud Slurm cluster VMs
 --------------------------------------
 
-1. Enter google cloud shell as described in the bellow image 
+1. Enter google cloud shell as described in the bellow image. 
 
 .. image:: ../figures/google_cloud_shell.PNG
 
 
-2. Clone from our git repository the scripts for installing Google cloud slurm cluster login and controller VMs:
+2. Clone from our git repository the scripts for installing Google cloud Slurm cluster login and controller VMs:
 
 ::
 
@@ -194,35 +192,35 @@ Install Google cloud Slurm cluster VMs
    chmod +X ~/utap2/GCP_installation_scripts/*
 
 
-In this installation the required paraemters get also default values. 
+In this installation the required paraemeters get also default values. 
 The default parameters can be modified in the files ~/utap2/scripts/required_parameters.conf ~/utap2/scripts/optional_parameters.conf.
 
 
-3. Execute slurm cluster installation on GCP:
+3. Execute Slurm cluster installation on GCP:
 
 ::
 
    bash ~/utap2/GCP_installation_scripts/install_GCP_slurm.sh -i <project_id> 
    
 
-Dont forget to replace project_id parametr with your actual project id. 
+Don’t forget to replace 'project_id' parameter with your actual project id.
 
-Uppon running the above command, two compressed raw images – one serving as the login node and the other as the controller node (thes images comprise the entire UTAP installation and include software that streamlines the installation process and ensures its stability) are initially fetched from our public server and stored in your Google Storage bucket created during the installation. Then, the images are transferred to your Google Cloud project as bootable images, this procedure can take arround 10 houres.
+Upon running the above command, two compressed raw images are fetched from our public server. One image serves as the login node, and the other serves as the controller node. These images encompass the entire UTAP installation and include software that streamlines the installation process, ensuring stability. Initially, the images are stored in your Google Storage bucket, created during the installation process. Subsequently, the images are transferred to your Google Cloud project as bootable images. Please note that this procedure can take around 10 hours to complete.
 
 
-Click on autorize to give permissions to GCP shell as described in the image bellow :
+Click on authorize to give permissions to GCP shell as described in the image bellow:
 
 .. image:: ../figures/autorize_GCP_shell.PNG
 
 
 
-When promped for authentication, enter 'Y' as decribed in the image bellow:
+When prompted for authentication, enter 'Y' as described in the image bellow:
 
 .. image:: ../figures/authentication_promped.PNG
 
 
 
-Click on the link to authenticate with youe google account: 
+Click on the link to authenticate with your google account:
 
 .. image:: ../figures/authentication_link.PNG
 
@@ -255,7 +253,7 @@ Paste the code in the Google shell console and click on  "ENTER".
 
 
 
-Enter 'yes' to apply all proposed changes and install slurm cluster with Terraform.
+Enter 'yes' to apply all proposed changes and install Slurm cluster with Terraform.
 
 .. image:: ../figures/accept_terraform.PNG
 
@@ -265,7 +263,7 @@ Enter 'yes' to enable ssh to the cluster login node.
 .. image:: ../figures/login_vm.PNG
 
 
-If the Google project already contains UTAP images, the installation will take only a few minutes (approximately 10). Otherwise, the installation will take a few hours (approximately 5 hours) because UTAP images need to be copied to your Google Cloud bucket storage and then exported as bootable images to your project.
+If the Google project already contains UTAP images, the installation will take only a few minutes (approximately 15 minutes). Otherwise, the installation will take a few hours (approximately 10 hours) because UTAP images need to be copied to your Google Cloud bucket storage and then exported as bootable images to your project.
 
 Upon successful installation, two new VM will be created on your Google project as shown in the image bellow:
 
@@ -400,10 +398,7 @@ If the run is successfully completed, the output message "UTAP test run succeede
 Generate new genome index and annotation file
 =============================================
 
-Only admin users can genrate new genome index and annotation file. 
-For RNA-Seq, MARS-Seq and SCRB-Seq pipeline follow the below instructions for generating STAR index and GTF file for RNA-Seq, MARS-Seq and SCRB-Seq pipelines.
-For ATAC-Seq and ChIP-Seq pipeline follow the below instructions for generating Bowtie2 index.
-Currently, new index and annotation file cannot be generated for Ribo-Seq pipelie (all demultiplexing pipelines don't require any genome indexe and annotation file).
+Only admin users have the authority to generate new genome indexes and annotation files. For RNA-Seq, MARS-Seq, and SCRB-Seq pipelines, please adhere to the following instructions to generate STAR indexes and GTF files. For ATAC-Seq and ChIP-Seq pipelines, please refer to the instructions provided to generate Bowtie2 indexes. It's important to note that currently, new indexes and annotation files cannot be generated for the Ribo-Seq pipeline. Additionally, it's worth mentioning that all demultiplexing pipelines do not require any genome indexes or annotation files.
 
 
 Generate STAR (v2.7.10.a) index and GTF for RNA-Seq, MARS-Seq and SCRB-Seq pipelines
@@ -424,7 +419,7 @@ To generate a new index for an organism other than human, mouse and zebrafish, m
    
    
 
-Then run the folowing command:
+Then run the following command:
 
 ::
 
@@ -462,7 +457,7 @@ To generate a new index for an organism other than human, mouse, make sure to do
    export FASTA=<fasta_full_path>
 
 
-Then run the folowing command:
+Then run the following command:
 
 :: 
 
