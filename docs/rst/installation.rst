@@ -144,12 +144,9 @@ if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
 Install UTAP on Google Cloud platform (GCP)
 ===========================================
 
-UTAP can be executed on Google Cloud following the installation process. The installation is carried out using the Terraform application, deploying a Slurm cluster with 20 potential nodes of type N2- high memory, where each node is equipped with 2 CPUs and 32GB of memory on Google Cloud.
+UTAP can be executed on Google Cloud folowing the installation process. The installation is carried out using the Terraform application, deploying a Slurm cluster with login node, controller node and  20 potential nodes of type N2- high memory, where each node is equipped with 2 CPUs and 32GB of memory on Google Cloud.
 
-The installation encompasses two compressed raw images – one serving as the login node and the other as the controller node. These images are fetched from our public server and stored in the Google Storage bucket created during the installation. Subsequently, the images are transferred to your Google Cloud project as bootable images, a time-consuming procedure.
-
-These images comprise the entire UTAP installation and include software that streamlines the installation process and ensures its stability.
-
+Once the installation is completed, all UTAP software and applications are setup and ready to run. 
 For installing UTAP on Google cloud, follow the instructions below.
 
 
@@ -207,6 +204,9 @@ The default parameters can be modified in the files ~/utap2/scripts/required_par
    
 
 Dont forget to replace project_id parametr with your actual project id. 
+
+Uppon running the above command, two compressed raw images – one serving as the login node and the other as the controller node (thes images comprise the entire UTAP installation and include software that streamlines the installation process and ensures its stability) are initially fetched from our public server and stored in your Google Storage bucket created during the installation. Then, the images are transferred to your Google Cloud project as bootable images, this procedure can take arround 10 houres.
+
 
 Click on autorize to give permissions to GCP shell as described in the image bellow :
 
