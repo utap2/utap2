@@ -231,9 +231,12 @@ Make sure to select the Google account with which your project has been created.
 .. image:: ../figures/choose_google_account.PNG
 
 
+
 Click on continue to sign in Google cloud SDK.
 
 .. image:: ../figures/sign_in_sdk.PNG
+
+
 
 Click on Allow to access your Google Account.
 
@@ -251,11 +254,6 @@ Paste the code in the Google shell console and click on  "ENTER".
 
 .. image:: ../figures/paste_code.PNG 
 
-
-
-Enter 'yes' to apply all proposed changes and install Slurm cluster with Terraform.
-
-.. image:: ../figures/accept_terraform.PNG
 
 
 If the Google project already contains UTAP images, the installation will take only a few minutes (approximately 15 minutes). Otherwise, the installation will take a few hours (approximately 10 hours) because UTAP images need to be copied to your Google Cloud bucket storage and then exported as bootable images to your project.
