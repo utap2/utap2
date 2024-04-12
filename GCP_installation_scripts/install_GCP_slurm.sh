@@ -183,7 +183,7 @@ sed -i "s/BUCKET_NAME/${bucket_name//\//\\/}/" ~/slurm-gcp/terraform/slurm_clust
 
 # Install slurm cluster with terraform
 cd ~/slurm-gcp/terraform/slurm_cluster/examples/slurm_cluster/simple_cloud_utap
-terraform init && terraform validate && terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster")
+terraform init && terraform validate && printf 'yes\n' | terraform apply -var-file=example.tfvars || (echo "ERROR installing GCP Slurm cluster")
 wait
 STATUS=$?
 if [ $STATUS -ne 0 ]; then
