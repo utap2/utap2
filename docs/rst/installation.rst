@@ -258,11 +258,6 @@ Enter 'yes' to apply all proposed changes and install Slurm cluster with Terrafo
 .. image:: ../figures/accept_terraform.PNG
 
 
-Enter 'yes' to enable ssh to the cluster login node.
-
-.. image:: ../figures/login_vm.PNG
-
-
 If the Google project already contains UTAP images, the installation will take only a few minutes (approximately 15 minutes). Otherwise, the installation will take a few hours (approximately 10 hours) because UTAP images need to be copied to your Google Cloud bucket storage and then exported as bootable images to your project.
 
 Upon successful installation, two new VM will be created on your Google project as shown in the image bellow:
