@@ -256,19 +256,21 @@ Paste the code in the Google shell console and click on  "ENTER".
 
 
 
-If the Google project already contains UTAP images, the installation will take only a few minutes (approximately 15 minutes). Otherwise, the installation will take a few hours (approximately 10 hours) because UTAP images need to be copied to your Google Cloud bucket storage and then exported as bootable images to your project.
-
-Upon successful installation, two new VM will be created on your Google project as shown in the image bellow:
+If the Google project already contains UTAP images, the installation will take a few minutes (approximately 15 minutes) to complete. Otherwise, the installation will take approximately 20 hours to complete. This breakdown includes:
+- 15-16 hours for downloading and uploading the controller image (96GB) and the login image (17GB) to your bucket.
+- An additional 3 hours for importing the images to your project as bootable images.
+- Approximately 15 minutes for the installation process.
+Upon successful installation, two new VMs (controller and login nodes) will be created on your Google project as shown in the image bellow:
 
 .. image:: ../figures/VMs.PNG
 
 
 The login VM is assigned an external IP address (as displayed in the image). Please copy this IP address to access the UTAP site using the following link: https://<external login node IP>:7000 (the default Apache2 port is 7000 unless the HOST_APACHE_PORT optional parameter has been altered).
+To log in to UTAP for the first time,use the following credentials:
 
+Username: admin
+Password: Admin1234 (if the ADMIN_PASS required parameter was not changed)
 
-
-
- 
 
 
 
