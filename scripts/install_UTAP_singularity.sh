@@ -278,7 +278,7 @@ if [ $GCP = 1 ];  then  # use the function, save the code
     ln -s /opt/apps/genomes $HOST_MOUNT
   fi
   wait $!
-  if [ "$CLUSTER_TYPE" != "local" ] && [ "$CLUSTER_TYPE" = "slurm" ]; then
+  if [ "$CLUSTER_TYPE" != "local" ] && [ "$CLUSTER_TYPE" != "slurm" ]; then
     export CLUSTER_TYPE="slurm"
     override_param CLUSTER_TYPE "slurm"  
   #bash ~/data/install_UTAP_GCP.sh
