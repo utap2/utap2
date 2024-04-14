@@ -5,7 +5,7 @@ Installation
 *Support:* utap@weizmann.ac.il
 
 
-Install UTAP on a local server
+Install UTAP2 on a local server
 ==============================
 
 Requirements
@@ -15,7 +15,7 @@ Requirements
 The application should be installed on a Linux server.
 
 
-If the server supports LSF or Slurm cluster, it is recommended to run UTAP pipelines on the cluster in order to improve computational efficiency. Otherwise, if the server does not support LSF or Slurm cluster, the UTAP pipelines will need to be executed locally.
+If the server supports load sharing facility (LSF)/Portable Batch System (PBS)/Slurm/Sun Grid Engine (SGE)/LoadLeveler cluster, it is recommended to run UTAP2 pipelines on the cluster in order to improve computational efficiency (note that UTAP2 was executed and tested onlt on LSF and Slurm clusters). Otherwise, if the server does not support one of the above clusters, the UTAP2 pipelines will need to be executed locally.
 
 
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory.
@@ -33,7 +33,7 @@ The user should then do the following:
 
 
 
-Create a directory for UTAP software and its output
+Create a directory for UTAP2 software and its output
 ---------------------------------------------------
 
 Note: Since user output data will be written in this folder, please verify that you have sufficient disk space -  approximately 400G per analysis.
@@ -46,10 +46,10 @@ Note: Since user output data will be written in this folder, please verify that 
 
 
 
-Download the UTAP installation folder 
+Download the UTAP2 installation folder 
 -------------------------------------
 
-The UTAP installation folder includes the following files:
+The UTAP2 installation folder includes the following files:
   a.	install_UTAP_singularity.sh
   b.	optional_parameters.conf
   c.	ports.conf
@@ -70,7 +70,7 @@ The UTAP installation folder includes the following files:
 
 
 
-Pull UTAP image from the public repository
+Pull UTAP2 image from the public repository
 ------------------------------------------
 ::
 
@@ -108,7 +108,7 @@ If you are using multiple genomes, it is important to ensure that they are synch
    
    
 
-Execute UTAP
+Execute UTAP2
 --------------
 Fill up all the parameters in files required_parameters.conf and optional_parameters.conf. 
 
@@ -118,10 +118,10 @@ The parameters mentioned in the optional_parameters.conf file are not mandatory 
 
 All the parameters are described below under the section parameters.
 
-Note: UTAP can be installed either as an instance container or as a sandbox container. 
-If the user has "fakeroot" privileges and there is approximately 36 GB of available space in the server's temp directory (default location: /tmp but can be modified using SINGULARITY_TMP_DIR in the optional_parameters.conf) or in the "HOST_MOUNT" directory, and the corresponding directory is not mounted as a GPFS or NFS mount, then UTAP will be installed as an instance container. Otherwise, UTAP will be installed as a sandbox container.
+Note: UTAP2 can be installed either as an instance container or as a sandbox container. 
+If the user has "fakeroot" privileges and there is approximately 36 GB of available space in the server's temp directory (default location: /tmp but can be modified using SINGULARITY_TMP_DIR in the optional_parameters.conf) or in the "HOST_MOUNT" directory, and the corresponding directory is not mounted as a GPFS or NFS mount, then UTAP2 will be installed as an instance container. Otherwise, UTAP2 will be installed as a sandbox container.
 
-For running UTAP run the command in the shell:
+For running UTAP2 run the command in the shell:
 
 ::
 
@@ -129,9 +129,9 @@ For running UTAP run the command in the shell:
     ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
     
 
-If UTAP was installed as an instance, an image named utap.SIF (approximately 7GB in size) will be created in your $HOST_MOUNT directory, along with additional folders and files necessary for UTAP run.
+If UTAP2 was installed as an instance, an image named utap.SIF (approximately 7GB in size) will be created in your $HOST_MOUNT directory, along with additional folders and files necessary for UTAP2 run.
 
-Alternatively, if UTAP was installed as a sandbox, a folder named utap.sandbox (around 17GB in size) will be generated in your $HOST_MOUNT directory, containing the required folders and files for UTAP run.
+Alternatively, if UTAP2 was installed as a sandbox, a folder named utap.sandbox (around 17GB in size) will be generated in your $HOST_MOUNT directory, containing the required folders and files for UTAP2 run.
 
 Upon completion of the run, you will be able to access the application through your web browser using the following address:
 
@@ -139,21 +139,21 @@ http://DNS_HOST:HOST_APACHE_PORT
 or
 http://host_ip:7000
 if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
-To log in to UTAP for the first time,use the following credentials:
+To log in to UTAP2 for the first time,use the following credentials:
 
 Username: admin
 
 Password: the password is the ADMIN_PASS required parameter
 
 
-Install UTAP on Google Cloud platform (GCP)
+Install UTAP2 on Google Cloud platform (GCP)
 ===========================================
 
 
 UTAP2 can be deployed on Google Cloud by following the installation process. The installation is carried out using the Terraform application, which deploys a Slurm cluster comprising a login node of n1-standard-2 type, a controller node of n1-standard-4 type, and 20 potential nodes of type N2-high memory. Each node is equipped with 2 CPUs and 32GB of memory on Google Cloud.
 
-Once the installation process is complete, all UTAP software and applications are configured and prepared for execution. 
-To install UTAP on Google Cloud, refer to the following instructions.
+Once the installation process is complete, all UTAP2 software and applications are configured and prepared for execution. 
+To install UTAP2 on Google Cloud, refer to the following instructions.
 
 Requirments
 -----------
@@ -210,7 +210,7 @@ The default parameters can be modified in the files ~/utap2/scripts/required_par
 
 Don’t forget to replace 'project_id' parameter with your actual project id.
 
-Upon running the above command, two compressed raw images are fetched from our public server. One image serves as the login node, and the other serves as the controller node. These images encompass the entire UTAP installation and include software that streamlines the installation process, ensuring stability. Initially, the images are stored in your Google Storage bucket, created during the installation process. Subsequently, the images are transferred to your Google Cloud project as bootable images. Please note that this procedure can take around 10 hours to complete.
+Upon running the above command, two compressed raw images are fetched from our public server. One image serves as the login node, and the other serves as the controller node. These images encompass the entire UTAP2 installation and include software that streamlines the installation process, ensuring stability. Initially, the images are stored in your Google Storage bucket, created during the installation process. Subsequently, the images are transferred to your Google Cloud project as bootable images. Please note that this procedure can take around 10 hours to complete.
 
 
 Click on authorize to give permissions to GCP shell as described in the image bellow:
@@ -261,7 +261,7 @@ Paste the code in the Google shell console and click on  "ENTER".
 
 
 
-If the Google project already contains UTAP images, the installation will take a few minutes (approximately 15 minutes) to complete. Otherwise, the installation will take approximately 20 hours to complete. This breakdown includes:
+If the Google project already contains UTAP2 images, the installation will take a few minutes (approximately 15 minutes) to complete. Otherwise, the installation will take approximately 20 hours to complete. This breakdown includes:
 
 - 15-16 hours for downloading and uploading the controller image (96GB) and the login image (17GB) to your bucket.
 
@@ -274,9 +274,9 @@ Upon successful installation, two new VMs (controller and login nodes) will be c
 .. image:: ../figures/VMs.PNG
 
 
-The login VM is assigned an external IP address (as displayed in the image). Please copy this IP address to access the UTAP site using the following link: https://<external login node IP>:7000 (the default Apache2 port is 7000 unless the HOST_APACHE_PORT optional parameter has been altered).
+The login VM is assigned an external IP address (as displayed in the image). Please copy this IP address to access the UTAP2 site using the following link: https://<external login node IP>:7000 (the default Apache2 port is 7000 unless the HOST_APACHE_PORT optional parameter has been altered).
 
-To log in to UTAP for the first time,use the following credentials:
+To log in to UTAP2 for the first time,use the following credentials:
 
 Username: admin
 
@@ -285,13 +285,13 @@ Password: Admin1234 (if the ADMIN_PASS required parameter was not changed)
 
 
 
-Upload data to UTAP
--------------------
+Upload data to UTAP2
+--------------------
 
 
-To upload data, such as fastq files, either from your local PC or a mounted location, please utilize the upload feature on the UTAP site.
+To upload data, such as fastq files, either from your local PC or a mounted location, utilize the upload feature on the UTAP2 site.
 
-For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> and <input> with your actual bucket name and input files (the default HOST_MOUNT directory is $HOME, if you changed it in the optional_parameters.conf during UTAP installation, you will need to change it here as well), to copy the data from the bucket to the cluster:
+For admin users exclusively, if your data resides in a Google bucket, execute the following commands in your Google Shell, replacing <bucket_name> and <input> with your actual bucket name and input files (the default HOST_MOUNT directory is $HOME, if you changed it in the optional_parameters.conf during UTAP2 installation, you will need to change it here as well), to copy the data from the bucket to the cluster:
 ::
 
 
@@ -305,15 +305,15 @@ For admin users exclusively, if your data resides in a Google bucket, execute th
 
 
 If your data is stored in an AWS S3 bucket, utilize the Google Transfer Data service to move the data from the AWS S3 bucket to the Google bucket "
-slurm-us-central1-simple" generated during the UTAP installation process. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
+slurm-us-central1-simple" generated during the UTAP2 installation process. Refer to the official documentation at https://cloud.google.com/storage-transfer/docs/overview for detailed instructions. After completing the data transfer to the Google bucket, run the aforementioned commands in your Google Shell.
 
-Test UTAP
+Test UTAP2
 =========
 
 
 Run RNA-Seq pipeline with example data
 --------------------------------------
-For testing UTAP, you can download fastq files and test files for RNA-Seq pipeline folder as noted below.
+For testing UTAP2, you can download fastq files and test files for RNA-Seq pipeline folder as noted below.
 ::
 
     export HOST_MOUNT=<the relevant path>
@@ -321,7 +321,7 @@ For testing UTAP, you can download fastq files and test files for RNA-Seq pipeli
     wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*'  --exclude-directories=/20230613_081343_test_Transcriptome_RNA-Seq -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/example_and_data_for_testing_hg38_RNA-seq/
  
     
-Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome RNA-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
+Once the download is finished, log in to the UTAP2 site as the admin USER and select the Transcriptome RNA-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
 
       1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/fastq using the browser in the "Input folder" field.
       
@@ -349,7 +349,7 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
                      
                      IZ-siC
       
-      It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
+      It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP2 run test.
    
    7.Add batch effect by clicking on "Add Batch Effect" button. 
    
@@ -490,13 +490,13 @@ Required parameters
 HOST_MOUNT             
                        Mount point from the singularity on the host (full path of the folder).
                           
-                       This is the folder that contains all UTAP installation files,
+                       This is the folder that contains all UTAP2 installation files,
                           
                        All input and output data for all of the users will be written into this folder.
 
 
 ADMIN_PASS              
-                       Password of an admin in the UTAP database
+                       Password of an admin in the UTAP2 database
                         
                        (The password must contain at least one uppercase character, one lowercase character, and one digit).
 
@@ -597,7 +597,7 @@ CONDA
 
 
 PROXY_URL            
-                        UTAP's URL if you are using proxy server. 
+                        UTAP2's URL if you are using proxy server. 
                         default: DNS_HOST:HOST_APACHE_PORT
 
 
@@ -670,11 +670,11 @@ Additional optional parameters for installing on a cluster:
 CLUSTER_TYPE         
                      Type of the cluster.
 
-                     **For example:** lsf or pbs or local.
+                     **For example:** lsf/pbs/slurm/sge/load leveler/local.
 
-                     The commands will be sent to the cluster. Currently, UTAP supports LSF or PBS clusters.
+                     The commands will be sent to the cluster. Currently, UTAP2 supports load sharing facility (LSF), Portable Batch System (PBS), Slurm, Sun Grid Engine (SGE) and LoadLeveler clusters (note that UTAP2 was executed and tested onlt on LSF and Slurm clusters).
                      
-                     When "local" parameter is used, UTAP pipelines will be run on the local host inside the container.
+                     When "local" parameter is used, UTAP2 pipelines will be run on the local host inside the container.
 
                      **The default is:** CLUSTER_TYPE=local
 
@@ -704,14 +704,14 @@ Additional example for testing
 
 Run MARS-Seq pipeline with example data
 --------------------------------------
-For testing UTAP, you can download fastq files and test files for MARS-Seq pipeline folderas noted below.
+For testing UTAP2, you can download fastq files and test files for MARS-Seq pipeline folderas noted below.
 ::
 
     cd $HOST_MOUNT
     wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
  
     
-Once the download is finished, log in to the UTAP site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
+Once the download is finished, log in to the UTAP2 site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
 
       1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
       
@@ -752,7 +752,7 @@ Once the download is finished, log in to the UTAP site as the admin USER and sel
                      GFAP_reporter_12hLPS_CD45_2_LPS_2
 
       
-      It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP run test.
+      It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP2 run test.
    
    7.click on "Run analysis" button
 
