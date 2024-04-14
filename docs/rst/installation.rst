@@ -139,6 +139,11 @@ http://DNS_HOST:HOST_APACHE_PORT
 or
 http://host_ip:7000
 if the default values for DNS_HOST and HOST_APACHE_PORT were not modified.
+To log in to UTAP for the first time,use the following credentials:
+
+Username: admin
+
+Password: Admin1234 (if the ADMIN_PASS required parameter was not changed)
 
 
 Install UTAP on Google Cloud platform (GCP)
@@ -257,18 +262,24 @@ Paste the code in the Google shell console and click on  "ENTER".
 
 
 If the Google project already contains UTAP images, the installation will take a few minutes (approximately 15 minutes) to complete. Otherwise, the installation will take approximately 20 hours to complete. This breakdown includes:
+
 - 15-16 hours for downloading and uploading the controller image (96GB) and the login image (17GB) to your bucket.
+
 - An additional 3 hours for importing the images to your project as bootable images.
+
 - Approximately 15 minutes for the installation process.
+
 Upon successful installation, two new VMs (controller and login nodes) will be created on your Google project as shown in the image bellow:
 
 .. image:: ../figures/VMs.PNG
 
 
 The login VM is assigned an external IP address (as displayed in the image). Please copy this IP address to access the UTAP site using the following link: https://<external login node IP>:7000 (the default Apache2 port is 7000 unless the HOST_APACHE_PORT optional parameter has been altered).
+
 To log in to UTAP for the first time,use the following credentials:
 
 Username: admin
+
 Password: Admin1234 (if the ADMIN_PASS required parameter was not changed)
 
 
