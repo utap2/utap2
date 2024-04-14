@@ -143,7 +143,7 @@ To log in to UTAP for the first time,use the following credentials:
 
 Username: admin
 
-Password: Admin1234 (if the ADMIN_PASS required parameter was not changed)
+Password: the password is the ADMIN_PASS required parameter
 
 
 Install UTAP on Google Cloud platform (GCP)
