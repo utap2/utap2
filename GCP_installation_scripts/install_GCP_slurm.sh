@@ -58,8 +58,8 @@ echo "project id: $project_id, project num: $project_num, bucket name: $bucket_n
 #gcloud auth login - you are allready authenticated with gcloud when running inside the Cloud Shell and so do not need to run this command.
 gcloud config set project $project_id
 
-# Grant user access credentials to terraform 
- printf 'Y\n' | gcloud auth application-default login
+# Grant user access credentials to terraform. This obtains your credentials via a web flow and stores them in 'the well-known location for Application Default Credentials'. Now any code/SDK you run will be able to find the credentials automatically.
+gcloud auth application-default login
 
 # Enable VM connection to your cluster by using ssh with os-login at project level
 gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE
