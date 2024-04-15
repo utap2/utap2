@@ -59,7 +59,7 @@ echo "project id: $project_id, project num: $project_num, bucket name: $bucket_n
 gcloud config set project $project_id
 
 # Grant user access credentials to terraform 
-gcloud auth application-default login
+ printf 'Y\n' | gcloud auth application-default login
 
 # Enable VM connection to your cluster by using ssh with os-login at project level
 gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE
