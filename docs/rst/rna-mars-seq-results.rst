@@ -36,27 +36,26 @@ The report includes several sections:
 
 1. Sequencing and Mapping QC
 
-    a. **Figure 1** - Plots the average quality of each base across all reads. Qualities of 30 (predicted error rate 1:1000) and above are good
-
-    b. **Figure 2** - Histogram showing the number of reads for each sample in the raw data
+    a. `**Figure 1** <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_1.png>`_ - Plots the average quality of each base across all reads. Qualities of 30 (predicted error rate 1:1000) and above are good 
+    b. `**Figure 2** <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_2.png>`_ - Histogram showing the number of reads for each sample in the raw data
     c. **Figure 3** - Histogram showing the percentage of reads discarded after trimming the adapters (after removing adapters, short, polyA/T and low quality reads are discarded by the pipeline)
-    d. **Figure 4** - Histogram with the number of reads for each sample in each step of the pipeline
-    e. **Figure 5** - Plots sequence coverage on and near gene regions 
+    d. `**Figure 4** <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_4.png>`_ - Histogram with the number of reads for each sample in each step of the pipeline
+    e. `**Figure 5** <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_5.png>`_ - Plots sequence coverage on and near gene regions 
 
 2. Exploratory Analysis
-    a. **Figure 6** - Heatmap plotting the fraction of reads from the genes with the most counts 
-    b. **Figure 7** - Heatmap of Pearson correlation between samples according to gene expression values
-    c. **Figure 8** - Clustering dendrogram of the samples according to gene expression
+    a. `**Figure 6** <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_6.png>`_ - Heatmap plotting the fraction of reads from the genes with the most counts 
+    b. `**Figure 7** <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_7.png>`_ - Heatmap of Pearson correlation between samples according to gene expression values
+    c. `**Figure 8** <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_8.png>`_ - Clustering dendrogram of the samples according to gene expression
     d. **Figure 9** - PCA analysis
-        i. Histogram of % explained variability for each PC component
-        ii. PCA plot of PC1 vs PC2
-	iii. PCA plot of PC1 vs PC3
+        i. `Histogram of % explained variability for each PC component <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_9.png>`_
+        ii. `PCA plot of PC1 vs PC2 <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_10.png>`_
+	iii. `PCA plot of PC1 vs PC3 <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_10.png>`_
 
-3. Differential Expression Analysis (this section exists only if you run the DESeq2 analysis) - a table with the number of differentially expressed genes (DE) in each category (up/down) for the different contrasts.  In addition, links for p-value distribution, volcano plots and heatmaps, as well as a table of the DE genes with dot plots of their expression values are also provided
+3. `Differential Expression Analysis <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_11.png>`_ (this section exists only if you run the DESeq2 analysis) - a table with the number of differentially expressed genes (DE) in each category (up/down) for the different contrasts.  In addition, links for p-value distribution, volcano plots and heatmaps, as well as a table of the DE genes with dot plots of their expression values are also provided
 
-4. Bioinformatics Pipeline Methods - description of pipeline methods
+4. `Bioinformatics Pipeline Methods <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_12.png>`_ - description of pipeline methods
 
-5. Links to additional results - links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts. In cases of models with batches, "combat" values calculated (instead of rld) using the "sva" package, providing batch corrected normalized log2 count values.
+5. `Links to additional results <https://utap-demo.weizmann.ac.il/reports/MARS_Seq_fig_13.png>`_ - links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts. In cases of models with batches, "combat" values calculated (instead of rld) using the "sva" package, providing batch corrected normalized log2 count values.
 
 
 Annotation file
