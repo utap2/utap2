@@ -15,7 +15,7 @@ Requirements
 The application should be installed on a Linux server.
 
 
-If the server supports load sharing facility (LSF)/Portable Batch System (PBS)/Slurm/Sun Grid Engine (SGE)/LoadLeveler cluster, it is recommended to run UTAP2 pipelines on the cluster in order to improve computational efficiency (note that UTAP2 was executed and tested onlt on LSF and Slurm clusters). Otherwise, if the server does not support one of the above clusters, the UTAP2 pipelines will need to be executed locally.
+If the server supports load sharing facility (LSF)/Portable Batch System (PBS)/Slurm/Sun Grid Engine (SGE)/LoadLeveler cluster, it is recommended to run UTAP2 pipelines on the cluster in order to improve computational efficiency (note that UTAP2 was executed and tested only on LSF and Slurm clusters). Otherwise, if the server does not support one of the above clusters, the UTAP2 pipelines will need to be executed locally.
 
 
 The host server and/or each compute node in the relevant queue(s) requires ~40GB of RAM memory.
