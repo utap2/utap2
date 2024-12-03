@@ -4,6 +4,8 @@ Analysis pipeline steps and reports
 Analysis pipeline steps
 -----------------------
 
+The pipeline:
+
 1. Trims adapter sequences
 
 2. Runs FastQC on the trimmed sequences for quality control of the samples, in parallel with the steps that follow
@@ -14,9 +16,9 @@ Analysis pipeline steps
 
 5. Quantifies gene expression by counting reads
 
-6. Counts UMI's for cases of PCR bias
+6. Counts UMI's for cases of PCR bias (only if DESeq2 is selected)
 
-7. Detects Differentially Expressed (DE) genes for a model with a single factor
+7. Detects Differentially Expressed (DE) genes for a model with a single factor (only if DESeq2 is selected)
 
 Steps 3 and 5 are performed only for Mars-Seq
 
