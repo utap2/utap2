@@ -59,7 +59,7 @@ The UTAP2 installation folder includes the following files:
   g.	install_UTAP_image.sh
   h.	run_UTAP_sandbox.sh
 
- You can download it using as noted below, and then unpack it in the $HOST_MOUNT folder.
+ You can download it as noted below, and then unpack it in the $HOST_MOUNT folder.
 ::
 
 
@@ -121,7 +121,7 @@ All the parameters are described below under the section parameters.
 Note: UTAP2 can be installed either as an instance container or as a sandbox container. 
 If the user has "fakeroot" privileges and there is approximately 36 GB of available space in the server's temp directory (default location: /tmp but can be modified using SINGULARITY_TMP_DIR in the optional_parameters.conf) or in the "HOST_MOUNT" directory, and the corresponding directory is not mounted as a GPFS or NFS mount, then UTAP2 will be installed as an instance container. Otherwise, UTAP2 will be installed as a sandbox container.
 
-For running UTAP2 run the command in the shell:
+Run the following shell command in order to run UTAP2:
 
 ::
 
@@ -129,9 +129,9 @@ For running UTAP2 run the command in the shell:
     ./install_UTAP_singularity.sh -a required_parameters.conf -b optional_parameters.conf
     
 
-If UTAP2 was installed as an instance, an image named utap.SIF (approximately 7GB in size) will be created in your $HOST_MOUNT directory, along with additional folders and files necessary for UTAP2 run.
+If UTAP2 was installed as an instance, an image named utap.SIF (approximately 7GB in size) will be created in your $HOST_MOUNT directory, along with additional folders and files necessary for running UTAP2.
 
-Alternatively, if UTAP2 was installed as a sandbox, a folder named utap.sandbox (around 17GB in size) will be generated in your $HOST_MOUNT directory, containing the required folders and files for UTAP2 run.
+Alternatively, if UTAP2 was installed as a sandbox, a folder named utap.sandbox (around 17GB in size) will be generated in your $HOST_MOUNT directory, containing the required folders and files for running UTAP2.
 
 Upon completion of the run, you will be able to access the application through your web browser using the following address:
 
@@ -201,7 +201,7 @@ In this installation the required paraemeters get also default values.
 The default parameters can be modified in the files ~/utap2/scripts/required_parameters.conf ~/utap2/scripts/optional_parameters.conf.
 
 
-3. Execute Slurm cluster installation on GCP:
+3. Execute Slurm cluster installation on Google Cloud Platform:
 
 ::
 
@@ -249,7 +249,7 @@ Click on Allow to access your Google Account.
 
 
 
-Click on copy to copy the indicated password.
+Click on copy in order to copy the indicated password.
 
 .. image:: ../figures/copy_code.PNG
 
