@@ -15,13 +15,18 @@ Upload BCL files to the server according to the following instructions:
 
 All original BCL file folders must be built according to Next-seq (or Hi-seq) machine requirements. Folder names should adhere to the template <date>_<machine name>_<run number>_<flowcell id>, e.g.  "170802_NB501465_0140_AH3W3KBGX3".
 
-The pipeline converts bcl files to fastq files, and demultiplexes fastq files according to MAR-seq or True-seq (or semi- True-seq) protocols.
+The pipeline converts bcl files to fastq files, and demultiplexes fastq files according to MAR-seq or True-seq (or semi- True-seq) or SCRB-seq protocols.
+
+Demultiplexing from BCL Analysis Setup
+======================================
+
+.. image:: ../figures/demultiplex_bcl.png
 
 
 Demultiplexing from fastq files
 -------------------------------
 
-The pipeline demultiplexes fastq files according to MAR-seq or True-seq (or semi- True-seq) protocols.
+The pipeline demultiplexes fastq files according to MAR-seq protocol.
 
 Upload fastq files to the server according to the following instructions:
 
@@ -31,9 +36,10 @@ Upload fastq files to the server according to the following instructions:
     upload
 
 
-Note that the pipeline get as input one file per read (i.e. one file for each of *R1*, *R2*, *I1* etc.).
-Choose the root folder of the fastq files from the list.
+The input folder should contain the undetermined FASTQ files. Note: the pipeline can accept multiple files per read as input (i.e., multiple files for each R1 and R2, such as undetermined_fastq_files/Undetermined_S0_L001_R1_001.fastq.gz and Undetermined_S0_L002_R1_001.fastq.gz).
 
-If the sequencing is single read, choose the file with *R1* in its file name for read 1, the file with either *R2* or *I1* for index read, and leave the read 2 field empty.
+Demultiplexing from fastq Analysis Setup
+======================================
 
-If the sequencing is paired end, choose the file with *R1* in its file name for read 1, the file with *R2* for read 2, and the file with *I1* for index read. If no file name includes *I1*, choose one with *R2* for index read, and one with *R3* for read 2.
+.. image:: ../figures/demultiplex_fastq.png
+
