@@ -1,0 +1,11 @@
+The ChIP-seq (Chromatin Immuno-Precipitation followed by Sequencing) pipeline facilitates the analysis of ChIP-seq data in order to identify genome-wide DNA binding sites for transcription factors and other proteins. 
+The pipeline receives single or paired-end reads as input (the type of input is automatically determined by the number of fastq files generated per sample), performs quality control and pre-processing steps, and maps the reads onto mouse or human genomes. 
+Peak analysis is then performed (after some post-processing), on the identified DNA binding fragments, and significant peaks (as compared to a control background if present) are selected and analyzed.
+
+RNA-seq Analysis Setup
+----------------------
+ .. image:: ../figures/chip-seq.png
+                                                                                                                              
+                                                                                                                              
+                                                                                                                  
+                                                                                                                              
