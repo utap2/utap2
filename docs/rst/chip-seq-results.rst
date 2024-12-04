@@ -5,7 +5,7 @@ Analysis pipeline steps
 -----------------------
 
 
-1. Quality control: Reads are trimmed using cutadapt (DOI: 14806/ej.17.1.200) (with the parameters --times 2 -q 20 -m 25). In this process, primers corresponding to the Tru-seq protocol are removed.
+1. Reads trimming: Reads are trimmed using cutadapt (DOI: 14806/ej.17.1.200) (with the parameters --times 2 -q 20 -m 25). In this process, primers corresponding to the Tru-seq protocol are removed.
 
 2. Quality control: Reads quality control is evaluated using FastQC (with the parameter --cassava). A report file, containing quality results for all of the samples is generated using multiQC.
   
@@ -40,23 +40,23 @@ The report includes several sections:
 
 1. Sequencing and Mapping QC
 
-    a. `**Figure 1** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_1.png>`_ - Plots the average quality of each base across all reads. Qualities of 30 (predicted error rate 1:1000) and above are good 
-    b. `**Figure 2** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_2.png>`_ - Histogram showing the number of reads for each sample in the raw data
+    a. `**Figure 1** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_1.png>`_ - Plots the average quality of each base across all reads. Qualities of 30 (predicted error rate 1:1000) and above are good. 
+    b. `**Figure 2** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_2.png>`_ - Histogram showing the number of reads for each sample in the raw data.
     c. **Figure 3** - Histogram showing the percentage of reads discarded after trimming the adapters (after removing adapters, short, polyA/T and low quality reads are discarded by the pipeline).
        No figure will be presented if the percentage of reads discarded after trimming for all samples is lower than 1%.
-    d. `**Figure 4** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_4.png>`_ - Histogram with the number of reads for each sample in each step of the pipeline
-    e. `**Figure 5** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_5.png>`_ - Plots sequence coverage on and near gene regions 
+    d. `**Figure 4** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_4.png>`_ - Histogram with the number of reads for each sample in each step of the pipeline.
+    e. `**Figure 5** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_5.png>`_ - Plots sequence coverage on and near gene regions. 
 
 2. MACS peak calling
     a. `**Figure 6** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_6.png>`_ - MACS (peak calling) results table for each sample or for each comparison, if the pipeline was run with a control.
-    b. `**Figure 7** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_7.png>`_ - Histogram with the of peaks for all samples or for comparisons, if the pipeline was run with a control.
+    b. `**Figure 7** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_7.png>`_ - Histogram with the number of peaks for all samples or for comparisons, if the pipeline was run with a control.
     c. `**Figure 8** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_8.png>`_ - Histogram showing Peaks distribution in genomic regions.    
     d. `**Figure 9** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_9.png>`_ - Histogram showing Peaks distribution around TSS.
     e. `**Figure 10** <https://dors4.weizmann.ac.il/utap/figures/chip_fig_10.png>`_ - Venn diagram of peak overlaps among the first four comparisons.
                                                                                                       
 3. `Bioinformatics Pipeline Methods <https://dors4.weizmann.ac.il/utap/figures/chip_fig_12.png>`_ - description of pipeline methods
 
-4. `Links to additional results <https://dors4.weizmann.ac.il/utap/figures/chip_fig_13.png>`_ - links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts. In cases of models with batches, "combat" values calculated (instead of rld) using the "sva" package, providing batch corrected normalized log2 count values.
+4. `Links to additional results <https://dors4.weizmann.ac.il/utap/figures/chip_fig_13.png>`_ - links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts.
                                                                                                    
 --------------- 
                                                                                                       
