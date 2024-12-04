@@ -45,4 +45,4 @@ Uploading input for the demultiplexing pipeline
 -----------------------------------------------
 
 * For the pipeline of demultiplexing from BCL files: upload the original bcl folder. The original folder name should adhere to the template: <date>_<field2>.<field3>_field4>, e.g. 180514_NB551168_0123_AHTHHKBGX5.
-* For the pipeline of demultiplexing from FASTQ files: upload the fastq files. Note: the pipeline gets one file per read as input (i.e. one file for *R1*, *R2*, *I1* etc.).
+* For the pipeline of demultiplexing from FASTQ files: upload the folder containing the undetermined FASTQ files. Note: the pipeline can process multiple files per read as input (e.g., multiple files for each *R1* and *R2*, such as undetermined_fastq_files/Undetermined_S0_L001_R1_001.fastq.gz and Undetermined_S0_L002_R1_001.fastq.gz).
