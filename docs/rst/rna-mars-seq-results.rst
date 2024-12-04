@@ -38,7 +38,8 @@ The report includes several sections:
 
     a. `**Figure 1** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_1.png>`_ - Plots the average quality of each base across all reads. Qualities of 30 (predicted error rate 1:1000) and above are good 
     b. `**Figure 2** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_2.png>`_ - Histogram showing the number of reads for each sample in the raw data
-    c. **Figure 3** - Histogram showing the percentage of reads discarded after trimming the adapters (after removing adapters, short, polyA/T and low quality reads are discarded by the pipeline)
+    c. **Figure 3** - Histogram showing the percentage of reads discarded after trimming the adapters (after removing adapters, short, polyA/T and low quality reads are discarded by the pipeline).
+       No figure presented since the percentage of reads discarded after trimming for all samples is lower than 1%.
     d. `**Figure 4** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_4.png>`_ - Histogram with the number of reads for each sample in each step of the pipeline
     e. `**Figure 5** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_5.png>`_ - Plots sequence coverage on and near gene regions 
 
