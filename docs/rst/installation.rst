@@ -325,7 +325,7 @@ Once the download is finished, log in to the UTAP2 site as the admin USER and se
 
       1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_hg38_RNA-seq/fastq using the browser in the "Input folder" field.
       
-      2.Select "Run DESeq2: in "DESeq2 run" choice field
+      2.Select "Run DESeq2" in "DESeq2 run" choice field
       
       3.Select Homo_sapiens(hg38) in the "Genome" field
 
@@ -349,7 +349,7 @@ Once the download is finished, log in to the UTAP2 site as the admin USER and se
                      
                      IZ-siC
       
-      It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP2 run test.
+      It is crucial to ensure that all category names are identical to the names mentioned above as seen in the screenshot below. This is of utmost importance for verifying the successful completion of the UTAP2 run test.
    
    7.Add batch effect by clicking on "Add Batch Effect" button. 
    
@@ -490,13 +490,13 @@ Required parameters
 HOST_MOUNT             
                        Mount point from the singularity on the host (full path of the folder).
                           
-                       This is the folder that contains all UTAP2 installation files,
+                       This is the folder that contains all UTAP2 installation files.
                           
                        All input and output data for all of the users will be written into this folder.
 
 
 ADMIN_PASS              
-                       Password of an admin in the UTAP2 database
+                       Password of an admin in the UTAP2 database.
                         
                        (The password must contain at least one uppercase character, one lowercase character, and one digit).
 
@@ -525,9 +525,7 @@ Optional parameters
                         
                         
 USER                   
-                       User in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write 
-
-                       into the $HOST_MOUNT folder (user can have "fakeroot" permissions).
+                       User in host server that has permission to run cluster commands (if run with cluster), run singularity commands and write into the $HOST_MOUNT folder (user can have "fakeroot" permissions).
 
                        **The default is:** USER=$USER
 
@@ -638,9 +636,7 @@ GENOMES_DIR
 
 
 SINGULARITY_TMP_DIR           
-                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 36GB  
-
-                     large to hold the entire resulting Singularity image.
+                     Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be at least 36GB large to hold the entire resulting Singularity image.
  
                      If you use "fakeroot" privileges,  make sure that the tmp directory is local and not NFS or GPFS mounted disc.
 
@@ -704,14 +700,14 @@ Additional example for testing
 
 Run MARS-Seq pipeline with example data
 --------------------------------------
-For testing UTAP2, you can download fastq files and test files for MARS-Seq pipeline folderas noted below.
+For testing UTAP2, you can download the fastq and additional test files for the MARS-Seq pipeline folders noted below.
 ::
 
     cd $HOST_MOUNT
     wget  --no-check-certificate -nH --cut-dirs=3 -r --reject='index.html*' --exclude-directories=/20230520_231819_test_Transcriptome_MARS-Seq  -P $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/
  
     
-Once the download is finished, log in to the UTAP2 site as the admin USER and select the Transcriptome MARS-Seq pipeline from the "Choose pipeline" scroll-bar. Proceed to complete the form according to the instructions provided below.
+Once the download has finished, log in to the UTAP2 site as the admin USER and select the Transcriptome MARS-Seq pipeline from the “Choose pipeline” scroll-bar. Proceed to complete the form according to the instructions provided below.
 
       1.Select the folder $HOST_MOUNT/utap-output/admin/example_and_data_for_testing_mm10_MARS-seq/fastq using the browser in the "Input folder" field.
       
@@ -752,7 +748,7 @@ Once the download is finished, log in to the UTAP2 site as the admin USER and se
                      GFAP_reporter_12hLPS_CD45_2_LPS_2
 
       
-      It is crucial to ensure that all category names are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP2 run test.
+      It is crucial to ensure that all category names (e.g  "MG_cont",  "MG_LPS" etc. or refer to the screenshot below) are identical to the names mentioned above. This is of utmost importance for verifying the successful completion of the UTAP2 run test.
    
    7.click on "Run analysis" button
 
@@ -771,7 +767,7 @@ After submitting the run, you will be directed to the "User Datasets" page, whic
 The folder "10_reports/<report_name>_umi_counts_<run_id>" contains graphs, statistics, and additional information for all the pipeline steps. Once the run is completed, you will receive an email with links to the results report. For a detailed interactive explanation of the report, you can utilize the relevant e-learning module available in the site navigation bar.
 
 An example of the pipeline output can be found at:
-https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
+https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/example_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq
 
 For further details, please refer to the "Help" tab in the site navigation bar.
 
@@ -780,7 +776,7 @@ For further details, please refer to the "Help" tab in the site navigation bar.
 
 Check pipeline output
 --------------------------
-After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at https://dors4.weizmann.ac.il/UTAP/UTAP_test_and_example_data/exammple_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
+After the run is finished, you can verify the successful completion of the test run by executing the script test_UTAP.sh. This script compares the results from your pipeline with the example results available at https://dors4.weizmann.ac.il/utap/UTAP_test_and_example_data/exammple_and_data_for_testing_mm10_MARS-seq/20230520_231819_test_Transcriptome_MARS-Seq.
 
 To run the script, follow the instructions below:
 
