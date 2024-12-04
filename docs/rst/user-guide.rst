@@ -33,10 +33,6 @@ Click on the "Upload data" button on the navigation bar, and select the folder o
 
 .. image:: ../figures/upload.png
 
-.. toctree::
-    :maxdepth: 2
-
-    upload
 
 
 Run analysis
@@ -45,12 +41,6 @@ Run analysis
 After importing you data (or if you have old data on the server that was imported in the past), you can run the pipeline by selecting the "Run pipeline" option
 
 .. image:: ../figures/run-analysis.png
-
-.. toctree::
-    :maxdepth: 2
-
-    run-rna-mars-seq
-    run-demultiplexing
 
 
 Customization
