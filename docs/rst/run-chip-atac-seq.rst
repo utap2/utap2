@@ -19,6 +19,8 @@ ATAC-Seq Analysis Setup
 =======================
 
  .. image:: ../figures/atac-seq.png
+
+
 ------------
 
 
