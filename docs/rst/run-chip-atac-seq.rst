@@ -5,7 +5,7 @@ The pipeline receives single or paired-end reads as input (the type of input is 
 Peak analysis is then performed (after some post-processing), on the identified DNA binding fragments, and significant peaks (as compared to a control background if present) are selected and analyzed.
 
 ChIP-Seq Analysis Setup
-----------------------
+=======================
 
  .. image:: ../figures/chip-seq.png
 
