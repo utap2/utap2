@@ -16,7 +16,7 @@ The ATAC-Seq (Assay for transposase-accessible chromatin using sequencing) pipel
 The pipeline receives paired-end reads as input, performs quality control and pre-processing steps, and maps the reads onto mouse or human genomes. Nucleosome-free fragments are selected, peaks (as compared to a control background if present) are identified  and analyzed.
 
 ATAC-Seq Analysis Setup
-----------------------
+=======================
 
  .. image:: ../figures/atac-seq.png
 ------------
