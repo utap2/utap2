@@ -30,7 +30,7 @@ Define the type of your adapters for each read (R1 and R2). These adapters will 
 
 ------------
 
-To identify what's differentially expressed by using the DESeq2 package, select the Run Deseq option. By default, two categories must be created. Fill in the category names for each of the 2 categories displayed by default. To define more categories, click on the Add Categories button to enable entering their details.
+To identify what's differentially expressed by using the DESeq2 package, select the Run DESeq2 option. By default, two categories must be created. Fill in the category names for each of the 2 categories displayed by default. To define more categories, click on the Add Categories button to enable entering their details.
 
 .. image:: ../figures/deseq1.png
 
@@ -50,7 +50,7 @@ If the samples were prepared in different batches, one can annotate them as foll
 .. image:: ../figures/deseq-batch.png
 
 
-All of the steps of the pipeline (mapping, counts etc.) will be run on all of the samples, with the exception of Deseq which will be run only on samples with categories.
+All of the steps of the pipeline (mapping, counts etc.) will be run on all of the samples, with the exception of DESeq2 which will be run only on samples with categories.
 
 
 Finally, click on the "Run analysis" button.
@@ -61,6 +61,6 @@ At the end of the run, an email will be sent reporting analysis completion.
 Using the pipeline efficiently
 ------------------------------
 
-**If you want re-run only the Deseq step several times on the same input folder (with other comparisons/batches), after completion of the initial analysis you will see (on the "user dataset" screen) a new button called "run again with other parameters". Clicking on this button will re-run only the Deseq step.**
+**If you want re-run only the DESeq2 step several times on the same input folder (with other comparisons/batches), after completion of the initial analysis you will see (on the "user dataset" screen) a new button called "run again with other parameters". Clicking on this button will re-run only the DESeq2 step.**
 
-**Thus, the analysis will re-run only the short Dseq step (which takes a few minutes) and not re-run all of the time-consuming steps of the complete pipeline.**
+**Thus, the analysis will re-run only the short DESeq2 step (which takes a few minutes) and not re-run all of the time-consuming steps of the complete pipeline.**
