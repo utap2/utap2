@@ -14,7 +14,7 @@ If your protocol is MARS-seq, you will get this screen:
 
 ------------
 
-In the input folder field, Browse within your directory structure and Select the **root folder**  for analysis.  Note that if you wish to go up one level (or more) click on the desired folder level using the path at the top of the window.
+In the input folder field, Browse within your directory structure and use the Select button the **root folder**  for analysis.  Note that if you wish to go up one level (or more) click on the desired folder level using the path at the top of the window.
 
 .. image:: ../figures/browse-folder.png
 
