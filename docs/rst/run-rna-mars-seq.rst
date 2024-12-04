@@ -43,7 +43,7 @@ Choose the samples by first selecting them, and then using the arrows to move th
 ------------
 
 The order of what's being compared will be determined by the specification order of the categories. For example, DESeq2's output will show a "Treatment" vs "Control" comparison when "Treatment" is defined to be the first category, and "Control" the second.
-Note than when submitting more than two categories, all categories will be compared with all the rest (e.g. for three categories - category 1 vs category 2, category 1 vs category 3, category 2 vs category 3).
+Note that when submitting more than two categories, all categories will be compared with all the rest (e.g. for three categories - category 1 vs category 2, category 1 vs category 3, category 2 vs category 3).
 
 If the samples were prepared in different batches, one can annotate them as follows: After moving the samples into category boxes, click on the "Add Batch Effect" button, select the samples from the category boxes that belong to a particular batch, and click on the "Batch 1" button. Repeat the operation for the other batches. Be sure that the batch effect is designed correctly - seeDESeq2 documentation `here  <https://bioconductor.org/packages/3.7/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#model-matrix-not-full-rank>`_.
 
