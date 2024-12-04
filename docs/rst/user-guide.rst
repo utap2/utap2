@@ -19,7 +19,7 @@ Click on the signup button and fill out the form:
 User datasets
 =============
 
-The "User datasets" screen contains the list of the user's analyses. You can see the status of the run (RUNNING/SUCCESSFOL/FAILS). You need to refresh the page to see if the status has changed (you also will get email in the end of the run).
+The "User datasets" screen contains the list of the user's analyses. You can see the run status (RUNNING/SUCCESSFOL/FAILS). You need to refresh the page to see if the status has changed (you will also get an email at the end of the run).
 
 .. image:: ../figures/analysis-list.png
 
@@ -29,7 +29,7 @@ Import Input data
 
 In order to run the transcriptome analysis pipeline, fastq sequence files need to be located on the server.
 
-Click on the "Upload data" button on the navigation bar, and select the folder of fastq files.
+Click on the "Upload data" button on the navigation bar, and select the folder of the fastq files.
 
 .. image:: ../figures/upload.png
 
