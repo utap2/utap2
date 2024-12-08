@@ -109,9 +109,11 @@ For counts of the reads per gene, we use annotation files (gtf format) from "Ens
 Examples of reports
 -------------------
 
-`RNA-Seq example <https://utap-demo.weizmann.ac.il/reports/20241118_225254_demo/report.html>`_
+`RNA-seq example <https://utap-demo.weizmann.ac.il/reports/20241118_225254_demo/report.html>`_
 
 `Mars-seq example <https://utap-demo.weizmann.ac.il/reports/20241119_044604_demo/test_umi_counts_20241119_044604/report.html>`_
+
+`RNA-seq with UMI example <https://utap-demo.weizmann.ac.il/reports/demo_20220318_000431/RNA_with_UMI_umi_counts_20220318_000431/report.html>`_
 
 Note: This example analysis demonstrates a good starting point, and not necessarily an end result.
 
