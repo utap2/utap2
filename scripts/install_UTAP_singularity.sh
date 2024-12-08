@@ -152,9 +152,9 @@ run_utap () {
     export UTAP_MNT=$UTAP_CODE
     if [ "$BUILD_SANDBOX" = 1 ]; then
       echo "installing UTAP sandbox from instance image"
-      export run_UTAP="singularity instance stop utap-staging; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity build --sandbox utap.sandbox utap.SIF" #change after testing
+      export run_UTAP="singularity instance stop $UTAP_VERSION; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity build --sandbox utap.sandbox utap.SIF" #change after testing
     else
-      export run_UTAP="singularity instance stop utap-staging; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity instance start --writable-tmpfs utap.SIF utap-staging" #change after testing
+      export run_UTAP="singularity instance stop $UTAP_VERSION; singularity build --fakeroot --writable-tmpfs utap.SIF Singularity.def && sleep 20; singularity instance start --writable-tmpfs utap.SIF $UTAP_VERSION" #change after testing
     fi
     #modify Singularity.def file
     cp Singularity_sed.def Singularity.def
@@ -334,7 +334,7 @@ chmod  +rwx $HOST_MOUNT || (echo "ERROR: USER $USER doesn't have permissions to 
 if [ "$GCP_BUCKET" != "None" ] && [ "$GCP" = 1 ]; then
   bucket_size=`get_dir_df "Avail" "$HOME/data"` #results are in Bytes
   bucket_size=$(($bucket_size * 1024))
-  bucket_used=` gsutil du -s  gs://utap-data-devops-279708 | awk '{print $1}'`
+  bucket_used=` gsutil du -s  gs://$GCP_BUCKET | awk '{print $1}'`
   avail_size=$(($bucket_size - $bucket_used))
   min_size=107374182400 #100GB in bytes 
 else
@@ -364,7 +364,7 @@ else
     EMAIL_PORT="587"
     override_param MAIL_SERVER "smtp.gmail.com"
     if [[ $MAIL_PASSWORD = *"None"* ]] || [[ $MAIL_PASSWORD = "" ]] ; then 
-      echo "WARNING: if gmail address is specified, you must provide gmail app password,otherwise UTAP default email adress will be used"
+      echo "WARNING: If a Gmail address is specified, you must provide a Gmail app password; otherwise, the UTAP default email address will be used."
     fi
   else
      if [ $MAIL_PASSWORD = "None" ]; then  
@@ -438,11 +438,18 @@ if [ ! -d "$DB_PATH" ]; then
   override_param DB_PATH "$DB_PATH"
 fi 
 
+
 #check if  GENOMES_DIR path exist
-check_dir "$GENOMES_DIR"
+if [ "$DEMO_SITE" != 1 ]; then
+  check_dir "$GENOMES_DIR"
+else
+  if [ ! -d "$GENOMES_DIR" ]; then
+    export GENOMES_DIR="$HOST_MOUNT/genomes"
+    mkdir -p $GENOMES_DIR  
+  fi
+fi
 GENOMES='mkdir -p $SINGULARITY_ROOTFS'
 GENOMES="$GENOMES$GENOMES_DIR"
-
 
 if [ -d "$CONDA" ];
 then
@@ -473,23 +480,23 @@ if [ "$CLUSTER_TYPE" != "local" ]; then
   echo "You are installing UTAP that run on $CLUSTER_TYPE cluster"
   if [ "$SINGULARITY_CLUSTER_COMMAND" = "None" ]; then
     #$cluster_exe bash -c "(module load Singularity && echo 'SINGULARITY_CLUSTER_COMMAND=\"module load Singularity;\"' >> all_parameters) || (module load singularity && echo 'SINGULARITY_CLUSTER_COMMAND=\"module load singularity;\"' >> all_parameters) || (singularity --version && echo 'SINGULARITY_CLUSTER_COMMAND=\"\"' >> all_parameters) || (touch $HOST_MOUNT/cluster_singularity_error)" 
-    $cluster_exe /bin/bash -c "
+    $cluster_exe << EOF
 if module load Singularity; then
-     echo 'SINGULARITY_CLUSTER_COMMAND=\"module load Singularity;\"' >> all_parameters
+    echo "SINGULARITY_CLUSTER_COMMAND=\"module load Singularity;\"" >> "$HOST_MOUNT/all_parameters"
 elif module load singularity; then
-     echo 'SINGULARITY_CLUSTER_COMMAND=\"module load singularity;\"' >> all_parameters
+    echo "SINGULARITY_CLUSTER_COMMAND=\"module load singularity;\"" >> "$HOST_MOUNT/all_parameters"
 elif singularity --version; then
-     echo 'SINGULARITY_CLUSTER_COMMAND=\"\"' >> all_parameters
+    echo "SINGULARITY_CLUSTER_COMMAND=\"\"" >> "$HOST_MOUNT/all_parameters"
 else
-    touch $HOST_MOUNT/cluster_singularity_error
+    touch "${HOST_MOUNT}/cluster_singularity_error"
 fi
-"
+EOF
   else
-    $cluster_exe /bin/bash -c  "
+    $cluster_exe << EOF
 if ! $SINGULARITY_CLUSTER_COMMAND then
     touch $HOST_MOUNT/cluster_singualrity_error
 fi
-"
+EOF
   fi
   if [  -d "$HOST_MOUNT/cluster_singualrity_error" ]; then  
     echo "ERROR: no singularity found on the cluster"; 
