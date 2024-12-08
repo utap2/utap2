@@ -37,9 +37,14 @@ Upload fastq files to the server according to the following instructions:
 
 
 The input folder should contain the undetermined FASTQ files. Note: the pipeline can accept multiple files per read as input (i.e., multiple files for each R1 and R2, such as undetermined_fastq_files/Undetermined_S0_L001_R1_001.fastq.gz and Undetermined_S0_L002_R1_001.fastq.gz).
+The pipeline demultiplexes fastq files according to MAR-seq protocol.
+
 
 Demultiplexing from fastq Analysis Setup
 ======================================
 
 .. image:: ../figures/demultiplex_fastq.png
 
+
+For both pipelines, if you have dual indexes, click on the Add Dual Index button, and an additional index column will be added to the table.
+After completing the addition of all sample names and indexes, it is highly recommended to verify that all names and indexes are valid by clicking on the Check Sample Sheet button.
