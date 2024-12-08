@@ -1,4 +1,4 @@
- Analysis pipeline steps and reports
+ ChIP-seq pipeline steps and reports
 ###################################
 
 Analysis pipeline steps
@@ -65,7 +65,7 @@ The report includes several sections:
 --------------- 
                                                                                                       
                                                                                                       
-Output folders:
+Output folders
 ---------------                                                                                                      
                                                                                                       
 1_cutadapt
