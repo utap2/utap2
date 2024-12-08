@@ -29,7 +29,7 @@ Analysis pipeline steps
 10. Peak annotation: The predicted peaks are collected from all samples using multi_intersectBed and then annotated according to the corresponding genome using Homer (with default parameters). 
     Analysis of peaks distribution in genomic regions, and around TSS is done using ChIPseeker, together with a venn diagram of overlap of peaks sets.                                                                                                                                                                                 
                                                                                                       
-.. image:: ../figures/atac-seq_workflow.png
+.. image:: ../figures/atac-seq_workflow.jpg
 
 
                                                                                                     
