@@ -1,4 +1,4 @@
- ATAC-seq pipeline steps and reports
+ATAC-seq pipeline steps and reports
 ###################################
 
 Analysis pipeline steps
