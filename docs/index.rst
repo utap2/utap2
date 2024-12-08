@@ -13,11 +13,8 @@ UTAP2 is a web-based intuitive platform currently installed on Weizmann institut
 
 
 
-Run Pipelines
-=============
-
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
     rst/rna-mars-seq-results
     rst/atac-seq-results
