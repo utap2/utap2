@@ -17,7 +17,7 @@ Run Pipelines
 =============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     rst/rna-mars-seq-results
     rst/atac-seq-results
