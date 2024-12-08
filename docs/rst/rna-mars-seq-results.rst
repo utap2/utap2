@@ -1,4 +1,4 @@
-Analysis pipeline steps and reports
+RNA-seq and MARS-seq pipelines steps and reports
 ###################################
 
 Analysis pipeline steps
