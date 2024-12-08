@@ -127,6 +127,7 @@ Examples of reports
 
 `RNA-seq with UMI example <https://utap-demo.weizmann.ac.il/reports/demo_20220318_000431/RNA_with_UMI_umi_counts_20220318_000431/report.html>`_
 
+`DESeq2 from counts matrix example <https://utap-demo.weizmann.ac.il/reports/demo_20210303_220413/test_production_20210303_220413/report_counts_matrix.html>`_
 
 Note: This example analysis demonstrates a good starting point, and not necessarily an end result.
 
