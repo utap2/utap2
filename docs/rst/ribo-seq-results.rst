@@ -97,7 +97,7 @@ The report includes several sections:
 --------------- 
                                                                                                       
                                                                                                       
-Output folders:
+Output folders
 ---------------                                                                                                      
                                                                                                       
 1_cutadapt
