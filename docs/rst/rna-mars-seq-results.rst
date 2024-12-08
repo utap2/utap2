@@ -58,7 +58,7 @@ The report includes several sections:
 
 3. `Differential Expression Analysis <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_11.png>`_ (this section exists only if you run the DESeq2 analysis) - A table with the number of differentially expressed genes (DE) in each category (up/down) for the different contrasts.  In addition, links for p-value distribution, volcano plots and heatmaps, as well as a table of the DE genes with dot plots of their expression values are also provided
 
-4. `Bioinformatics Pipeline Methods <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_12.png>`_ - Description of pipeline methods
+4. `Bioinformatics Pipeline Methods <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_12.png>`_ - Description of pipeline methods.
 
 5. `Links to additional results <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_13.png>`_ - Links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts. In cases of models with batches, "combat" values calculated (instead of rld) using the "sva" package, providing batch corrected normalized log2 count values.
 
