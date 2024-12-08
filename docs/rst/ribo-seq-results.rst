@@ -1,4 +1,4 @@
- Analysis pipeline steps and reports
+Ribo-seq pipeline steps and reports
 ###################################
 
 Analysis pipeline steps
