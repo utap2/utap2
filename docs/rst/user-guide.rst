@@ -43,6 +43,14 @@ After importing you data (or if you have old data on the server that was importe
 .. image:: ../figures/run-analysis.png
 
 
+.. toctree::
+    :maxdepth: 3
+
+    Run peiplines 
+    run-rna-mars-seq
+    run-demultiplexing
+
+
 Customization
 =============
 
