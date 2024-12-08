@@ -24,7 +24,7 @@ Steps 3 and 5 are performed only for Mars-Seq
 
 Steps 6 and 7 are performed only if DESeq2 is selected
 
-.. image:: ../figures/pipeline.png
+.. image:: ../figures/rna-seq_workflow.jpg
 
 
 Pipeline report
