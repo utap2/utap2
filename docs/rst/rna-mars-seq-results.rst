@@ -40,18 +40,18 @@ The report includes several sections:
 
 1. Sequencing and Mapping QC
 
-    a. `**Figure 1** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_1.png>`_ - Plots the average quality of each base across all reads. Qualities of 30 (predicted error rate 1:1000) and above are good 
-    b. `**Figure 2** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_2.png>`_ - Histogram showing the number of reads for each sample in the raw data
-    c. **Figure 3** - Histogram showing the percentage of reads discarded after trimming the adapters (after removing adapters, short, polyA/T and low quality reads are discarded by the pipeline).
+    a. `Figure 1 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_1.png>`_ - Plots the average quality of each base across all reads. Qualities of 30 (predicted error rate 1:1000) and above are good 
+    b. `Figure 2 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_2.png>`_ - Histogram showing the number of reads for each sample in the raw data
+    c. Figure 3 - Histogram showing the percentage of reads discarded after trimming the adapters (after removing adapters, short, polyA/T and low quality reads are discarded by the pipeline).
        No figure presented since the percentage of reads discarded after trimming for all samples is lower than 1%.
-    d. `**Figure 4** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_4.png>`_ - Histogram with the number of reads for each sample in each step of the pipeline
-    e. `**Figure 5** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_5.png>`_ - Plots sequence coverage on and near gene regions 
+    d. `Figure 4 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_4.png>`_ - Histogram with the number of reads for each sample in each step of the pipeline
+    e. `Figure 5 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_5.png>`_ - Plots sequence coverage on and near gene regions 
 
 2. Exploratory Analysis
-    a. `**Figure 6** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_6.png>`_ - Heatmap plotting the fraction of reads from the genes with the most counts 
-    b. `**Figure 7** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_7.png>`_ - Heatmap of Pearson correlation between samples according to gene expression values
-    c. `**Figure 8** <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_8.png>`_ - Clustering dendrogram of the samples according to gene expression
-    d. **Figure 9** - PCA analysis
+    a. `Figure 6 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_6.png>`_ - Heatmap plotting the fraction of reads from the genes with the most counts 
+    b. `Figure 7 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_7.png>`_ - Heatmap of Pearson correlation between samples according to gene expression values
+    c. `Figure 8 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_8.png>`_ - Clustering dendrogram of the samples according to gene expression
+    d. Figure 9 - PCA analysis
         i. `Histogram of % explained variability for each PC component <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_9.png>`_
         ii. `PCA plot of PC1 vs PC2 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_10.png>`_
 	iii. `PCA plot of PC1 vs PC3 <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_10.png>`_
@@ -108,6 +108,7 @@ Log directory
 Output folders for DESeq2 from counts matrix pipeline
 --------------
 <report_directory>
+
 Log file
 
 
