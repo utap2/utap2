@@ -7,9 +7,9 @@ NGS technology is routinely used to characterize the genome and detect gene expr
 
 In order to enable fast and user-friendly transcriptome and epigenome NGS sequence data analysis, we developed an intuitive and scalable pipeline that executes the full process. Transcriptome analysis starts from cDNA sequences derived from RNA (for the protocols: TruSeq, bulk MARS-Seq, Ribo-Seq and SCRB-Seq) and ends with gene count and/or differentially expressed genes. Output files are organized in structured folders, and results summaries are provided in rich and comprehensive reports, containing dozens of plots, tables and links. In addition, the pipeline supports epigenome sequence analysis for ChIP-Seq and ATAC-Seq, including alignment and peak detection. 
 
-Our User-friendly Transcriptome Analysis Pipeline (UTAP) can be easily installed through a single singularity image that includes all the necessary software and files inside miniconda environment required for running Snakemake  workflows and taking advantage of parallel cluster resources.
+Our User-friendly Transcriptome and Epigenome Analysis Pipeline (UTAP2) can be easily installed through a single singularity image that includes all the necessary software and files inside miniconda environment required for running Snakemake workflows and taking advantage of parallel cluster resources.
 
-UTAP is a web-based intuitive platform currently installed on Weizmann institute’s cluster and is used extensively by the institute researches. It is also available as an open-source application for the biomedical research community, thus enabling researchers with limited programming skills, to efficiently and accurately analyse transcriptome and epigenome sequence data. 
+UTAP2 is a web-based intuitive platform currently installed on Weizmann institute’s cluster and is used extensively by the institute researches. It is also available as an open-source application for the biomedical research community, thus enabling researchers with limited programming skills, to efficiently and accurately analyse transcriptome and epigenome sequence data. 
 
 
 
@@ -29,13 +29,13 @@ UTAP is a web-based intuitive platform currently installed on Weizmann institute
 
 License
 =======
-UTAP is licensed under GNU General Public License version 3. License needed for commercial use.
+UTAP2 is licensed under GNU General Public License version 3. License needed for commercial use.
 
 
 Author
 ======
 
-UTAP team
+UTAP2 team
 
 support:
 utap@weizmann.ac.il
