@@ -18,6 +18,9 @@ UTAP is a web-based intuitive platform currently installed on Weizmann institute
 
  
     rst/rna-mars-seq-results
+    rst/atac-seq-results
+    rst/chip-seq-results
+    rst/ribo-seq-results
     rst/installation
     rst/user-guide
     rst/releases
