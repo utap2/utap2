@@ -1,4 +1,4 @@
-RNA-seq and MARS-seq pipelines steps and reports
+RNA-seq, RNA-seq with UMI and MARS-seq pipelines steps and reports
 ###################################
 
 Analysis pipeline steps
@@ -20,7 +20,7 @@ The pipeline:
 
 7. Detects Differentially Expressed (DE) genes for a model with a single factor 
 
-Steps 3 and 5 are performed only for Mars-Seq
+Steps 4 and 6 are performed only for MARS-Seq and RNA-seq with UMI
 
 Steps 6 and 7 are performed only if DESeq2 is selected
 
@@ -75,7 +75,7 @@ Log files (one directory above the output directory)
 
 snakemake_stdout.txt
 
-Output folders for MARS-seq and RNA-with-UMI-seq pipelines 
+Output folders for MARS-seq and RNA-seq with-UMI pipelines 
 --------------
 1_combined_fastq
 
