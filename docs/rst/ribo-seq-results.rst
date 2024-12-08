@@ -64,7 +64,7 @@ Summarized points- 
 8. Extend and annotate summits
 
 
-.. image:: ../figures/ribo-seq_workflow.png
+.. image:: ../figures/ribo-seq_workflow.jpg
 
 
                                                                                                     
