@@ -1,5 +1,7 @@
-RNA-seq, RNA-seq with UMI and MARS-seq pipelines steps and reports
+Transcriptome pipelines steps and reports
 ###################################
+
+Here, we outline the pipeline steps and reports for the Transcriptome pipeline, encompassing RNA-seq, RNA-seq with UMI, MARS-seq, and DESeq2 from counts matrix pipelines.
 
 Analysis pipeline steps
 -----------------------
@@ -22,7 +24,9 @@ The pipeline:
 
 Steps 4 and 6 are performed only for MARS-Seq and RNA-seq with UMI
 
-Steps 6 and 7 are performed only if DESeq2 is selected
+Steps 7 is performed only if DESeq2 is selected
+
+Steps 1-6 are not performed for DESeq2 from counts matrix pipeline
 
 .. image:: ../figures/rna-seq_workflow.jpg
 
@@ -58,6 +62,7 @@ The report includes several sections:
 
 5. `Links to additional results <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_13.png>`_ - links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts. In cases of models with batches, "combat" values calculated (instead of rld) using the "sva" package, providing batch corrected normalized log2 count values.
 
+Note that only Figure 2 from Step 1, as well as Steps 2–5, will appear in the DESeq2 counts matrix report.
 
 Output folders for RNA-seq pipeline 
 --------------
@@ -71,9 +76,8 @@ Output folders for RNA-seq pipeline
 
 4_reports
 
-Log files (one directory above the output directory)
+Log directory
 
-snakemake_stdout.txt
 
 Output folders for MARS-seq and RNA-seq with-UMI pipelines 
 --------------
@@ -97,14 +101,21 @@ Output folders for MARS-seq and RNA-seq with-UMI pipelines
 
 10_reports
 
-Log files (one directory above the output directory)
+Log directory
 
-snakemake_stdout.txt
+
+
+Output folders for DESeq2 from counts matrix pipeline
+--------------
+<report_directory>
+Log file
+
 
 Annotation file
 ---------------
 
 For counts of the reads per gene, we use annotation files (gtf format) from "Ensembl" or "GENCODE". In MARS-seq analysis, we extend the 3' UTR exon away from the transcript on the DNA and extend or cut the 3' UTR exon towards the 5' direction on the mRNA.
+
 
 Examples of reports
 -------------------
@@ -114,6 +125,7 @@ Examples of reports
 `Mars-seq example <https://utap-demo.weizmann.ac.il/reports/20241119_044604_demo/test_umi_counts_20241119_044604/report.html>`_
 
 `RNA-seq with UMI example <https://utap-demo.weizmann.ac.il/reports/demo_20220318_000431/RNA_with_UMI_umi_counts_20220318_000431/report.html>`_
+
 
 Note: This example analysis demonstrates a good starting point, and not necessarily an end result.
 
