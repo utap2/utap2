@@ -59,6 +59,30 @@ The report includes several sections:
 5. `Links to additional results <https://dors4.weizmann.ac.il/utap/figures/MARS_Seq_fig_13.png>`_ - links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts. In cases of models with batches, "combat" values calculated (instead of rld) using the "sva" package, providing batch corrected normalized log2 count values.
 
 
+Output folders for RNA-seq pipeline 
+--------------
+0_concatenating_fastq
+1_cutadapt
+2_fastqc
+3_mapping
+4_reports
+Log files (one directory above the output directory):
+snakemake_stdout.txt
+
+Output folders for MARS-seq and RNA-with-UMI-seq pipelines 
+--------------
+1_combined_fastq
+2_cutadapt
+3_fastqc
+4_mapping
+5_move_umi
+6_count_reads
+7_mark_dup
+8_dedup_counts
+9_umi_counts
+10_reports
+Log files (one directory above the output directory):
+snakemake_stdout.txt
 Annotation file
 ---------------
 
