@@ -54,7 +54,7 @@ The report includes several sections:
     d. `Figure 9 <https://dors4.weizmann.ac.il/utap/figures/chip_fig_9.png>`_ - Histogram showing Peaks distribution around TSS.
     e. `Figure 10 <https://dors4.weizmann.ac.il/utap/figures/chip_fig_10.png>`_ - Venn diagram of peak overlaps among the first four comparisons.
                                                                                                       
-3. `Bioinformatics Pipeline Methods <https://dors4.weizmann.ac.il/utap/figures/chip_fig_12.png>`_ - Description of pipeline methods
+3. `Bioinformatics Pipeline Methods <https://dors4.weizmann.ac.il/utap/figures/chip_fig_12.png>`_ - Description of pipeline methods.
 
 4. `Links to additional results <https://dors4.weizmann.ac.il/utap/figures/chip_fig_13.png>`_ - Links for downloading tables with raw, normalized counts, log normalized values (rld), and statistical data of contrasts.
                                                                                                    
