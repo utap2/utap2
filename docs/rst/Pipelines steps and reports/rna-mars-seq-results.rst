@@ -28,7 +28,7 @@ Steps 7 is performed only if DESeq2 is selected
 
 Steps 1-6 are not performed for DESeq2 from counts matrix pipeline
 
-.. image:: ../figures/rna-seq_workflow.jpg
+.. image:: ../../figures/rna-seq_workflow.jpg
 
 
 Pipeline report
