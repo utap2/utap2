@@ -1,4 +1,4 @@
-Run RNA-seq or MARS-seq pipeline
+Run Transcriptome pipelines
 ################################
 
 
