@@ -1,4 +1,4 @@
-UTAP demo website
+demo website
 #################
 
 Navigate to `http://utap-demo.weizmann.ac.il <http://utap-demo.weizmann.ac.il>`_, and login using:
