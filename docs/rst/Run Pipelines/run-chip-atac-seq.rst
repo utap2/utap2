@@ -18,7 +18,7 @@ The pipeline receives paired-end reads as input, performs quality control and pr
 ATAC-Seq Analysis Setup
 =======================
 
- .. image:: ../../figures/atac-seq.png
+.. image:: ../../figures/atac-seq.png
 
 
 ------------
@@ -26,7 +26,7 @@ ATAC-Seq Analysis Setup
 
 In the input folder field, Browse within your directory structure and use the Select button the **root folder**  for analysis.  Note that if you wish to go up one level (or more) click on the desired folder level using the path at the top of the window.
 
-.. image:: ../figures/browse-folder.png
+.. image:: ../../figures/browse-folder.png
 
 Input folder names must conform to the correct format as previously described. If there is a problem with the folder you selected, first resolve the error and then retry, selecting the updated folder.
 
