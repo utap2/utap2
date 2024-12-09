@@ -12,22 +12,24 @@ Analysis pipeline steps
 3. Mapping to genomes: The quality trimmed reads are mapped to Mouse and Human genomes using Bowtie2 (doi: 10.1038/nmeth.1923.) (with the parameters --local for all analyses and, in addition, -X 2000 for paired end analyses). Refseq annotation is provided for the mapped genes.
 
 4. Alignment filtering: Following the alignment, reads are filtered using samtools view with the parameters -F 4 to remove unmapped reads that are output by bowtie2, -q 39 and with -f 0x2 for paired end reads. 
-   The remaining unique reads are then indexed and sorted, using samtools index and samtools sort.
+The remaining unique reads are then indexed and sorted, using samtools index and samtools sort.
 
 5. Generation of statistics on the alignment using flagstat.
 
 6. Visualization in graphs: The reads are graphically visualized using ngsplot (with the parameters -G -R genebody -C -O samples -D refseq -L 50000).
 
 7. Peak calling: Significant chip regions (peaks) are evaluated and compared to control samples if present using macs2 callpeak (with the parameters --bw 300 -B -f --SPMR -g -keep-dup auto -q 0.01 for all analyses, BAMPE --nomodel for paired end analyses, and BAM for single end analyses). 
-   The resulting peaks "*_peaks_filtered.broadPeak" are filtered to exclude peaks from the blacklist (https://github.com/Boyle-Lab/Blacklist/tree/master/lists).
+The resulting peaks "*_peaks_filtered.broadPeak" are filtered to exclude peaks from the blacklist (https://github.com/Boyle-Lab/Blacklist/tree/master/lists).
 
 8. Conversion to BigWig format: Files containing the predicted peaks coordinates in BedGraph format are converted to BigWig format using bedtools slop (with the parameters -g -b 0), bedClip stdin and bedGraphToBigWig (with default parameters).
 
 9. Peak annotation: The predicted peaks are collected from all samples using multiIntersectBed and then annotated according to the corresponding genome using Homer (with default parameters). 
-   Analysis of peaks distribution in genomic regions, and around TSS is done using ChipSeeker, together with a Venn diagram of overlap of peaks sets.
+Analysis of peaks distribution in genomic regions, and around TSS is done using ChipSeeker, together with a Venn diagram of overlap of peaks sets.
 
 
 .. image:: ../../figures/chip-seq_workflow.jpg
+
+
 
 
                                                                                                       A
