@@ -3,17 +3,21 @@ Run Transcriptome pipelines
 
 Analysis Setup
 ----------------------
+
 If your pipeline is RNA-seq, you will get this screen:
+
 
 .. image: ../../figures/rna-with-umi.png
 
 
 If your pipeline is MARS-seq, you will get this screen:
 
+
 .. image:: ../../figures/mars-seq.png
 
 
 If your pipeline is DESeq2 from counts matrix, you will get this screen:
+
 
 .. image: ../../figures/deseq2_from_matrix.png
 
@@ -49,9 +53,10 @@ If your pipeline is DESeq2 from counts matrix, you will get this screen:
 
   5. For RNA-seq protocols:
 
-Indicate whether your protocol is stranded (preserves the original strand of RNA fragments) or non-stranded.
-Specify if your protocol is paired-end or single-end.
-Indicate whether you wish to correct for UMIs. If so, provide the correct UMI length.
+    Indicate whether your protocol is stranded (preserves the original strand of RNA fragments) or non-stranded.
+    Specify if your protocol is paired-end or single-end.
+    Indicate whether you wish to correct for UMIs. If so, provide the correct UMI length.
+
 
 
 
