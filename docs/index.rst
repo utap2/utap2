@@ -12,11 +12,12 @@ Our User-friendly Transcriptome and Epigenome Analysis Pipeline (UTAP2) can be e
 UTAP2 is a web-based intuitive platform currently installed on Weizmann institute’s cluster and is used extensively by the institute researches. It is also available as an open-source application for the biomedical research community, thus enabling researchers with limited programming skills, to efficiently and accurately analyse transcriptome and epigenome sequence data. 
 
 
+Pipelines steps and reports
+=============
 
 .. toctree::
     :maxdepth: 2
-
- 
+    
     rst/rna-mars-seq-results
     rst/atac-seq-results
     rst/chip-seq-results
