@@ -22,11 +22,7 @@ Pipelines steps and reports
     rst/atac-seq-results
     rst/chip-seq-results
     rst/ribo-seq-results
-
-.. toctree::
-    :maxdepth: 2
-
-
+    rst/Run Pipelines/index
     rst/installation
     rst/user-guide
     rst/releases
