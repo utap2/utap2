@@ -7,13 +7,13 @@ Peak analysis is then performed (after some post-processing), on the identified 
 
 
 Run ATAC-Seq pipeline
------------------
+---------------------
 The ATAC-Seq (Assay for transposase-accessible chromatin using sequencing) pipeline facilitates the analysis of ATAC-Seq data in order to capture open and accessible regions of chromatin across the genome. 
 The pipeline receives paired-end reads as input, performs quality control and pre-processing steps, and maps the reads onto mouse or human genomes. Nucleosome-free fragments are selected, peaks (as compared to a control background if present) are identified  and analyzed.
 
  
 Analysis Setup
---------------
+---------------
 
 If your pipeline is ChIP-seq, you will get this screen:
 
