@@ -13,7 +13,7 @@ The pipeline receives paired-end reads as input, performs quality control and pr
 
  
 Analysis Setup
-=======================
+--------------
 
 If your pipeline is ChIP-seq, you will get this screen:
 
