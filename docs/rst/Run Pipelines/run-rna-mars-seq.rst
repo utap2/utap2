@@ -1,32 +1,61 @@
 Run Transcriptome pipelines
 ################################
 
-
-RNA-seq Analysis Setup
+Analysis Setup
 ----------------------
-If your protocol is RNA-seq, you will get this screen:
+If your pipeline is RNA-seq, you will get this screen:
 
 .. image:: ../../figures/rna-seq.png
 
-If your protocol is MARS-seq, you will get this screen:
+If your pipeline is MARS-seq, you will get this screen:
 
 .. image:: ../../figures/mars-seq.png
 
+If your pipeline is DESeq2 from counts matrix, you will get this screen:
+
+.. image: ../../figures/deseq2_from_matrix.png
+
+If your pipeline is RNA-seq with UMI , you will get this screen:
+
+.. image: ../../figures/rna-with-umi.png
+
 ------------
 
-In the input folder field, Browse within your directory structure and use the Select button the **root folder**  for analysis.  Note that if you wish to go up one level (or more) click on the desired folder level using the path at the top of the window.
+
+**For the DESeq2 from Counts Matrix Pipeline:**
+
+  1. In the Input File field, navigate through your directory structure and use the Select button to choose the file containing the counts matrix for analysis. The file must be in either CSV or TXT format.
+  
+  2. Fill in the Project Name.
+
+  3. Select the Genomes for Functional Analysis.
+
+**For RNA-Seq and MARS-Seq Pipelines:**
+
+  1. In the Input Folder field, browse through your directory structure and use the Select button to choose the root folder for analysis.
+
+  2. Fill in the Project Name.
+
+  3. Select the Genome and Annotation.
+
+  4. Define the type of adapters for each read (R1 and R2). The pipeline will remove these adapters from the reads. You can use the default adapters if your protocol is TrueSeq, which uses P5 and P7 adapters.
+
+  5. For RNA-seq protocols:
+
+  Indicate whether your protocol is stranded (preserves the original strand of RNA fragments) or non-stranded.
+  Specify if your protocol is paired-end or single-end.
+  Indicate whether you wish to correct for UMIs. If so, provide the correct UMI length.
+
+
+**Note:** If you wish to navigate to a higher-level directory, click on the desired folder level in the path displayed at the top of the window, as illustrated in the image below.
 
 .. image:: ../../figures/browse-folder.png
 
-Input folder names must conform to the correct format as previously described. If there is a problem with the folder you selected, first resolve the error and then retry, selecting the updated folder.
+The input name must conform to the correct format as previously described. If there is an issue with the input you selected, resolve the error first and then retry, selecting the updated input.
 
-If you wish the output folder to be different from the one automatically filled in (based on the selected input folder), just select the desired output folder.
+If you wish the Output Folder to be different from the default (automatically set based on the selected input folder), simply select the desired output folder.
 
-Fill in the project name, then select the genome and annotation.
 
-For RNA-seq protocols, choose whether your protocol is stranded (sequenced reads save the original strand of RNA fragments) or non-stranded.
-
-Define the type of your adapters for each read (R1 and R2). These adapters will be removed from the reads by the pipeline. You can leave the default adapters if you use True-seq protocol P5 and P7 adapters.
 
 ------------
 
