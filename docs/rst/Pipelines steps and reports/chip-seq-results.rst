@@ -26,9 +26,6 @@ Analysis pipeline steps
 9. Peak annotation: The predicted peaks are collected from all samples using multiIntersectBed and then annotated according to the corresponding genome using Homer (with default parameters). 
    Analysis of peaks distribution in genomic regions, and around TSS is done using ChipSeeker, together with a Venn diagram of overlap of peaks sets.
 
-                                                                                                      
-
-
 
 .. image:: ../../figures/chip-seq_workflow.jpg
 
