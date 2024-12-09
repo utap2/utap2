@@ -7,7 +7,7 @@ Peak analysis is then performed (after some post-processing), on the identified 
 ChIP-Seq Analysis Setup
 =======================
 
- .. image:: ../figures/chip-seq.png
+ .. image:: ../../figures/chip-seq.png
 
 
 ATAC-Seq pipeline
@@ -18,7 +18,7 @@ The pipeline receives paired-end reads as input, performs quality control and pr
 ATAC-Seq Analysis Setup
 =======================
 
- .. image:: ../figures/atac-seq.png
+ .. image:: ../../figures/atac-seq.png
 
 
 ------------
@@ -38,11 +38,11 @@ Fill in the project name, then select the genome and annotation. The Chromosome 
 
 To compare control samples with treatment samples, select the Run with Control option. Enter your desired folder name for storing the analysis results and the final report. By default, two categories must be created: one for the control group and one for the treatment group. To define additional groups, click the Add Group button to enter their details.
 
-.. image:: ../figures/chromatine_comparison.png
+.. image:: ../../figures/chromatine_comparison.png
 
 Choose the samples by first selecting them, and then using the arrows to move them to the appropriate groups. You may also add additional groups.                                                                                                                              
                                                                                                                   
-.. image:: ../figures/chromatine_comparison2.png 
+.. image:: ../../figures/chromatine_comparison2.png 
 
 All of the steps of the pipeline (mapping, peak calling etc.) will be run on all of the samples.
 
