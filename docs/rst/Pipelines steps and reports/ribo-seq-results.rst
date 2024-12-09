@@ -49,7 +49,11 @@ Initial steps are similar to described in Ingolia et al. Nature 2012
 
 
 
-Summarized points:
+
+
+
+
+**Summarized points:**
 
 1. Sequence data: Including file format conversion and/or demultiplexing
 
