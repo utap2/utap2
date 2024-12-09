@@ -69,6 +69,8 @@ If your pipeline is DESeq2 from counts matrix, you will get this screen:
 
 
 
+
+
 **Note:** If you wish to navigate to a higher-level directory, click on the desired folder level in the path displayed at the top of the window, as illustrated in the image below.
 
 .. image:: ../../figures/browse-folder.png
@@ -76,6 +78,7 @@ If your pipeline is DESeq2 from counts matrix, you will get this screen:
 The input name must conform to the correct format as previously described. If there is an issue with the input you selected, resolve the error first and then retry, selecting the updated input.
 
 If you wish the Output Folder to be different from the default (automatically set based on the selected input folder), simply select the desired output folder.
+
 
 
 
