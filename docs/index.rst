@@ -21,6 +21,7 @@ UTAP2 is a web-based intuitive platform currently installed on Weizmann institut
     rst/atac-seq-results
     rst/chip-seq-results
     rst/ribo-seq-results
+    rst/Run Pipelines/index
     rst/installation
     rst/user-guide
     rst/releases
