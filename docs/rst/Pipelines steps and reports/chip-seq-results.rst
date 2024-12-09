@@ -27,12 +27,18 @@ The resulting peaks "*_peaks_filtered.broadPeak" are filtered to exclude peaks f
 Analysis of peaks distribution in genomic regions, and around TSS is done using ChipSeeker, together with a Venn diagram of overlap of peaks sets.
 
 
+
+
+
+
+
+
+
+
 .. image:: ../../figures/chip-seq_workflow.jpg
 
 
 
-
-                                                                                                      A
 Pipeline report
 ---------------
 
