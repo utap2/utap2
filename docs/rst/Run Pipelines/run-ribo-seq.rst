@@ -1,4 +1,4 @@
-Ribo-Seq Pipeline
+Run Ribo-Seq Pipeline
 -----------------
 Pipeline to run Ribo-Seq analysis from sequences to UTR and CDS counts and MACS peaks to determine ribosome enrichment regions.
 
