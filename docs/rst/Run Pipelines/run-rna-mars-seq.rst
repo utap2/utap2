@@ -1,44 +1,73 @@
-Run RNA-seq or MARS-seq pipeline
+Run Transcriptome pipelines
 ################################
 
-
-RNA-seq Analysis Setup
+Analysis Setup
 ----------------------
-If your protocol is RNA-seq, you will get this screen:
+If your pipeline is RNA-seq, you will get this screen:
 
-.. image:: ../figures/rna-seq.png
+.. image:: ../../figures/rna-seq.png
 
-If your protocol is MARS-seq, you will get this screen:
+If your pipeline is MARS-seq, you will get this screen:
 
-.. image:: ../figures/mars-seq.png
+.. image:: ../../figures/mars-seq.png
+
+If your pipeline is DESeq2 from counts matrix, you will get this screen:
+
+.. image: ../../figures/deseq2_from_matrix.png
+
+If your pipeline is RNA-seq with UMI , you will get this screen:
+
+.. image: ../../figures/rna-with-umi.png
 
 ------------
 
-In the input folder field, Browse within your directory structure and use the Select button the **root folder**  for analysis.  Note that if you wish to go up one level (or more) click on the desired folder level using the path at the top of the window.
 
-.. image:: ../figures/browse-folder.png
+**For the DESeq2 from Counts Matrix Pipeline:**
 
-Input folder names must conform to the correct format as previously described. If there is a problem with the folder you selected, first resolve the error and then retry, selecting the updated folder.
+  1. In the Input File field, navigate through your directory structure and use the Select button to choose the file containing the counts matrix for analysis. The file must be in either CSV or TXT format.
+  
+  2. Fill in the Project Name.
 
-If you wish the output folder to be different from the one automatically filled in (based on the selected input folder), just select the desired output folder.
+  3. Select the Genomes for Functional Analysis.
 
-Fill in the project name, then select the genome and annotation.
+**For RNA-Seq and MARS-Seq Pipelines:**
 
-For RNA-seq protocols, choose whether your protocol is stranded (sequenced reads save the original strand of RNA fragments) or non-stranded.
+  1. In the Input Folder field, browse through your directory structure and use the Select button to choose the root folder for analysis.
 
-Define the type of your adapters for each read (R1 and R2). These adapters will be removed from the reads by the pipeline. You can leave the default adapters if you use True-seq protocol P5 and P7 adapters.
+  2. Fill in the Project Name.
+
+  3. Select the Genome and Annotation.
+
+  4. Define the type of adapters for each read (R1 and R2). The pipeline will remove these adapters from the reads. You can use the default adapters if your protocol is TrueSeq, which uses P5 and P7 adapters.
+
+  5. For RNA-seq protocols:
+
+  Indicate whether your protocol is stranded (preserves the original strand of RNA fragments) or non-stranded.
+  Specify if your protocol is paired-end or single-end.
+  Indicate whether you wish to correct for UMIs. If so, provide the correct UMI length.
+
+
+**Note:** If you wish to navigate to a higher-level directory, click on the desired folder level in the path displayed at the top of the window, as illustrated in the image below.
+
+.. image:: ../../figures/browse-folder.png
+
+The input name must conform to the correct format as previously described. If there is an issue with the input you selected, resolve the error first and then retry, selecting the updated input.
+
+If you wish the Output Folder to be different from the default (automatically set based on the selected input folder), simply select the desired output folder.
+
+
 
 ------------
 
 To identify what's differentially expressed by using the DESeq2 package, select the Run DESeq2 option. By default, two categories must be created. Fill in the category names for each of the 2 categories displayed by default. To define more categories, click on the Add Categories button to enable entering their details.
 
-.. image:: ../figures/deseq1.png
+.. image:: ../../figures/deseq1.png
 
 ------------
 
 Choose the samples by first selecting them, and then using the arrows to move them to the appropriate categories. You may also add additional categories.
 
-.. image:: ../figures/deseq2.png
+.. image:: ../../figures/deseq2.png
 
 ------------
 
@@ -47,7 +76,7 @@ Note that when submitting more than two categories, all categories will be compa
 
 If the samples were prepared in different batches, one can annotate them as follows: After moving the samples into category boxes, click on the "Add Batch Effect" button, select the samples from the category boxes that belong to a particular batch, and click on the "Batch 1" button. Repeat the operation for the other batches. Be sure that the batch effect is designed correctly - seeDESeq2 documentation `here  <https://bioconductor.org/packages/3.7/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#model-matrix-not-full-rank>`_.
 
-.. image:: ../figures/deseq-batch.png
+.. image:: ../../figures/deseq-batch.png
 
 
 All of the steps of the pipeline (mapping, counts etc.) will be run on all of the samples, with the exception of DESeq2 which will be run only on samples with categories.
