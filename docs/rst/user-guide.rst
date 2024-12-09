@@ -35,6 +35,18 @@ Click on the "Upload data" button on the navigation bar, and select the folder o
 
 
 
+
+
+
+
+.. toctree::
+    :maxdepth: 2
+
+    upload
+
+
+
+
 Run analysis
 ============
 
