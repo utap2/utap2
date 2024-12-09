@@ -36,14 +36,10 @@ Click on the "Upload data" button on the navigation bar, and select the folder o
 
 
 
-
-
-
 .. toctree::
-    :maxdepth: 2
+   :maxdepth: 2
 
-    upload
-
+   rst/upload
 
 
 
@@ -59,14 +55,11 @@ After importing you data (or if you have old data on the server that was importe
 
 
 
-
-
-
-
 .. toctree::
-    :maxdepth: 3
+   :maxdepth: 2
 
-    Run peiplines/index
+   rst/Run peiplines/index
+
 
 
 Customization
@@ -100,5 +93,5 @@ We chose the various pipeline parameters based on our rich experience in transcr
 
 
 
-(where $HOST_MOUNT is location that contains all UTAP2 installation files - see https://utap2.readthedocs.io/en/latest/rst/installation.html).
+(where $HOST_MOUNT is the folder that contains all UTAP2 installation files - see https://utap2.readthedocs.io/en/latest/rst/installation.html).
 
