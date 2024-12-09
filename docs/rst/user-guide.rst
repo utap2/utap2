@@ -35,6 +35,18 @@ Click on the "Upload data" button on the navigation bar, and select the folder o
 
 
 
+
+
+
+
+.. toctree::
+    :maxdepth: 2
+
+    upload
+
+
+
+
 Run analysis
 ============
 
@@ -43,12 +55,18 @@ After importing you data (or if you have old data on the server that was importe
 .. image:: ../figures/run-analysis.png
 
 
+
+
+
+
+
+
+
+
 .. toctree::
     :maxdepth: 3
 
-    Run peiplines 
-    run-rna-mars-seq
-    run-demultiplexing
+    Run peiplines/index
 
 
 Customization
@@ -58,18 +76,18 @@ We chose the various pipeline parameters based on our rich experience in transcr
  
 1. **System-wide changes:** 
 
-   The Snakefiles of the pipelines are built using the Snakemake workflow management system (https://snakemake.readthedocs.io) , and are located at:
+   The Snakefiles for the pipelines are built using the Snakemake workflow management system (https://snakemake.readthedocs.io) and are located within a Miniconda3 environment in the image/container at:
 
-   $CONDA/envs/utap/lib/python2.7/site-packages/ngs-snakemake/snakefile-marseq.txt
-   $CONDA/envs/utap/lib/python2.7/site-packages/ngs-snakemake/snakefile-rnaseq.txt
 
-   (where $CONDA is the location of the miniconda -  see https://utap.readthedocs.io/en/latest/rst/installation.html).
+   ``/home/labs/bioservices/services/UTAP-data-staging/utap-meta-data/installation/UTAP-staging-singularity/update_utap/UTAP2_RHEL_9.1/utap.sandbox/opt/miniconda3/envs/utap/lib/python3.10/site-packages/ngs-snakemake/snakefiles/``
+  
 
    Users can modify the above scripts by adding new rules, commands and changing parameters. 
 
    In addition, one can customize the following R script's DESeq2 analyses and report generation:
    
-   $CONDA/envs/utap/lib/python2.7/site-packages/ngs-snakemake/reports.Rmd
+   ``/home/labs/bioservices/services/UTAP-data-staging/utap-meta-data/installation/UTAP-staging-singularity/update_utap/UTAP2_RHEL_9.1/utap.sandbox/opt/miniconda3/envs/utap/lib/python3.10/site-packages/ngs-snakemake/DESeq_extend.Rmd``
+
 
    After the code is changed, subsequent analyses using the web application will reflect these changes.   
 2. **Ad-hoc changes:**
@@ -78,5 +96,9 @@ We chose the various pipeline parameters based on our rich experience in transcr
     
    After running the analysis in the usual way, one can navigate to the output folder, which contains a copy of the snakefile and Rmd script. One can then change and re-run the analysis from the linux terminal by executing:  
     
-   ``./snakemake_cmd_RUN_ID`` (where an example of a  RUN_ID is a timestamp like  "20171205_145424").
+   ``source $HOST_MOUNT/singularity_variables && singularity exec  $HOST_MOUNT/utap_latest.sif /bin/bash <output_folder>/snakemake_cmd_RUN_ID`` (where an example of a  RUN_ID is a timestamp like  "20171205_145424").
+
+
+
+(where $HOST_MOUNT is location that contains all UTAP2 installation files - see https://utap2.readthedocs.io/en/latest/rst/installation.html).
 

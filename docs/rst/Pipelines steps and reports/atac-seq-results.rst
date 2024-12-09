@@ -39,7 +39,7 @@ Analysis pipeline steps
     Analysis of peaks distribution in genomic regions, and around TSS is done using ChIPseeker, together with a venn diagram of overlap of peaks sets.                                       
 
                                                                                                       
-.. image:: ../figures/atac-seq_workflow.jpg
+.. image:: ../../figures/atac-seq_workflow.jpg
 
 
                                                                                                     

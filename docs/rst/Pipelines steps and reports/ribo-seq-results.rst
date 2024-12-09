@@ -49,7 +49,11 @@ Initial steps are similar to described in Ingolia et al. Nature 2012
 
 
 
-Summarized points:
+
+
+
+
+**Summarized points:**
 
 1. Sequence data: Including file format conversion and/or demultiplexing
 
@@ -74,7 +78,7 @@ Summarized points:
 8. Extend and annotate summits
 
 
-.. image:: ../figures/ribo-seq_workflow.jpg
+.. image:: ../../figures/ribo-seq_workflow.jpg
 
 
                                                                                                     
