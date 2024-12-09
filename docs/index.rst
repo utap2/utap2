@@ -18,10 +18,7 @@ Pipelines steps and reports
 .. toctree::
     :maxdepth: 2
     
-    rst/rna-mars-seq-results
-    rst/atac-seq-results
-    rst/chip-seq-results
-    rst/ribo-seq-results
+    rst/Pipelines steps and reports/index
     rst/Run Pipelines/index
     rst/installation
     rst/user-guide
