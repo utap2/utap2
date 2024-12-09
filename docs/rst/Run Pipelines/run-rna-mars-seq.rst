@@ -6,17 +6,17 @@ RNA-seq Analysis Setup
 ----------------------
 If your protocol is RNA-seq, you will get this screen:
 
-.. image:: ../figures/rna-seq.png
+.. image:: ../../figures/rna-seq.png
 
 If your protocol is MARS-seq, you will get this screen:
 
-.. image:: ../figures/mars-seq.png
+.. image:: ../../figures/mars-seq.png
 
 ------------
 
 In the input folder field, Browse within your directory structure and use the Select button the **root folder**  for analysis.  Note that if you wish to go up one level (or more) click on the desired folder level using the path at the top of the window.
 
-.. image:: ../figures/browse-folder.png
+.. image:: ../../figures/browse-folder.png
 
 Input folder names must conform to the correct format as previously described. If there is a problem with the folder you selected, first resolve the error and then retry, selecting the updated folder.
 
@@ -32,13 +32,13 @@ Define the type of your adapters for each read (R1 and R2). These adapters will 
 
 To identify what's differentially expressed by using the DESeq2 package, select the Run DESeq2 option. By default, two categories must be created. Fill in the category names for each of the 2 categories displayed by default. To define more categories, click on the Add Categories button to enable entering their details.
 
-.. image:: ../figures/deseq1.png
+.. image:: ../../figures/deseq1.png
 
 ------------
 
 Choose the samples by first selecting them, and then using the arrows to move them to the appropriate categories. You may also add additional categories.
 
-.. image:: ../figures/deseq2.png
+.. image:: ../../figures/deseq2.png
 
 ------------
 
@@ -47,7 +47,7 @@ Note that when submitting more than two categories, all categories will be compa
 
 If the samples were prepared in different batches, one can annotate them as follows: After moving the samples into category boxes, click on the "Add Batch Effect" button, select the samples from the category boxes that belong to a particular batch, and click on the "Batch 1" button. Repeat the operation for the other batches. Be sure that the batch effect is designed correctly - seeDESeq2 documentation `here  <https://bioconductor.org/packages/3.7/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#model-matrix-not-full-rank>`_.
 
-.. image:: ../figures/deseq-batch.png
+.. image:: ../../figures/deseq-batch.png
 
 
 All of the steps of the pipeline (mapping, counts etc.) will be run on all of the samples, with the exception of DESeq2 which will be run only on samples with categories.
