@@ -44,6 +44,8 @@ Acknowlegments
 ==============
 
 Please cite: 
+
+
 UTAP: Kohen R, Barlev J, Hornung G, Stelzer G, Feldmesser E, Kogan K, Safran M, Leshkowitz D: UTAP: User-friendly Transcriptome Analysis Pipeline. BMC Bioinformatics 2019, 20(1):154.
 
 
