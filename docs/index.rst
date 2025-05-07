@@ -43,5 +43,8 @@ Weizmann Institute of Science, Rehovot 76100, Israel.
 Acknowlegments
 ==============
 
-Please cite: Kohen R, Barlev J, Hornung G, Stelzer G, Feldmesser E, Kogan K, Safran M, Leshkowitz D: UTAP: User-friendly Transcriptome Analysis Pipeline. BMC Bioinformatics 2019, 20(1):154.
-Lindner, J., Dassa, B., Wigoda, N., Stelzer, G., Feldmesser, E., Prilusky, J., & Leshkowitz, D. (2025). UTAP2: Enhanced Transcriptome and Epigenome Analysis Pipeline. BMC Bioinformatics, 26:79. https://doi.org/10.1186/s12859-025-06090-8.
+Please cite: 
+UTAP: Kohen R, Barlev J, Hornung G, Stelzer G, Feldmesser E, Kogan K, Safran M, Leshkowitz D: UTAP: User-friendly Transcriptome Analysis Pipeline. BMC Bioinformatics 2019, 20(1):154.
+
+
+UTAP2: Lindner, J., Dassa, B., Wigoda, N., Stelzer, G., Feldmesser, E., Prilusky, J., & Leshkowitz, D. (2025). UTAP2: Enhanced Transcriptome and Epigenome Analysis Pipeline. BMC Bioinformatics, 26:79. https://doi.org/10.1186/s12859-025-06090-8.
